@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بازی یادگیری زبان - مراحل تدریجی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .game-container {
+    width: 100%;
+    max-width: 1050px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+  }
+
+  /* ========== هدر کلی ========== */
+  .global-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    color: #fff;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .global-title {
+    font-size: 22px;
+    font-weight: 900;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .global-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .global-stat {
+    background: rgba(255,255,255,0.25);
+    padding: 10px 18px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .global-stat.gold {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+  }
+
+  .global-stat img { width: 20px; height: 20px; }
+
+  /* ========== صفحه انتخاب زبان ========== */
+  .setup-screen {
+    animation: fadeIn 0.5s ease;
+  }
+
+  .setup-screen h2 {
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .setup-screen p.subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+
+  .voice-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+
+  .voice-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 10px #4ade80;
+  }
+
+  .voice-status.unavailable .dot {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+  }
+
+  .speed-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .speed-control input[type="range"] {
+    width: 140px;
+    accent-color: #f6d365;
+    cursor: pointer;
+  }
+
+  .speed-control #speedValue {
+    background: rgba(255,255,255,0.3);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    min-width: 48px;
+    text-align: center;
+  }
+
+  .lang-pickers {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .lang-picker {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 25px 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .lang-picker h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    opacity: 0.95;
+    color: #fff;
+  }
+
+  .lang-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lang-btn {
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Vazirmatn', sans-serif;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .lang-btn .flag img { width: 24px; height: 24px; display: block; }
+
+  .lang-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+  .lang-btn.active {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+    border-color: #fff;
+    box-shadow: 0 8px 20px rgba(253, 160, 133, 0.5);
+  }
+
+  .swap-icon { font-size: 30px; opacity: 0.8; color: #fff; text-align: center; }
+
+  .start-btn {
+    padding: 18px 60px;
+    font-size: 20px;
+    font-weight: 900;
+    font-family: 'Vazirmatn', sans-serif;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(253, 160, 133, 0.5);
+    transition: all 0.3s;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .start-btn:hover:not(:disabled) { transform: translateY(-4px) scale(1.03); }
+  .start-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ========== صفحه مراحل ========== */
+  .levels-screen { display: none; animation: fadeIn 0.5s ease; }
+  .levels-screen.active { display: block; }
+
+  .levels-header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 25px;
+  }
+
+  .levels-header h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .levels-header p { font-size: 14px; opacity: 0.9; }
+
+  .lang-info-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.2);
+    padding: 12px 25px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 auto 25px;
+    width: fit-content;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .lang-info-bar img { width: 24px; height: 24px; }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .level-card {
+    background: linear-gradient(135deg, #fff, #f0f4ff);
+    border-radius: 22px;
+    padding: 22px 20px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+  }
+
+  .level-card::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -30%;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(118, 75, 162, 0.08), transparent 70%);
+  }
+
+  .level-card:hover:not(.locked) {
+    transform: translateY(-6px) scale(1.02);
+    border-color: #764ba2;
+    box-shadow: 0 18px 40px rgba(118, 75, 162, 0.35);
+  }
+
+  .level-card.locked {
+    cursor: not-allowed;
+    opacity: 0.55;
+    filter: grayscale(0.7);
+  }
+
+  .level-card.completed {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-color: #10b981;
+  }
+
+  .level-card.current {
+    border-color: #f59e0b;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 15px 40px rgba(245, 158, 11, 0.6); }
+  }
+
+  .level-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .level-icon {
+    font-size: 40px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+  }
+
+  .level-status {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 12px;
+    background: rgba(118, 75, 162, 0.15);
+    color: #764ba2;
+  }
+
+  .level-card.completed .level-status {
+    background: rgba(16, 185, 129, 0.2);
+    color: #059669;
+  }
+
+  .level-card.locked .level-status {
+    background: rgba(120, 120, 120, 0.2);
+    color: #666;
+  }
+
+  .level-card.current .level-status {
+    background: rgba(245, 158, 11, 0.2);
+    color: #b45309;
+  }
+
+  .level-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 6px;
+    position: relative;
+  }
+
+  .level-desc {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 14px;
+    position: relative;
+    min-height: 34px;
+  }
+
+  .level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    position: relative;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+  }
+
+  .level-info .words-count {
+    color: #764ba2;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .level-info .min-score {
+    color: #dc2626;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .level-progress {
+    margin-top: 12px;
+    height: 6px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f6d365, #fda085);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .level-card.completed .level-progress-fill {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    width: 100% !important;
+  }
+
+  /* ========== صفحه بازی ========== */
+  .game-screen { display: none; }
+  .game-screen.active { display: block; animation: fadeIn 0.5s ease; }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    color: #fff;
+    font-weight: 700;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .score-box, .streak-box, .lang-badge, .min-score-box {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 10px 18px;
+    border-radius: 15px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-badge {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+  }
+
+  .lang-badge img { width: 20px; height: 20px; }
+
+  .min-score-box { background: rgba(220, 38, 38, 0.85); color: #fff; }
+
+  .progress-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f6d365, #fda085);
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .progress-threshold {
+    position: absolute;
+    top: -3px; bottom: -3px;
+    width: 3px;
+    background: #dc2626;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+    z-index: 2;
+  }
+
+  .question-card {
+    background: linear-gradient(135deg, #ffffff, #f0f4ff);
+    border-radius: 25px;
+    padding: 45px 30px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(118, 75, 162, 0.08) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+  }
+
+  @keyframes rotate { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+  .question-label {
+    font-size: 15px;
+    color: #764ba2;
+    font-weight: 700;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .question-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .question-text {
+    font-size: clamp(50px, 11vw, 100px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .speak-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-size: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4);
+    transition: all 0.3s;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+
+  .speak-btn:hover { transform: scale(1.1) rotate(-5deg); }
+
+  .speak-btn.speaking {
+    animation: speakPulse 0.8s ease infinite;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  .question-sub {
+    font-size: 14px;
+    color: #999;
+    margin-top: 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .question-sub img { width: 18px; height: 18px; vertical-align: middle; }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+  }
+
+  .option-card {
+    background: #fff;
+    border: 3px solid transparent;
+    border-radius: 20px;
+    padding: 30px 20px 25px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .option-card:hover:not(.disabled) {
+    transform: translateY(-8px) scale(1.03);
+    border-color: #764ba2;
+  }
+
+  .option-card.disabled { cursor: not-allowed; pointer-events: none; }
+
+  .option-flag {
+    font-size: 50px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+  }
+
+  .option-flag img { width: 56px; height: 56px; display: block; }
+
+  .option-text {
+    font-size: 26px;
+    font-weight: 900;
+    color: #333;
+    line-height: 1.2;
+  }
+
+  .option-card.correct {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    border-color: #16a34a;
+    box-shadow: 0 15px 40px rgba(34, 197, 94, 0.5);
+  }
+  .option-card.correct .option-text { color: #fff; }
+
+  .option-card.wrong {
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    border-color: #dc2626;
+  }
+  .option-card.wrong .option-text { color: #fff; }
+
+  .option-speak {
+    position: absolute;
+    top: 8px; left: 8px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(118, 75, 162, 0.12);
+    color: #764ba2;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.25s;
+  }
+
+  .option-speak:hover { background: rgba(118, 75, 162, 0.3); transform: scale(1.15); }
+
+  .option-card.correct .option-speak,
+  .option-card.wrong .option-speak {
+    background: rgba(255, 255, 255, 0.35);
+    color: #fff;
+  }
+
+  .result-message {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    margin-top: 22px;
+    min-height: 32px;
+    color: #fff;
+  }
+
+  .game-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Vazirmatn', sans-serif;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .action-btn:hover { background: rgba(255,255,255,0.4); }
+
+  .action-btn.primary {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    color: #5a3d00;
+    border: none;
+  }
+
+  /* ========== مودال پایان مرحله ========== */
+  /* ===== مودال ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* ⭐ کادر اصلی مودال */
+.modal-box {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-radius: 24px;
+  max-width: 560px;
+  width: 100%;
+  max-height: calc(100vh - 30px);           /* ⭐ محدودیت ارتفاع */
+  max-height: calc(100dvh - 30px);           /* ⭐ موبایل‌های جدید */
+  display: flex;
+  flex-direction: column;                    /* ⭐ چیدمان عمودی */
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  animation: popIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ⭐ بخش محتوا — قابل اسکرول */
+.modal-content {
+  padding: 25px 22px 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  text-align: center;
+  -webkit-overflow-scrolling: touch;        /* اسکرول نرم در iOS */
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #1e293b;
+}
+
+.modal-content::-webkit-scrollbar { width: 6px; }
+.modal-content::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+.modal-content::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+/* ⭐ بخش دکمه‌ها — ثابت در پایین */
+.modal-actions {
+  padding: 15px 22px 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  background: rgba(15, 23, 42, 0.5);
+  flex-shrink: 0;                            /* ⭐ فشرده نشود */
+}
+
+/* استایل‌های محتوای داخلی */
+.modal-emoji {
+  font-size: 70px;
+  margin-bottom: 10px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #38bdf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.modal-message {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.modal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-stat {
+  background: rgba(118, 75, 162, 0.1);
+  padding: 12px 8px;
+  border-radius: 14px;
+  border: 2px solid rgba(118, 75, 162, 0.2);
+}
+
+.modal-stat-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: #a78bfa;
+  margin-bottom: 4px;
+}
+
+.modal-stat-label {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.modal-stat.pass { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.modal-stat.pass .modal-stat-value { color: #34d399; }
+.modal-stat.fail { border-color: #dc2626; background: rgba(220, 38, 38, 0.1); }
+.modal-stat.fail .modal-stat-value { color: #f87171; }
+
+/* دکمه‌ها */
+.modal-btn {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  flex: 1;
+  min-width: 110px;
+  max-width: 200px;
+}
+
+.modal-btn.primary {
+  background: linear-gradient(135deg, #38bdf8, #a78bfa);
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
+}
+
+.modal-btn.primary:hover { transform: translateY(-2px); }
+
+.modal-btn.secondary {
+  background: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+}
+
+.modal-btn.secondary:hover { background: rgba(148, 163, 184, 0.35); }
+
+/* ===== ریسپانسیو موبایل ===== */
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 8px;
+    align-items: flex-start;
+  }
+  
+  .modal-box {
+    max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
+    border-radius: 18px;
+  }
+  
+  .modal-content {
+    padding: 20px 16px 12px;
+  }
+  
+  .modal-actions {
+    padding: 12px 15px 15px;
+    gap: 8px;
+  }
+  
+  .modal-emoji {
+    font-size: 55px;
+    margin-bottom: 6px;
+  }
+  
+  .modal-title {
+    font-size: 20px;
+  }
+  
+  .modal-message {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+  
+  .modal-stats {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .modal-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+  }
+  
+  .modal-stat-value {
+    font-size: 18px;
+    margin-bottom: 0;
+    order: 2;
+  }
+  
+  .modal-stat-label {
+    font-size: 12px;
+    order: 1;
+  }
+  
+  .modal-btn {
+    padding: 11px 16px;
+    font-size: 14px;
+    min-width: 100px;
+  }
+}
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 30px;
+    animation: floatUp 1.5s ease-out forwards;
+    z-index: 9999;
+  }
+
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  @media (max-width: 640px) {
+    .lang-pickers { grid-template-columns: 1fr; }
+    .swap-icon { transform: rotate(90deg); }
+    .question-text { font-size: 55px; }
+    .speak-btn { width: 50px; height: 50px; font-size: 20px; }
+    .game-container { padding: 20px 15px; }
+    .option-flag, .option-flag img { width: 44px; height: 44px; font-size: 42px; }
+    .speed-control { font-size: 12px; padding: 8px 14px; }
+    .speed-control input[type="range"] { width: 100px; }
+    .modal-stats { grid-template-columns: 1fr; }
+    .levels-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+
+  <!-- ============ هدر کلی ============ -->
+  <div class="global-header">
+    <div class="global-title">
+      <span>🌍</span>
+      <span>بازی یادگیری زبان</span>
+    </div>
+    <div class="global-stats">
+      <div class="global-stat gold">
+        <span>🏆</span>
+        <span>امتیاز کل: <span id="totalScore">0</span></span>
+      </div>
+      <div class="global-stat">
+        <span>🎯</span>
+        <span>مراحل: <span id="completedCount">0</span>/<span id="totalLevels">0</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ صفحه انتخاب زبان ============ -->
+  <div class="setup-screen" id="setupScreen">
+    <h2>🎨 حالت یادگیری تدریجی</h2>
+    <p class="subtitle">زبان مبدا و مقصد را انتخاب کنید تا مراحل آماده شود</p>
+
+    <div style="text-align:center;">
+      <div class="voice-status" id="voiceStatus">
+        <span class="dot"></span>
+        <span id="voiceStatusText">در حال آماده‌سازی...</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="speed-control">
+        <label>⚡ سرعت تلفظ:</label>
+        <input type="range" id="speedSlider" min="0.5" max="1.3" step="0.1" value="0.9">
+        <span id="speedValue">0.9x</span>
+      </div>
+    </div>
+
+    <div class="lang-pickers">
+      <div class="lang-picker">
+        <h3>📖 زبان مبدا (سوال)</h3>
+        <div class="lang-options" id="sourceLangs"></div>
+      </div>
+      <div class="swap-icon">⇄</div>
+      <div class="lang-picker">
+        <h3>🎯 زبان مقصد (پاسخ)</h3>
+        <div class="lang-options" id="targetLangs"></div>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" disabled>🚀 شروع یادگیری</button>
+  </div>
+
+  <!-- ============ صفحه نقشه مراحل ============ -->
+  <div class="levels-screen" id="levelsScreen">
+    <div class="levels-header">
+      <h2>🗺️ نقشه مراحل</h2>
+      <p>کلمات مرحله به مرحله سخت‌تر می‌شوند</p>
+    </div>
+
+    <div class="lang-info-bar" id="langInfoBar"></div>
+
+    <div class="levels-grid" id="levelsGrid"></div>
+
+    <div class="game-actions" style="margin-top: 25px;">
+      <button class="action-btn" id="changeLangBtn">🔄 تغییر زبان</button>
+      <button class="action-btn" id="resetProgressBtn">🗑️ ریست پیشرفت</button>
+    </div>
+  </div>
+
+  <!-- ============ صفحه بازی ============ -->
+  <div class="game-screen" id="gameScreen">
+    <div class="top-bar">
+      <div class="score-box">⭐ امتیاز: <span id="score">0</span></div>
+      <div class="lang-badge" id="langBadge"></div>
+      <div class="min-score-box">🎯 حداقل: <span id="minScore">0</span></div>
+      <div class="streak-box">🔥 زنجیره: <span id="streak">0</span></div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress"></div>
+      <div class="progress-threshold" id="progressThreshold"></div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-label" id="questionLabel">ترجمه صحیح این کلمه کدام است؟</div>
+      <div class="question-text-wrapper">
+        <button class="speak-btn" id="speakQuestionBtn" title="تلفظ کلمه">🔊</button>
+        <div class="question-text" id="questionText">Hello</div>
+      </div>
+      <div class="question-sub" id="questionSub"></div>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="result-message" id="resultMessage"></div>
+
+    <div class="game-actions">
+      <button class="action-btn" id="backBtn">↩ بازگشت به مراحل</button>
+      <button class="action-btn primary" id="restartBtn">🔄 شروع مجدد</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ مودال پایان مرحله ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    
+    <!-- ⭐ بخش قابل اسکرول -->
+    <div class="modal-content">
+      <div class="modal-emoji" id="modalEmoji">🎉</div>
+      <div class="modal-title" id="modalTitle">مرحله تمام شد!</div>
+      <div class="modal-message" id="modalMessage"></div>
+
+      <div class="modal-stats">
+        <div class="modal-stat" id="statScore">
+          <div class="modal-stat-value" id="modalScoreValue">0</div>
+          <div class="modal-stat-label">امتیاز این مرحله</div>
+        </div>
+        <div class="modal-stat" id="statMin">
+          <div class="modal-stat-value" id="modalMinValue">0</div>
+          <div class="modal-stat-label">حداقل لازم</div>
+        </div>
+        <div class="modal-stat" id="statTotal">
+          <div class="modal-stat-value" id="modalTotalValue">0</div>
+          <div class="modal-stat-label">امتیاز کل شما</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ⭐ بخش پایین — دکمه‌ها (ثابت) -->
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="modalBackBtn">🗺️ نقشه مراحل</button>
+      <button class="modal-btn primary" id="modalNextBtn">▶ مرحله بعد</button>
+    </div>
+    
+  </div>
+</div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- ===== Twemoji ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+
+<script>
+/* ========================================================
+   ۱) دیکشنری چندزبانه (۳۰ کلمه)
+   ======================================================== */
+   const vocabulary = [
+  // ═══════════════════════════════════════════════════════
+  // 📚 کلمات پایه (۳۱ کلمه)
+  // ═══════════════════════════════════════════════════════
+  { fa: 'سلام',     en: 'Hello',     ar: 'مَرحَبا',         ar_iq: 'السَلامُ عَلَيكُم',          ru: 'Привет',         fr: 'Bonjour',        es: 'Hola',       de: 'Hallo',         ja: 'こんにちは',  zh: '你好' },
+  { fa: 'خداحافظ',  en: 'Goodbye',   ar: 'مَعَ السَلامَة',    ar_iq: 'في اَمانِ اللهْ',          ru: 'Пока',           fr: 'Au revoir',      es: 'Adiós',      de: 'Tschüss',       ja: 'さようなら',  zh: '再见' },
+  { fa: 'متشکرم',   en: 'Thank you', ar: 'شُكرَاً',         ar_iq: 'شكراً',        ru: 'Спасибо',        fr: 'Merci',          es: 'Gracias',    de: 'Danke',         ja: 'ありがとう',  zh: '谢谢' },
+  { fa: 'لطفاً',    en: 'Please',    ar: 'مِن فَضْلِك',       ar_iq: 'لو تسمح',      ru: 'Пожалуйста',     fr: "S'il vous plaît",es: 'Por favor',  de: 'Bitte',         ja: 'お願いします', zh: '请' },
+  { fa: 'بله',      en: 'Yes',       ar: 'نَعَم',           ar_iq: 'إي',           ru: 'Да',             fr: 'Oui',            es: 'Sí',         de: 'Ja',            ja: 'はい',        zh: '是' },
+  { fa: 'نه',       en: 'No',        ar: 'لا',            ar_iq: 'لا',           ru: 'Нет',            fr: 'Non',            es: 'No',         de: 'Nein',          ja: 'いいえ',      zh: '不' },
+  { fa: 'آب',       en: 'Water',     ar: 'ماء',           ar_iq: 'مای',          ru: 'Вода',           fr: 'Eau',            es: 'Agua',       de: 'Wasser',        ja: '水',          zh: '水' },
+  { fa: 'نان',      en: 'Bread',     ar: 'خُبز',           ar_iq: 'خُبُز',          ru: 'Хлеб',           fr: 'Pain',           es: 'Pan',        de: 'Brot',          ja: 'パン',        zh: '面包' },
+  { fa: 'کتاب',     en: 'Book',      ar: 'كتاب',          ar_iq: 'كتاب',         ru: 'Книга',          fr: 'Livre',          es: 'Libro',      de: 'Buch',          ja: '本',          zh: '书' },
+  { fa: 'دوست',     en: 'Friend',    ar: 'صديق',          ar_iq: 'صَديق',         ru: 'Друг',           fr: 'Ami',            es: 'Amigo',      de: 'Freund',        ja: '友達',        zh: '朋友' },
+  { fa: 'خانه',     en: 'House',     ar: 'بَيت',           ar_iq: 'بيت',          ru: 'Дом',            fr: 'Maison',         es: 'Casa',       de: 'Haus',          ja: '家',          zh: '家' },
+  { fa: 'مادر',     en: 'Mother',    ar: 'أم',            ar_iq: 'ام',           ru: 'Мать',           fr: 'Mère',           es: 'Madre',      de: 'Mutter',        ja: '母',          zh: '母亲' },
+  { fa: 'پدر',      en: 'Father',    ar: 'أب',            ar_iq: 'اَبو',          ru: 'Отец',           fr: 'Père',           es: 'Padre',      de: 'Vater',         ja: '父',          zh: '父亲' },
+  { fa: 'عشق',      en: 'Love',      ar: 'حُب',            ar_iq: 'حُب',           ru: 'Любовь',         fr: 'Amour',          es: 'Amor',       de: 'Liebe',         ja: '愛',          zh: '爱' },
+  { fa: 'شب',       en: 'Night',     ar: 'لَيل',           ar_iq: 'ليل',          ru: 'Ночь',           fr: 'Nuit',           es: 'Noche',      de: 'Nacht',         ja: '夜',          zh: '夜晚' },
+  { fa: 'روز',      en: 'Day',       ar: 'يوم',           ar_iq: 'يوم',          ru: 'День',           fr: 'Jour',           es: 'Día',        de: 'Tag',           ja: '日',          zh: '白天' },
+  { fa: 'غذا',      en: 'Food',      ar: 'طَعام',          ar_iq: 'أكل',          ru: 'Еда',            fr: 'Nourriture',     es: 'Comida',     de: 'Essen',         ja: '食べ物',      zh: '食物' },
+  { fa: 'مدرسه',    en: 'School',    ar: 'مَدرِسَة',         ar_iq: 'مدرسة',        ru: 'Школа',          fr: 'École',          es: 'Escuela',    de: 'Schule',        ja: '学校',        zh: '学校' },
+  { fa: 'خوشحال',   en: 'Happy',     ar: 'سَعيد',          ar_iq: 'فَرحان',        ru: 'Счастливый',     fr: 'Heureux',        es: 'Feliz',      de: 'Glücklich',     ja: '幸せ',        zh: '快乐' },
+  { fa: 'زیبا',     en: 'Beautiful', ar: 'جَميل',          ar_iq: 'حِلو',          ru: 'Красивый',       fr: 'Beau',           es: 'Hermoso',    de: 'Schön',         ja: '美しい',      zh: '美丽' },
+  { fa: 'گربه',     en: 'Cat',       ar: 'قِطَّة',           ar_iq: 'بسة',          ru: 'Кошка',          fr: 'Chat',           es: 'Gato',       de: 'Katze',         ja: '猫',          zh: '猫' },
+  { fa: 'سگ',       en: 'Dog',       ar: 'كَلب',           ar_iq: 'جلب',          ru: 'Собака',         fr: 'Chien',          es: 'Perro',      de: 'Hund',          ja: '犬',          zh: '狗' },
+  { fa: 'خورشید',   en: 'Sun',       ar: 'الشَمس',         ar_iq: 'الشمس',        ru: 'Солнце',         fr: 'Soleil',         es: 'Sol',        de: 'Sonne',         ja: '太陽',        zh: '太阳' },
+  { fa: 'ماه',      en: 'Moon',      ar: 'القَمَر',         ar_iq: 'القمر',        ru: 'Луна',           fr: 'Lune',           es: 'Luna',       de: 'Mond',          ja: '月',          zh: '月亮' },
+  { fa: 'گل',       en: 'Flower',    ar: 'الوَردَة',        ar_iq: 'الوردة',       ru: 'Цветок',         fr: 'Fleur',          es: 'Flor',       de: 'Blume',         ja: '花',          zh: '花' },
+  { fa: 'درخت',     en: 'Tree',      ar: 'الشَجَرَة',        ar_iq: 'الشجرة',       ru: 'Дерево',         fr: 'Arbre',          es: 'Árbol',      de: 'Baum',          ja: '木',          zh: '树' },
+  { fa: 'ماشین',    en: 'Car',       ar: 'سَيارَة',         ar_iq: 'سيارة',        ru: 'Машина',         fr: 'Voiture',        es: 'Coche',      de: 'Auto',          ja: '車',          zh: '车' },
+  { fa: 'پول',      en: 'Money',     ar: 'مال',           ar_iq: 'فلوس',         ru: 'Деньги',         fr: 'Argent',         es: 'Dinero',     de: 'Geld',          ja: 'お金',        zh: '钱' },
+  { fa: 'وقت',      en: 'Time',      ar: 'الوَقت',         ar_iq: 'الوقت',        ru: 'Время',          fr: 'Temps',          es: 'Tiempo',     de: 'Zeit',          ja: '時間',        zh: '时间' },
+  { fa: 'رنگ',      en: 'Color',     ar: 'لون',           ar_iq: 'لون',          ru: 'Цвет',           fr: 'Couleur',        es: 'Color',      de: 'Farbe',         ja: '色',          zh: '颜色' },
+  { fa: 'سفید',     en: 'White',     ar: 'أبيَض',          ar_iq: 'أبيض',         ru: 'Белый',          fr: 'Blanc',          es: 'Blanco',     de: 'Weiß',          ja: '白',          zh: '白色' },
+
+  // ═══════════════════════════════════════════════════════
+  // 👑 کلمات سطح افسانه (Epic) — ۴۰ کلمه
+  // ═══════════════════════════════════════════════════════
+
+  // ═══════ مفاهیم عمیق ═══════
+  { fa: 'ابدیت',     en: 'Eternity',    ar: 'أَبَدِيَّة',        ar_iq: 'أَبَدِيَّة',        ru: 'Вечность',        fr: 'Éternité',    es: 'Eternidad',   de: 'Ewigkeit',       ja: '永遠',      zh: '永恒' },
+  { fa: 'بینهایت',   en: 'Infinity',    ar: 'لَا نِهَايَة',      ar_iq: 'بِلَا نِهَايَة',    ru: 'Бесконечность',   fr: 'Infini',      es: 'Infinito',    de: 'Unendlichkeit',  ja: '無限',      zh: '无限' },
+  { fa: 'سرنوشت',    en: 'Destiny',     ar: 'قَدَر',             ar_iq: 'نَصِيب',           ru: 'Судьба',          fr: 'Destin',      es: 'Destino',     de: 'Schicksal',      ja: '運命',      zh: '命运' },
+  { fa: 'معما',      en: 'Mystery',     ar: 'لُغْز',             ar_iq: 'لُغْز',            ru: 'Загадка',         fr: 'Mystère',     es: 'Misterio',    de: 'Geheimnis',      ja: '謎',        zh: '谜' },
+  { fa: 'معجزه',     en: 'Miracle',     ar: 'مُعْجِزَة',         ar_iq: 'مُعْجِزَة',        ru: 'Чудо',            fr: 'Miracle',     es: 'Milagro',     de: 'Wunder',         ja: '奇跡',      zh: '奇迹' },
+  { fa: 'راز',       en: 'Secret',      ar: 'سِرّ',              ar_iq: 'سِرّ',             ru: 'Секрет',          fr: 'Secret',      es: 'Secreto',     de: 'Geheimnis',      ja: '秘密',      zh: '秘密' },
+  { fa: 'خاطره',     en: 'Memory',      ar: 'ذَاكِرَة',          ar_iq: 'ذَاكِرَة',         ru: 'Память',          fr: 'Mémoire',     es: 'Memoria',     de: 'Erinnerung',     ja: '記憶',      zh: '记忆' },
+  { fa: 'رؤیا',      en: 'Dream',       ar: 'حُلْم',             ar_iq: 'حُلْم',            ru: 'Мечта',           fr: 'Rêve',        es: 'Sueño',       de: 'Traum',          ja: '夢',        zh: '梦' },
+  { fa: 'واقعیت',    en: 'Reality',     ar: 'وَاقِع',            ar_iq: 'وَاقِع',           ru: 'Реальность',      fr: 'Réalité',     es: 'Realidad',    de: 'Realität',       ja: '現実',      zh: '现实' },
+  { fa: 'خیال',      en: 'Imagination', ar: 'خَيَال',            ar_iq: 'خَيَال',           ru: 'Воображение',     fr: 'Imagination', es: 'Imaginación', de: 'Vorstellung',    ja: '想像',      zh: '想象' },
+
+  // ═══════ علوم پیشرفته ═══════
+  { fa: 'فیزیک',     en: 'Physics',     ar: 'فِيزِيَاء',         ar_iq: 'فِيزِيَاء',        ru: 'Физика',          fr: 'Physique',    es: 'Física',      de: 'Physik',         ja: '物理学',    zh: '物理学' },
+  { fa: 'شیمی',      en: 'Chemistry',   ar: 'كِيمِيَاء',         ar_iq: 'كِيمِيَاء',        ru: 'Химия',           fr: 'Chimie',      es: 'Química',     de: 'Chemie',         ja: '化学',      zh: '化学' },
+  { fa: 'زیستشناسی', en: 'Biology',     ar: 'أَحْيَاء',          ar_iq: 'أَحْيَاء',         ru: 'Биология',        fr: 'Biologie',    es: 'Biología',    de: 'Biologie',       ja: '生物学',    zh: '生物学' },
+  { fa: 'ریاضیات',   en: 'Mathematics', ar: 'رِيَاضِيَّات',       ar_iq: 'رِيَاضِيَّات',      ru: 'Математика',      fr: 'Mathématiques',es: 'Matemáticas',de: 'Mathematik',     ja: '数学',      zh: '数学' },
+  { fa: 'هندسه',     en: 'Geometry',    ar: 'هَنْدَسَة',         ar_iq: 'هَنْدَسَة',        ru: 'Геометрия',       fr: 'Géométrie',   es: 'Geometría',   de: 'Geometrie',      ja: '幾何学',    zh: '几何' },
+  { fa: 'جبر',       en: 'Algebra',     ar: 'جَبْر',             ar_iq: 'جَبْر',            ru: 'Алгебра',         fr: 'Algèbre',     es: 'Álgebra',     de: 'Algebra',        ja: '代数学',    zh: '代数' },
+  { fa: 'فلسفه',     en: 'Philosophy',  ar: 'فَلْسَفَة',          ar_iq: 'فَلْسَفَة',         ru: 'Философия',       fr: 'Philosophie', es: 'Filosofía',   de: 'Philosophie',    ja: '哲学',      zh: '哲学' },
+  { fa: 'روانشناسی', en: 'Psychology',  ar: 'عِلْم النَّفْس',     ar_iq: 'عِلْم النَّفْس',    ru: 'Психология',      fr: 'Psychologie', es: 'Psicología',  de: 'Psychologie',    ja: '心理学',    zh: '心理学' },
+  { fa: 'تاریخ',     en: 'History',     ar: 'تَارِيخ',           ar_iq: 'تَارِيخ',          ru: 'История',         fr: 'Histoire',    es: 'Historia',    de: 'Geschichte',     ja: '歴史',      zh: '历史' },
+  { fa: 'جغرافیا',   en: 'Geography',   ar: 'جُغْرَافِيَا',       ar_iq: 'جُغْرَافِيَا',      ru: 'География',       fr: 'Géographie',  es: 'Geografía',   de: 'Geographie',     ja: '地理学',    zh: '地理' },
+
+  // ═══════ صفات پیشرفته ═══════
+  { fa: 'شگفتانگیز', en: 'Amazing',     ar: 'مُذْهِل',           ar_iq: 'رَهِيب',           ru: 'Удивительный',    fr: 'Incroyable',  es: 'Asombroso',   de: 'Erstaunlich',    ja: '素晴らしい', zh: '惊人' },
+  { fa: 'بینظیر',    en: 'Unparalleled',ar: 'لَا مَثِيل لَهُ',    ar_iq: 'مَاكُو مِثْلُه',    ru: 'Непревзойдённый', fr: 'Inégalé',     es: 'Inigualable', de: 'Beispiellos',    ja: '無比',      zh: '无与伦比' },
+  { fa: 'عالی',      en: 'Excellent',   ar: 'مُمْتَاز',          ar_iq: 'مُمْتَاز',         ru: 'Превосходный',    fr: 'Excellent',   es: 'Excelente',   de: 'Ausgezeichnet',  ja: '優れた',    zh: '卓越' },
+  { fa: 'شکوهمند',   en: 'Magnificent', ar: 'رَائِع',            ar_iq: 'رَهِيب',           ru: 'Великолепный',    fr: 'Magnifique',  es: 'Magnífico',   de: 'Großartig',      ja: '壮大',      zh: '壮丽' },
+  { fa: 'پیچیده',    en: 'Complex',     ar: 'مُعَقَّد',           ar_iq: 'مُعَقَّد',          ru: 'Сложный',         fr: 'Complexe',    es: 'Complejo',    de: 'Komplex',        ja: '複雑',      zh: '复杂' },
+  { fa: 'ساده',      en: 'Simple',      ar: 'بَسِيط',            ar_iq: 'بَسِيط',           ru: 'Простой',         fr: 'Simple',      es: 'Simple',      de: 'Einfach',        ja: '簡単',      zh: '简单' },
+  { fa: 'مرموز',     en: 'Mysterious',  ar: 'غَامِض',            ar_iq: 'غَامِض',           ru: 'Таинственный',    fr: 'Mystérieux',  es: 'Misterioso',  de: 'Geheimnisvoll',  ja: '神秘的',    zh: '神秘' },
+  { fa: 'ابدی',      en: 'Eternal',     ar: 'أَبَدِيّ',           ar_iq: 'أَبَدِيّ',          ru: 'Вечный',          fr: 'Éternel',     es: 'Eterno',      de: 'Ewig',           ja: '永遠の',    zh: '永恒' },
+  { fa: 'مقدس',      en: 'Sacred',      ar: 'مُقَدَّس',           ar_iq: 'مُقَدَّس',          ru: 'Священный',       fr: 'Sacré',       es: 'Sagrado',     de: 'Heilig',         ja: '神聖',      zh: '神圣' },
+  { fa: 'ناب',       en: 'Pure',        ar: 'نَقِيّ',            ar_iq: 'نَقِيّ',           ru: 'Чистый',          fr: 'Pur',         es: 'Puro',        de: 'Rein',           ja: '純粋',      zh: '纯净' },
+
+  // ═══════ افعال پیشرفته ═══════
+  { fa: 'درک کردن',  en: 'Understand',  ar: 'يَفْهَم',           ar_iq: 'يَفْهَم',          ru: 'Понимать',        fr: 'Comprendre',  es: 'Entender',    de: 'Verstehen',      ja: '理解する',  zh: '理解' },
+  { fa: 'کشف کردن',  en: 'Discover',    ar: 'يَكْتَشِف',         ar_iq: 'يَكْتَشِف',        ru: 'Открывать',       fr: 'Découvrir',   es: 'Descubrir',   de: 'Entdecken',      ja: '発見する',  zh: '发现' },
+  { fa: 'ابداع کردن', en: 'Invent',     ar: 'يَخْتَرِع',         ar_iq: 'يَخْتَرِع',        ru: 'Изобретать',      fr: 'Inventer',    es: 'Inventar',    de: 'Erfinden',       ja: '発明する',  zh: '发明' },
+  { fa: 'تأمل کردن', en: 'Contemplate', ar: 'يَتَأَمَّل',         ar_iq: 'يَتَأَمَّل',        ru: 'Созерцать',       fr: 'Contempler',  es: 'Contemplar',  de: 'Nachdenken',     ja: '熟考する',  zh: '沉思' },
+  { fa: 'شکوفا شدن', en: 'Flourish',    ar: 'يَزْدَهِر',         ar_iq: 'يَزْدَهِر',        ru: 'Процветать',      fr: 'Fleurir',     es: 'Florecer',    de: 'Blühen',         ja: '栄える',    zh: '繁荣' },
+  { fa: 'به چالش کشیدن', en: 'Challenge',ar: 'يَتَحَدَّى',        ar_iq: 'يَتَحَدَّى',       ru: 'Бросать вызов',   fr: 'Défier',      es: 'Desafiar',    de: 'Herausfordern',  ja: '挑戦する',  zh: '挑战' },
+  { fa: 'غلبه کردن', en: 'Overcome',    ar: 'يَتَغَلَّب',         ar_iq: 'يَتَغَلَّب',        ru: 'Преодолевать',    fr: 'Surmonter',   es: 'Superar',     de: 'Überwinden',     ja: '克服する',  zh: '克服' },
+  { fa: 'رها کردن',  en: 'Release',     ar: 'يُطْلِق',           ar_iq: 'يُطْلِق',          ru: 'Освобождать',     fr: 'Libérer',     es: 'Liberar',     de: 'Freigeben',      ja: '解放する',  zh: '释放' },
+  { fa: 'درخشیدن',   en: 'Shine',       ar: 'يَلْمَع',           ar_iq: 'يَلْمَع',          ru: 'Сиять',           fr: 'Briller',     es: 'Brillar',     de: 'Leuchten',       ja: '輝く',      zh: '闪耀' },
+  { fa: 'پیروز شدن', en: 'Triumph',     ar: 'يَنْتَصِر',         ar_iq: 'يَنْتَصِر',        ru: 'Побеждать',       fr: 'Triompher',   es: 'Triunfar',    de: 'Triumphieren',   ja: '勝利する',  zh: '凯旋' },
+
+  // ═══════ مکانهای خاص ═══════
+  { fa: 'سرزمین',    en: 'Land',        ar: 'أَرْض',             ar_iq: 'أَرْض',            ru: 'Земля',           fr: 'Terre',       es: 'Tierra',      de: 'Land',           ja: '土地',      zh: '土地' },
+  { fa: 'پادشاهی',   en: 'Kingdom',     ar: 'مَمْلَكَة',         ar_iq: 'مَمْلَكَة',        ru: 'Королевство',     fr: 'Royaume',     es: 'Reino',       de: 'Königreich',     ja: '王国',      zh: '王国' },
+  { fa: 'امپراتوری', en: 'Empire',      ar: 'إِمْبِرَاطُورِيَّة',  ar_iq: 'إِمْبِرَاطُورِيَّة', ru: 'Империя',         fr: 'Empire',      es: 'Imperio',     de: 'Reich',          ja: '帝国',      zh: '帝国' },
+  { fa: 'قلمرو',     en: 'Realm',       ar: 'عَالَم',            ar_iq: 'عَالَم',           ru: 'Владение',        fr: 'Royaume',     es: 'Reino',       de: 'Reich',          ja: '領域',      zh: '领域' },
+  { fa: 'دنیا',      en: 'World',       ar: 'عَالَم',            ar_iq: 'عَالَم',           ru: 'Мир',             fr: 'Monde',       es: 'Mundo',       de: 'Welt',           ja: '世界',      zh: '世界' },
+  { fa: 'کیهان',     en: 'Cosmos',      ar: 'كَوْن',             ar_iq: 'كَوْن',            ru: 'Космос',          fr: 'Cosmos',      es: 'Cosmos',      de: 'Kosmos',         ja: '宇宙',      zh: '宇宙' },
+  { fa: 'دوردست',    en: 'Distance',    ar: 'بُعْد',             ar_iq: 'بُعْد',            ru: 'Расстояние',      fr: 'Distance',    es: 'Distancia',   de: 'Distanz',        ja: '距離',      zh: '距离' },
+  { fa: 'عمق',       en: 'Depth',       ar: 'عُمْق',             ar_iq: 'عُمْق',            ru: 'Глубина',         fr: 'Profondeur',  es: 'Profundidad', de: 'Tiefe',          ja: '深さ',      zh: '深度' },
+  { fa: 'بلندی',     en: 'Height',      ar: 'اِرْتِفَاع',         ar_iq: 'اِرْتِفَاع',        ru: 'Высота',          fr: 'Hauteur',     es: 'Altura',      de: 'Höhe',           ja: '高さ',      zh: '高度' },
+  { fa: 'ژرفا',      en: 'Abyss',       ar: 'هَاوِيَة',           ar_iq: 'هَاوِيَة',         ru: 'Бездна',          fr: 'Abîme',       es: 'Abismo',      de: 'Abgrund',        ja: '深淵',      zh: '深渊' }
+];
+/* ========================================================
+   ۲) تعریف زبان‌ها
+   ======================================================== */
+const languages = {
+  fa: { name: 'فارسی',     flag: '🇮🇷', font: "'Vazirmatn', sans-serif" },
+  en: { name: 'انگلیسی',   flag: '🇬🇧', font: "'Vazirmatn', sans-serif" },
+  fr: { name: 'فرانسوی',   flag: '🇫🇷', font: "'Vazirmatn', sans-serif" },
+  es: { name: 'اسپانیایی', flag: '🇪🇸', font: "'Vazirmatn', sans-serif" },
+  de: { name: 'آلمانی',    flag: '🇩🇪', font: "'Vazirmatn', sans-serif" },
+  ja: { name: 'ژاپنی',     flag: '🇯🇵', font: "'Noto Sans JP', sans-serif" },
+  zh: { name: 'چینی',      flag: '🇨🇳', font: "'Noto Sans SC', sans-serif" },
+  ar: { name: 'عربی',      flag: '🇸🇦', font: "'Noto Naskh Arabic', serif"},
+  ru: { name: 'روسی',          flag: '🇷🇺',   font: "'Vazirmatn', sans-serif"},
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶', font: "'Noto Naskh Arabic', serif" }
+};
+
+/* ========================================================
+   ۳) ⭐️ الگوی رشد مراحل
+   ========================================================
+   هر مرحله: تعداد کلمات افزایش می‌یابد و کلمات جدید (تکراری نشده) می‌آیند.
+   ======================================================== */
+const LEVEL_PATTERN = [
+  { wordCount: 4, minScoreRatio: 0.7, name: 'شروع آسان',     icon: '🌱' },
+  { wordCount: 4, minScoreRatio: 0.7, name: 'کلمات جدید',    icon: '🌿' },
+  { wordCount: 5, minScoreRatio: 0.7, name: 'کمی سخت‌تر',     icon: '🍀' },
+  { wordCount: 5, minScoreRatio: 0.75, name: 'چالش متوسط',   icon: '🌳' },
+  { wordCount: 6, minScoreRatio: 0.75, name: 'کلمات بیشتر',  icon: '🔥' },
+  { wordCount: 6, minScoreRatio: 0.8, name: 'چالش بزرگ',    icon: '⭐' },
+  { wordCount: 8, minScoreRatio: 0.8, name: 'استادکار',     icon: '💎' },
+  { wordCount: 8, minScoreRatio: 0.85, name: 'حرفه‌ای',     icon: '👑' },
+  { wordCount: 10, minScoreRatio: 0.85, name: 'قهرمان',      icon: '🏆' },
+  { wordCount: 10, minScoreRatio: 0.9, name: 'افسانه',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' },
+  { wordCount: 10, minScoreRatio: 0.8, name: 'تکمیلی',       icon: '🌟' }
+
+];
+
+/* ========================================================
+   ۴) زبان‌ها برای TTS
+   ======================================================== */
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ — فقط Google TTS + دور زدن محدودیت
+   ══════════════════════════════════════════════════════════════ */
+
+const googleTTSLangMap = {
+  fa: 'fa', en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let currentAudio = null;
+let speechRate = 1.0;
+
+/* ═══ کش صوتی ═══ */
+const audioCache = new Map();
+const CACHE_MAX_SIZE = 500;
+
+function getCacheKey(text, langKey) {
+  return `${langKey}:${text}`;
+}
+
+function addToCache(key, url) {
+  if (audioCache.size >= CACHE_MAX_SIZE) {
+    const firstKey = audioCache.keys().next().value;
+    URL.revokeObjectURL(audioCache.get(firstKey));
+    audioCache.delete(firstKey);
+  }
+  audioCache.set(key, url);
+}
+
+/* ═══ چرخش دامنه ═══ */
+const GOOGLE_TTS_DOMAINS = [
+  'translate.google.com',
+  'translate.google.co.uk',
+  'translate.google.de',
+  'translate.google.fr',
+  'translate.google.co.jp',
+  'translate.google.com.br',
+  'translate.google.ru',
+  'translate.google.co.in'
+];
+
+let domainIndex = 0;
+function getNextDomain() {
+  const domain = GOOGLE_TTS_DOMAINS[domainIndex];
+  domainIndex = (domainIndex + 1) % GOOGLE_TTS_DOMAINS.length;
+  return domain;
+}
+
+/* ═══ صف درخواست ═══ */
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL = 300;
+
+async function waitForSlot() {
+  const now = Date.now();
+  const timeSinceLast = now - lastRequestTime;
+  if (timeSinceLast < MIN_REQUEST_INTERVAL) {
+    await new Promise(r => setTimeout(r, MIN_REQUEST_INTERVAL - timeSinceLast));
+  }
+  lastRequestTime = Date.now();
+}
+
+/* ═══ Backoff ═══ */
+let backoffUntil = 0;
+function setBackoff(seconds = 5) {
+  backoffUntil = Date.now() + seconds * 1000;
+}
+function isInBackoff() {
+  return Date.now() < backoffUntil;
+}
+
+/* ═══ Fallback اضطراری ═══ */
+function speakEmergency(text, langKey, btnElement) {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = speechLocaleMap[langKey] || langKey;
+    utter.rate = speechRate;
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === utter.lang.toLowerCase());
+    if (voice) utter.voice = voice;
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+      utter.onerror = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch(e){}
+}
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e){}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+}
+
+/* ═══ تلفظ با Google TTS ═══ */
+async function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+
+  const cacheKey = getCacheKey(text, langKey);
+
+  if (audioCache.has(cacheKey)) {
+    return playAudioUrl(audioCache.get(cacheKey), btnElement);
+  }
+
+  if (isInBackoff()) {
+    speakEmergency(text, langKey, btnElement);
+    return false;
+  }
+
+  await waitForSlot();
+
+  const domainsToTry = [...GOOGLE_TTS_DOMAINS];
+  const startIdx = GOOGLE_TTS_DOMAINS.indexOf(getNextDomain());
+
+  for (let i = 0; i < domainsToTry.length; i++) {
+    const domain = domainsToTry[(startIdx + i) % domainsToTry.length];
+    const url = `https://${domain}/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    try {
+      const success = await tryPlayUrl(url, btnElement);
+      if (success) {
+        addToCache(cacheKey, url);
+        return true;
+      }
+    } catch(e){}
+  }
+
+  setBackoff(10);
+  speakEmergency(text, langKey, btnElement);
+  return false;
+}
+
+function tryPlayUrl(url, btnElement) {
+  return new Promise((resolve) => {
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    const timeout = setTimeout(() => { audio.pause(); resolve(false); }, 3000);
+    audio.oncanplaythrough = () => {
+      clearTimeout(timeout);
+      currentAudio = audio;
+      if (btnElement) {
+        btnElement.classList.add('speaking');
+        audio.onended = () => { btnElement.classList.remove('speaking'); currentAudio = null; };
+      }
+      audio.play().then(() => resolve(true)).catch(() => resolve(false));
+    };
+    audio.onerror = () => { clearTimeout(timeout); resolve(false); };
+    audio.load();
+  });
+}
+
+function playAudioUrl(url, btnElement) {
+  const audio = new Audio(url);
+  currentAudio = audio;
+  if (btnElement) {
+    btnElement.classList.add('speaking');
+    audio.onended = () => { btnElement.classList.remove('speaking'); currentAudio = null; };
+    audio.onerror = () => { btnElement.classList.remove('speaking'); currentAudio = null; };
+  }
+  return audio.play().then(() => true).catch(() => false);
+}
+
+/* ═══ تابع اصلی ═══ */
+async function speak(text, langKey, btnElement, customRate) {
+  if (!text) return;
+  stopSpeaking();
+
+  if (window.Telegram && window.Telegram.WebApp) {
+    speakEmergency(text, langKey, btnElement);
+    return;
+  }
+
+  if (customRate !== undefined) {
+    speakEmergency(text, langKey, btnElement);
+    return;
+  }
+
+  await speakGoogle(text, langKey, btnElement);
+}
+
+/* ═══ تلفظ آرام ═══ */
+function speakSlow(text, langKey, btnElement) {
+  stopSpeaking();
+  const slowRate = Math.max(0.4, speechRate * 0.6);
+  if (!('speechSynthesis' in window)) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = speechLocaleMap[langKey] || langKey;
+  utter.rate = slowRate;
+  const voices = window.speechSynthesis.getVoices();
+  const voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === utter.lang.toLowerCase());
+  if (voice) utter.voice = voice;
+  if (btnElement) {
+    btnElement.classList.add('speaking');
+    utter.onend = () => btnElement.classList.remove('speaking');
+  }
+  window.speechSynthesis.speak(utter);
+}
+
+/* ═══ تلفظ حرف‌به‌حرف ═══ */
+function speakSpelled(text, langKey, btnElement) {
+  const spelled = text.split('').filter(c => c.trim()).join('، ');
+  speakSlow(spelled, langKey, btnElement);
+}
+/* ========================================================
+   ۶) وضعیت بازی
+   ======================================================== */
+let totalScore = 0;
+let currentLevelIndex = 0;         // شماره مرحله فعلی (۰ تا ۹)
+let completedLevels = new Set();   // ایندکس مراحل تکمیل‌شده
+let usedWordIndices = new Set();   // کلمات استفاده‌شده (برای جلوگیری از تکرار)
+let sourceLang = null;
+let targetLang = null;
+let currentLevel = null;
+let currentLevelWords = [];        // کلمات این مرحله
+let currentIndex = 0;
+let score = 0;
+let streak = 0;
+let answered = false;
+
+/* ========================================================
+   ۷) توابع کمکی
+   ======================================================== */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function createParticles(x, y, emoji) {
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emoji || '✨';
+    p.style.left = (x + (Math.random() - 0.5) * 150) + 'px';
+    p.style.top = y + 'px';
+    p.style.animationDelay = (Math.random() * 0.3) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1800);
+  }
+}
+
+function renderEmojis(container) {
+  if (typeof twemoji !== 'undefined') {
+    twemoji.parse(container || document.body, {
+      folder: 'svg',
+      ext: '.svg',
+      base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/'
+    });
+  }
+}
+
+/* ===== ذخیره/بازیابی پیشرفت ===== */
+function getProgressKey() {
+  return `langGameProgress_${sourceLang}_${targetLang}`;
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(getProgressKey(), JSON.stringify({
+      totalScore,
+      currentLevelIndex,
+      completedLevels: [...completedLevels],
+      usedWordIndices: [...usedWordIndices]
+    }));
+  } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const data = JSON.parse(localStorage.getItem(getProgressKey()) || '{}');
+    totalScore = data.totalScore || 0;
+    currentLevelIndex = data.currentLevelIndex || 0;
+    completedLevels = new Set(data.completedLevels || []);
+    usedWordIndices = new Set(data.usedWordIndices || []);
+  } catch(e) {
+    totalScore = 0;
+    currentLevelIndex = 0;
+    completedLevels = new Set();
+    usedWordIndices = new Set();
+  }
+}
+
+/* ===== ساخت مراحل بر اساس الگو و کلمات موجود ===== */
+function buildLevels() {
+  // فیلتر کلماتی که در هر دو زبان معادل دارند
+  const availableWords = vocabulary
+    .map((w, i) => ({ ...w, originalIndex: i }))
+    .filter(w => w[sourceLang] && w[targetLang]);
+
+  const levels = [];
+  let wordPointer = 0;
+
+  LEVEL_PATTERN.forEach((pattern, levelIdx) => {
+    // کلماتی که هنوز استفاده نشده‌اند
+    const remaining = availableWords.slice(wordPointer);
+    if (remaining.length === 0) return; // دیگر کلمه‌ای نمانده
+
+    const take = Math.min(pattern.wordCount, remaining.length);
+    const levelWords = remaining.slice(0, take);
+    wordPointer += take;
+
+    const maxScore = take * 10;  // بدون احتساب bonus
+    const minScore = Math.round(maxScore * pattern.minScoreRatio);
+
+    levels.push({
+      index: levelIdx,
+      name: pattern.name,
+      icon: pattern.icon,
+      wordCount: take,
+      minScore,
+      maxPossible: maxScore,
+      words: levelWords,
+      isLast: wordPointer >= availableWords.length
+    });
+  });
+
+  return levels;
+}
+
+let allLevels = [];  // مراحل ساخته‌شده
+
+/* ========================================================
+   ۸) راه‌اندازی
+   ======================================================== */
+function init() {
+  // عناصر
+  const setupScreen    = document.getElementById('setupScreen');
+  const levelsScreen   = document.getElementById('levelsScreen');
+  const gameScreen     = document.getElementById('gameScreen');
+  const levelsGrid     = document.getElementById('levelsGrid');
+  const langInfoBar    = document.getElementById('langInfoBar');
+  const totalScoreEl   = document.getElementById('totalScore');
+  const completedCountEl = document.getElementById('completedCount');
+  const totalLevelsEl  = document.getElementById('totalLevels');
+
+  const sourceLangsEl  = document.getElementById('sourceLangs');
+  const targetLangsEl  = document.getElementById('targetLangs');
+  const startBtn       = document.getElementById('startBtn');
+  const voiceStatusEl  = document.getElementById('voiceStatus');
+  const voiceStatusTxt = document.getElementById('voiceStatusText');
+  const speedSlider    = document.getElementById('speedSlider');
+  const speedValue     = document.getElementById('speedValue');
+
+  const questionTextEl  = document.getElementById('questionText');
+  const questionLabelEl = document.getElementById('questionLabel');
+  const questionSubEl   = document.getElementById('questionSub');
+  const speakQuestionBtn= document.getElementById('speakQuestionBtn');
+  const optionsGridEl   = document.getElementById('optionsGrid');
+  const scoreEl         = document.getElementById('score');
+  const streakEl        = document.getElementById('streak');
+  const minScoreEl      = document.getElementById('minScore');
+  const langBadgeEl     = document.getElementById('langBadge');
+  const progressEl      = document.getElementById('progress');
+  const progressThresholdEl = document.getElementById('progressThreshold');
+  const resultMessageEl = document.getElementById('resultMessage');
+  const restartBtn      = document.getElementById('restartBtn');
+  const backBtn         = document.getElementById('backBtn');
+  const changeLangBtn   = document.getElementById('changeLangBtn');
+  const resetProgressBtn= document.getElementById('resetProgressBtn');
+
+  const Overlay    = document.getElementById('modalOverlay');
+  const modalEmoji      = document.getElementById('modalEmoji');
+  const modalTitle      = document.getElementById('modalTitle');
+  const modalMessage    = document.getElementById('modalMessage');
+  const statScore       = document.getElementById('statScore');
+  const statMin         = document.getElementById('statMin');
+  const statTotal       = document.getElementById('statTotal');
+  const modalScoreValue = document.getElementById('modalScoreValue');
+  const modalMinValue   = document.getElementById('modalMinValue');
+  const modalTotalValue = document.getElementById('modalTotalValue');
+  const modalBackBtn    = document.getElementById('modalBackBtn');
+  const modalNextBtn    = document.getElementById('modalNextBtn');
+
+  /* ===== بررسی صدا ===== */
+  if ('speechSynthesis' in window) {
+    voiceStatusEl.classList.remove('unavailable');
+    voiceStatusTxt.textContent = '🔊 تلفظ دقیق فعال است';
+  } else {
+    voiceStatusEl.classList.add('unavailable');
+    voiceStatusTxt.textContent = '❌ مرورگر صدا را پشتیبانی نمی‌کند';
+  }
+
+  /* ===== اسلایدر سرعت ===== */
+  speedSlider.addEventListener('input', (e) => {
+    speechRate = parseFloat(e.target.value);
+    speedValue.textContent = speechRate.toFixed(1) + 'x';
+  });
+
+  /* ===== ساخت دکمه‌های زبان ===== */
+  Object.keys(languages).forEach(key => {
+    const lang = languages[key];
+
+    const srcBtn = document.createElement('button');
+    srcBtn.className = 'lang-btn';
+    srcBtn.dataset.lang = key;
+    srcBtn.innerHTML = `<span class="flag">${lang.flag}</span><span>${lang.name}</span>`;
+    srcBtn.addEventListener('click', () => {
+      sourceLang = key;
+      document.querySelectorAll('#sourceLangs .lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === key)
+      );
+      if (targetLang === sourceLang) {
+        targetLang = null;
+        document.querySelectorAll('#targetLangs .lang-btn').forEach(b =>
+          b.classList.remove('active')
+        );
+      }
+      startBtn.disabled = !(sourceLang && targetLang && sourceLang !== targetLang);
+    });
+    sourceLangsEl.appendChild(srcBtn);
+
+    const tgtBtn = document.createElement('button');
+    tgtBtn.className = 'lang-btn';
+    tgtBtn.dataset.lang = key;
+    tgtBtn.innerHTML = `<span class="flag">${lang.flag}</span><span>${lang.name}</span>`;
+    tgtBtn.addEventListener('click', () => {
+      if (key === sourceLang) return;
+      targetLang = key;
+      document.querySelectorAll('#targetLangs .lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === key)
+      );
+      startBtn.disabled = !(sourceLang && targetLang && sourceLang !== targetLang);
+    });
+    targetLangsEl.appendChild(tgtBtn);
+  });
+
+  renderEmojis(sourceLangsEl);
+  renderEmojis(targetLangsEl);
+
+  /* ============================================================
+     ناوبری صفحه‌ها
+     ============================================================ */
+  function showSetupScreen() {
+    stopSpeaking();
+    setupScreen.style.display = 'block';
+    levelsScreen.classList.remove('active');
+    gameScreen.classList.remove('active');
+  }
+
+  function showLevelsScreen() {
+    stopSpeaking();
+    setupScreen.style.display = 'none';
+    levelsScreen.classList.add('active');
+    gameScreen.classList.remove('active');
+    renderLevelsScreen();
+  }
+
+  function showGameScreen() {
+    setupScreen.style.display = 'none';
+    levelsScreen.classList.remove('active');
+    gameScreen.classList.add('active');
+  }
+
+  /* ============================================================
+     رندر صفحه نقشه مراحل
+     ============================================================ */
+  function renderLevelsScreen() {
+    // اطلاعات زبان
+    langInfoBar.innerHTML = `
+      <span>${languages[sourceLang].flag}</span>
+      <span>${languages[sourceLang].name}</span>
+      <span>→</span>
+      <span>${languages[targetLang].flag}</span>
+      <span>${languages[targetLang].name}</span>
+    `;
+    renderEmojis(langInfoBar);
+
+    // آمار کلی
+    totalScoreEl.textContent = totalScore;
+    const totalLevels = allLevels.length;
+    const completed = [...completedLevels].filter(i => i < totalLevels).length;
+    completedCountEl.textContent = completed;
+    totalLevelsEl.textContent = totalLevels;
+
+    // ساخت کارت‌های مراحل
+    levelsGrid.innerHTML = '';
+
+    allLevels.forEach((level, idx) => {
+      const isCompleted = completedLevels.has(idx);
+      const isUnlocked = idx === 0 || completedLevels.has(idx - 1);
+      const isCurrent = idx === currentLevelIndex && !isCompleted;
+
+      const card = document.createElement('div');
+      card.className = 'level-card';
+      if (isCompleted) card.classList.add('completed');
+      if (!isUnlocked) card.classList.add('locked');
+      if (isCurrent) card.classList.add('current');
+
+      let statusText = '🔓 باز';
+      if (isCompleted) statusText = '✅ تکمیل';
+      if (!isUnlocked) statusText = '🔒 قفل';
+      if (isCurrent) statusText = '⭐ فعلی';
+
+      card.innerHTML = `
+        <div class="level-header">
+          <div class="level-icon">${level.icon}</div>
+          <div class="level-status">${statusText}</div>
+        </div>
+        <div class="level-title">مرحله ${idx + 1}: ${level.name}</div>
+        <div class="level-desc">
+          ${isCompleted ? 'با موفقیت گذراندید' :
+            isUnlocked ? `یادگیری ${level.wordCount} کلمه جدید` :
+            'ابتدا مرحله قبل را تکمیل کنید'}
+        </div>
+        <div class="level-info">
+          <span class="words-count">📚 ${level.wordCount} کلمه</span>
+          <span class="min-score">🎯 حداقل ${level.minScore}</span>
+        </div>
+        <div class="level-progress">
+          <div class="level-progress-fill" style="width: 0%"></div>
+        </div>
+      `;
+
+      if (isUnlocked) {
+        card.addEventListener('click', () => startLevel(idx));
+      }
+
+      levelsGrid.appendChild(card);
+    });
+
+    renderEmojis(levelsGrid);
+  }
+
+  /* ============================================================
+     شروع مرحله
+     ============================================================ */
+  function startLevel(levelIdx) {
+    const level = allLevels[levelIdx];
+    if (!level) return;
+
+    currentLevelIndex = levelIdx;
+    currentLevel = level;
+    currentLevelWords = shuffle(level.words);
+    currentIndex = 0;
+    score = 0;
+    streak = 0;
+    answered = false;
+
+    showGameScreen();
+
+    // نشان زبان
+    langBadgeEl.innerHTML = `
+      <span>${languages[sourceLang].flag}</span>
+      <span>${languages[sourceLang].name}</span>
+      <span>→</span>
+      <span>${languages[targetLang].flag}</span>
+      <span>${languages[targetLang].name}</span>
+    `;
+    renderEmojis(langBadgeEl);
+
+    // حداقل امتیاز
+    minScoreEl.textContent = level.minScore;
+
+    // نشانگر حداقل روی نوار
+    const thresholdPercent = Math.min(100, (level.minScore / level.maxPossible) * 100);
+    progressThresholdEl.style.right = thresholdPercent + '%';
+
+    updateTopBar();
+    renderQuestion();
+  }
+
+  /* ============================================================
+     به‌روزرسانی نوار بالا
+     ============================================================ */
+  function updateTopBar() {
+    scoreEl.textContent = score;
+    streakEl.textContent = streak;
+    const progress = (currentIndex / currentLevelWords.length) * 100;
+    progressEl.style.width = progress + '%';
+  }
+
+  /* ============================================================
+     رندر سوال
+     ============================================================ */
+  function renderQuestion() {
+    if (currentIndex >= currentLevelWords.length) {
+      endLevel();
+      return;
+    }
+
+    answered = false;
+    resultMessageEl.textContent = '';
+    const word = currentLevelWords[currentIndex];
+
+    questionTextEl.textContent = word[sourceLang];
+    questionTextEl.style.fontFamily = languages[sourceLang].font;
+    questionLabelEl.textContent =
+      `معادل «${languages[targetLang].name}» این کلمه کدام است؟`;
+
+    questionSubEl.innerHTML = `
+      <span>${languages[sourceLang].flag} ${languages[sourceLang].name}</span>
+      <span>→</span>
+      <span>${languages[targetLang].flag} ${languages[targetLang].name}</span>
+    `;
+    renderEmojis(questionSubEl);
+
+    setTimeout(() => {
+      speak(word[sourceLang], sourceLang, speakQuestionBtn);
+    }, 350);
+
+    // گزینه‌ها
+    const correctAnswer = word[targetLang];
+    const wrongPool = vocabulary
+      .filter(w => w[targetLang] && w[targetLang] !== correctAnswer)
+      .map(w => w[targetLang]);
+    const wrongAnswers = shuffle(wrongPool).slice(0, 3);
+
+    const allOptions = shuffle([
+      { text: correctAnswer, correct: true },
+      ...wrongAnswers.map(t => ({ text: t, correct: false }))
+    ]);
+
+    optionsGridEl.innerHTML = '';
+    allOptions.forEach(opt => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'option-card';
+      cardEl.innerHTML = `
+        <button class="option-speak" title="تلفظ">🔊</button>
+        <div class="option-flag">${languages[targetLang].flag}</div>
+        <div class="option-text" style="font-family:${languages[targetLang].font}">${opt.text}</div>
+      `;
+
+      const spkBtn = cardEl.querySelector('.option-speak');
+      spkBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        speak(opt.text, targetLang, spkBtn);
+      });
+
+      cardEl.addEventListener('click', () => handleAnswer(opt, cardEl));
+      optionsGridEl.appendChild(cardEl);
+    });
+
+    renderEmojis(optionsGridEl);
+    updateTopBar();
+  }
+
+  /* ============================================================
+     بررسی پاسخ
+     ============================================================ */
+  function handleAnswer(option, cardEl) {
+    if (answered) return;
+    answered = true;
+
+    const allCards = document.querySelectorAll('.option-card');
+    allCards.forEach(c => c.classList.add('disabled'));
+
+    const rect = cardEl.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    speak(option.text, targetLang, cardEl.querySelector('.option-speak'));
+
+    if (option.correct) {
+      cardEl.classList.add('correct');
+      score += 10 + streak * 2;
+      streak++;
+      resultMessageEl.textContent = '🎉 آفرین! پاسخ درست بود';
+      createParticles(centerX, centerY, '🎉');
+      createParticles(centerX, centerY, '⭐');
+    } else {
+      cardEl.classList.add('wrong');
+      streak = 0;
+      resultMessageEl.textContent = '❌ اشتباه بود!';
+      createParticles(centerX, centerY, '💔');
+
+      const word = currentLevelWords[currentIndex];
+      const correctText = word[targetLang];
+      allCards.forEach(c => {
+        const t = c.querySelector('.option-text').textContent;
+        if (t === correctText && !c.classList.contains('wrong')) {
+          c.classList.add('correct');
+        }
+      });
+
+      setTimeout(() => speak(correctText, targetLang), 700);
+    }
+
+    updateTopBar();
+
+    setTimeout(() => {
+      currentIndex++;
+      if (currentIndex >= currentLevelWords.length) {
+        endLevel();
+      } else {
+        renderQuestion();
+      }
+    }, 1800);
+  }
+
+  /* ============================================================
+     پایان مرحله
+     ============================================================ */
+  function endLevel() {
+    progressEl.style.width = '100%';
+
+    const minScore = currentLevel.minScore;
+    const passed = score >= minScore;
+
+    // جمع امتیاز
+    totalScore += score;
+
+    // ثبت پیشرفت
+    if (passed) {
+      completedLevels.add(currentLevelIndex);
+      // اگر مرحله بعدی وجود دارد، آن را به عنوان مرحله فعلی بگذار
+      if (currentLevelIndex + 1 < allLevels.length) {
+        currentLevelIndex = currentLevelIndex + 1;
+      }
+    }
+
+    saveProgress();
+
+    showEndModal(passed, minScore);
+  }
+
+  /* ============================================================
+     نمایش مودال
+     ============================================================ */
+  function showEndModal(passed, minScore) {
+    modalEmoji.textContent = passed ? '🎉' : '😢';
+    modalTitle.textContent = passed ? 'آفرین! مرحله را گذراندی' : 'متأسفانه قبول نشدی';
+
+    if (passed) {
+      modalMessage.textContent = `شما این مرحله را با موفقیت تکمیل کردید. ${
+        currentLevelIndex < allLevels.length ? 'مرحله بعد باز شد!' : 'همه مراحل تمام شد! 🏆'
+      }`;
+      statScore.className = 'modal-stat pass';
+      createParticles(window.innerWidth / 2, window.innerHeight / 2, '🎊');
+    } else {
+      const need = minScore - score;
+      modalMessage.textContent = `برای عبور از این مرحله به ${need} امتیاز بیشتر نیاز دارید. دوباره تلاش کنید!`;
+      statScore.className = 'modal-stat fail';
+    }
+
+    modalScoreValue.textContent = score;
+    modalMinValue.textContent = minScore;
+    modalTotalValue.textContent = totalScore;
+
+    statMin.className = 'modal-stat';
+    statTotal.className = 'modal-stat pass';
+
+    // مدیریت دکمه مرحله بعد
+    const nextIdx = currentLevelIndex; // بعد از پاس شدن، currentLevelIndex خودش جلو رفته
+    const hasNext = passed && nextIdx < allLevels.length;
+    const isLastCompleted = passed && nextIdx >= allLevels.length;
+
+    if (isLastCompleted) {
+      modalNextBtn.textContent = '🗺️ نقشه';
+    } else if (hasNext) {
+      modalNextBtn.textContent = '▶ مرحله بعد';
+    } else {
+      modalNextBtn.textContent = '🔄 تلاش مجدد';
+    }
+
+    modalOverlay.classList.add('active');
+  }
+
+  /* ============================================================
+     رویدادهای مودال
+     ============================================================ */
+  modalBackBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+    showLevelsScreen();
+  });
+
+  modalNextBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+
+    const passed = score >= (currentLevel?.minScore || 0);
+
+    if (!passed) {
+      // تلاش مجدد همان مرحله
+      // currentLevelIndex دست نخورده چون پاس نشده
+      const retryIdx = findLastIncompleteIndex();
+      startLevel(retryIdx);
+      return;
+    }
+
+    // پاس شد: currentLevelIndex الان به مرحله بعد اشاره می‌کند
+    if (currentLevelIndex < allLevels.length) {
+      startLevel(currentLevelIndex);
+    } else {
+      // همه مراحل تمام
+      showLevelsScreen();
+    }
+  });
+
+  /* پیدا کردن ایندکس مرحله‌ای که باید تلاش کند */
+  function findLastIncompleteIndex() {
+    for (let i = 0; i < allLevels.length; i++) {
+      if (!completedLevels.has(i)) return i;
+    }
+    return 0;
+  }
+
+  /* ============================================================
+     رویدادهای دکمه‌ها
+     ============================================================ */
+  startBtn.addEventListener('click', () => {
+    if (!sourceLang || !targetLang || sourceLang === targetLang) return;
+
+    // ساخت مراحل بر اساس زبان‌های انتخابی
+    allLevels = buildLevels();
+
+    // بارگذاری پیشرفت
+    loadProgress();
+
+    // اگر مرحله فعلی از تعداد مراحل بیشتر بود، اصلاح کن
+    if (currentLevelIndex >= allLevels.length) {
+      currentLevelIndex = findLastIncompleteIndex();
+    }
+
+    showLevelsScreen();
+  });
+
+  restartBtn.addEventListener('click', () => {
+    if (currentLevel) startLevel(currentLevelIndex);
+  });
+
+  backBtn.addEventListener('click', showLevelsScreen);
+
+  changeLangBtn.addEventListener('click', () => {
+    sourceLang = null;
+    targetLang = null;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    startBtn.disabled = true;
+    showSetupScreen();
+  });
+
+  resetProgressBtn.addEventListener('click', () => {
+    if (!confirm('آیا از پاک کردن پیشرفت این زبان مطمئن هستید؟')) return;
+    try {
+      localStorage.removeItem(getProgressKey());
+    } catch(e) {}
+    totalScore = 0;
+    currentLevelIndex = 0;
+    completedLevels = new Set();
+    usedWordIndices = new Set();
+    renderLevelsScreen();
+  });
+
+  speakQuestionBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!currentLevelWords[currentIndex]) return;
+    const word = currentLevelWords[currentIndex];
+    speak(word[sourceLang], sourceLang, speakQuestionBtn);
+  });
+
+  /* ============================================================
+     راه‌اندازی اولیه
+     ============================================================ */
+  showSetupScreen();
+}
+
+/* ===== اجرای اولیه ===== */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+document.addEventListener('click', function primeVoices() {
+  if ('speechSynthesis' in window) refreshVoices();
+}, { once: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎧 بخش شنیداری — درسنامه بازی زبان</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: #e2e8f0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ═══ هدر ═══ */
+  .main-header {
+    position: relative;
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 25px;
+    border: 2px solid rgba(167, 139, 250, 0.3);
+  }
+
+  .main-header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .main-header p {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 15px rgba(251, 191, 36, 0.4);
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 22px rgba(251, 191, 36, 0.6);
+  }
+
+  /* ═══ انتخاب زبان و سطح ═══ */
+  .setup-panel {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 25px;
+  }
+
+  .setup-section {
+    margin-bottom: 25px;
+  }
+
+  .setup-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .setup-section h3 {
+    font-size: 15px;
+    color: #cbd5e1;
+    font-weight: 900;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .lang-chip {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+    user-select: none;
+  }
+
+  .lang-chip:hover {
+    background: rgba(167, 139, 250, 0.15);
+    border-color: #a78bfa;
+    transform: translateY(-2px);
+  }
+
+  .lang-chip.active {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+  }
+
+  .lang-chip .flag { font-size: 20px; line-height: 1; }
+
+  /* ═══ سطوح تمرین ═══ */
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .level-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  .level-card:hover {
+    transform: translateY(-5px);
+    border-color: #a78bfa;
+    box-shadow: 0 15px 35px rgba(167, 139, 250, 0.3);
+  }
+
+  .level-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .level-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 5px;
+  }
+
+  .level-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+
+  /* ═══ دکمه شروع ═══ */
+  .start-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
+  }
+
+  .start-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(34, 197, 94, 0.6);
+  }
+
+  .start-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ═══ صفحه تمرین ═══ */
+  .practice-view {
+    display: none;
+  }
+
+  .practice-view.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .setup-panel.hidden {
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* نوار پیشرفت */
+  .progress-bar {
+    height: 10px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a78bfa, #fbbf24);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* کارت پخش */
+  .audio-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    border-radius: 25px;
+    padding: 35px 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .audio-icon-big {
+    font-size: 80px;
+    margin-bottom: 15px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .audio-instruction {
+    color: #cbd5e1;
+    font-size: 15px;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  .play-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+  }
+
+  .play-btn {
+    padding: 14px 26px;
+    border: none;
+    border-radius: 15px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .play-btn.main {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+    padding: 14px 32px;
+    font-size: 16px;
+  }
+
+  .play-btn.main:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 28px rgba(167, 139, 250, 0.6);
+  }
+
+  .play-btn.main:active {
+    transform: scale(0.98);
+  }
+
+  .play-btn.slow {
+    background: rgba(245, 158, 11, 0.15);
+    border: 2px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+  }
+
+  .play-btn.slow:hover {
+    background: rgba(245, 158, 11, 0.3);
+  }
+
+  .play-btn.repeat {
+    background: rgba(56, 189, 248, 0.15);
+    border: 2px solid rgba(56, 189, 248, 0.4);
+    color: #38bdf8;
+  }
+
+  .play-btn.repeat:hover {
+    background: rgba(56, 189, 248, 0.3);
+  }
+
+  .play-btn.speaking {
+    animation: speakPulse 0.8s ease infinite;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  .play-counter {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .play-counter strong {
+    color: #fbbf24;
+    font-size: 16px;
+  }
+
+  /* ورودی پاسخ */
+  .input-section {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    margin-bottom: 25px;
+  }
+
+  .input-label {
+    display: block;
+    color: #cbd5e1;
+    font-weight: 900;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .listening-input {
+    width: 100%;
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(148, 163, 184, 0.25);
+    border-radius: 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    resize: none;
+    transition: all 0.25s;
+    line-height: 1.6;
+  }
+
+  .listening-input:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+  }
+
+  .listening-input::placeholder {
+    color: #64748b;
+  }
+
+  .input-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    flex: 1;
+    min-width: 110px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .action-btn.check {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.4);
+  }
+
+  .action-btn.check:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.6);
+  }
+
+  .action-btn.skip {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+  }
+
+  .action-btn.skip:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  .action-btn.hint {
+    background: rgba(251, 191, 36, 0.15);
+    border: 2px solid rgba(251, 191, 36, 0.4);
+    color: #fbbf24;
+  }
+
+  .action-btn.hint:hover {
+    background: rgba(251, 191, 36, 0.3);
+  }
+
+  /* بازخورد */
+  .feedback {
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.8;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .feedback.show { display: block; }
+
+  .feedback.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1));
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  .feedback.wrong {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
+
+  .feedback .answer-highlight {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    direction: ltr;
+    display: inline-block;
+    margin: 0 4px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .feedback .translation {
+    display: block;
+    margin-top: 10px;
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ═══ صفحه پایان ═══ */
+  .end-view {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .end-view.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .end-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 2s ease infinite;
+  }
+
+  .end-view h2 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+  }
+
+  .end-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+
+  .end-stat {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+  }
+
+  .end-stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: #a78bfa;
+    margin-bottom: 8px;
+  }
+
+  .end-stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .end-stat.correct .end-stat-value { color: #22c55e; }
+  .end-stat.wrong .end-stat-value { color: #ef4444; }
+  .end-stat.score .end-stat-value { color: #fbbf24; }
+
+  .end-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .end-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .end-btn.primary {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+  }
+
+  .end-btn.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(167, 139, 250, 0.6);
+  }
+
+  .end-btn.secondary {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .end-btn.secondary:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  /* ═══ رسیپانسیو ═══ */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .main-header { padding: 25px 15px; }
+    .main-header h1 { font-size: 24px; }
+    .main-header p { font-size: 13px; }
+    .back-btn { position: static; margin-bottom: 15px; }
+    .setup-panel { padding: 18px; }
+    .lang-chip { padding: 8px 14px; font-size: 13px; }
+    .lang-chip .flag { font-size: 18px; }
+    .levels-grid { grid-template-columns: 1fr; }
+    .level-card { padding: 15px; }
+    .level-icon { font-size: 32px; }
+    .audio-card { padding: 25px 18px; }
+    .audio-icon-big { font-size: 60px; }
+    .play-btn { padding: 12px 18px; font-size: 14px; }
+    .play-btn.main { padding: 12px 24px; font-size: 15px; }
+    .input-section { padding: 18px; }
+    .listening-input { font-size: 16px; padding: 14px; }
+    .input-actions { flex-direction: column; }
+    .action-btn { width: 100%; }
+    .end-stats { grid-template-columns: 1fr; }
+    .end-view h2 { font-size: 22px; }
+    .end-icon { font-size: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ هدر ═══ -->
+  <div class="main-header">
+    <a href="lesson.html" class="back-btn">📖 بازگشت به درسنامه</a>
+    <h1>🎧 بخش شنیداری</h1>
+    <p>گوش کن، بشنو و آنچه شنیدی را بنویس</p>
+  </div>
+
+  <!-- ═══ صفحه تنظیمات ═══ -->
+  <div class="setup-panel" id="setupPanel">
+    
+    <!-- انتخاب زبان -->
+    <div class="setup-section">
+      <h3>🌍 زبان تمرین را انتخاب کن:</h3>
+      <div class="lang-chips" id="langChips">
+        <div class="lang-chip active" data-lang="en"><span class="flag">🇬🇧</span> انگلیسی</div>
+        <div class="lang-chip" data-lang="ar"><span class="flag">🇸🇦</span> عربی فصیح</div>
+        <div class="lang-chip" data-lang="ar_iq"><span class="flag">🇮🇶</span> عربی عراقی</div>
+        <div class="lang-chip" data-lang="ru"><span class="flag">🇷🇺</span> روسی</div>
+        <div class="lang-chip" data-lang="fr"><span class="flag">🇫🇷</span> فرانسوی</div>
+        <div class="lang-chip" data-lang="es"><span class="flag">🇪🇸</span> اسپانیایی</div>
+        <div class="lang-chip" data-lang="de"><span class="flag">🇩🇪</span> آلمانی</div>
+        <div class="lang-chip" data-lang="ja"><span class="flag">🇯🇵</span> ژاپنی</div>
+        <div class="lang-chip" data-lang="zh"><span class="flag">🇨🇳</span> چینی</div>
+      </div>
+    </div>
+
+    <!-- انتخاب سطح -->
+    <div class="setup-section">
+      <h3>📊 سطح تمرین را انتخاب کن:</h3>
+      <div class="levels-grid">
+        <div class="level-card active" data-level="word">
+          <span class="level-icon">📝</span>
+          <div class="level-name">کلمه</div>
+          <div class="level-desc">یک کلمه می‌شنوی و می‌نویسی</div>
+        </div>
+        <div class="level-card" data-level="sentence">
+          <span class="level-icon">📖</span>
+          <div class="level-name">جمله</div>
+          <div class="level-desc">یک جمله کامل می‌شنوی</div>
+        </div>
+        <div class="level-card" data-level="mixed">
+          <span class="level-icon">🎯</span>
+          <div class="level-name">ترکیبی</div>
+          <div class="level-desc">کلمه و جمله با هم</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- انتخاب تعداد سوال -->
+    <div class="setup-section">
+      <h3>🔢 تعداد سوال:</h3>
+      <div class="lang-chips" id="countChips">
+        <div class="lang-chip" data-count="5">۵ سوال</div>
+        <div class="lang-chip active" data-count="10">۱۰ سوال</div>
+        <div class="lang-chip" data-count="15">۱۵ سوال</div>
+        <div class="lang-chip" data-count="20">۲۰ سوال</div>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startPractice()">
+      ▶ شروع تمرین
+    </button>
+
+  </div>
+
+  <!-- ═══ صفحه تمرین ═══ -->
+  <div class="practice-view" id="practiceView">
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="progress-info">
+      <div>سوال <strong id="currentNum">1</strong> از <strong id="totalNum">10</strong></div>
+      <div>⭐ امتیاز: <strong id="scoreNum">0</strong></div>
+    </div>
+
+    <!-- کارت پخش صدا -->
+    <div class="audio-card">
+      <div class="audio-icon-big" id="audioIcon">🎧</div>
+      <div class="audio-instruction" id="instruction">روی دکمه پخش کلیک کن و آنچه می‌شنوی را بنویس</div>
+      
+      <div class="play-controls">
+        <button class="play-btn main" id="playBtn" onclick="playAudio(false)">
+          🔊 پخش
+        </button>
+        <button class="play-btn slow" onclick="playAudio(true)">
+          🐢 آرام
+        </button>
+        <button class="play-btn repeat" onclick="playAudio(false, 2)">
+          🔁 دو بار
+        </button>
+      </div>
+      
+      <div class="play-counter">
+        تعداد پخش: <strong id="playCount">0</strong>
+      </div>
+    </div>
+
+    <!-- ورودی -->
+    <div class="input-section">
+      <label class="input-label" for="answerInput">✍️ آنچه شنیدی را بنویس:</label>
+      <textarea 
+        id="answerInput" 
+        class="listening-input" 
+        placeholder="اینجا بنویس..."
+        rows="3"
+        autocomplete="off"
+        spellcheck="false"
+      ></textarea>
+      
+      <div class="input-actions">
+        <button class="action-btn check" onclick="checkAnswer()">✅ بررسی</button>
+        <button class="action-btn hint" onclick="showHint()">💡 راهنما</button>
+        <button class="action-btn skip" onclick="skipQuestion()">⏭️ رد کن</button>
+      </div>
+    </div>
+
+    <!-- بازخورد -->
+    <div class="feedback" id="feedback"></div>
+
+  </div>
+
+  <!-- ═══ صفحه پایان ═══ -->
+  <div class="end-view" id="endView">
+    <div class="end-icon">🏆</div>
+    <h2>تمرین تمام شد!</h2>
+    
+    <div class="end-stats">
+      <div class="end-stat correct">
+        <div class="end-stat-value" id="endCorrect">0</div>
+        <div class="end-stat-label">پاسخ درست</div>
+      </div>
+      <div class="end-stat wrong">
+        <div class="end-stat-value" id="endWrong">0</div>
+        <div class="end-stat-label">پاسخ غلط</div>
+      </div>
+      <div class="end-stat score">
+        <div class="end-stat-value" id="endScore">0</div>
+        <div class="end-stat-label">امتیاز کل</div>
+      </div>
+    </div>
+
+    <div class="end-actions">
+      <button class="end-btn primary" onclick="restartPractice()">🔄 تمرین مجدد</button>
+      <a href="lesson.html" class="end-btn secondary">📖 درسنامه</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   📚 داده‌های Listening
+   ══════════════════════════════════════════════════════════════ */
+
+const languages = {
+  fa:    { name: 'فارسی',        flag: '🇮🇷' },
+  en:    { name: 'انگلیسی',      flag: '🇬🇧' },
+  ar:    { name: 'عربی فصیح',   flag: '🇸🇦' },
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶' },
+  ru:    { name: 'روسی',         flag: '🇷🇺' },
+  fr:    { name: 'فرانسوی',      flag: '🇫🇷' },
+  es:    { name: 'اسپانیایی',    flag: '🇪🇸' },
+  de:    { name: 'آلمانی',       flag: '🇩🇪' },
+  ja:    { name: 'ژاپنی',        flag: '🇯🇵' },
+  zh:    { name: 'چینی',         flag: '🇨🇳' }
+};
+
+/* ═══ کلمات با ترجمه ═══ */
+const words = [
+  { fa: 'سلام',    en: 'Hello',      ar: 'مَرْحَبًا',            ar_iq: 'سَلَامْ عَلَيْكُمْ',  ru: 'Привет',      fr: 'Bonjour',      es: 'Hola',      de: 'Hallo',      ja: 'こんにちは',  zh: '你好' },
+  { fa: 'خداحافظ', en: 'Goodbye',    ar: 'مَعَ السَّلَامَةِ',     ar_iq: 'بْايْ',               ru: 'Пока',        fr: 'Au revoir',    es: 'Adiós',     de: 'Tschüss',    ja: 'さようなら',  zh: '再见' },
+  { fa: 'متشکرم',  en: 'Thank you',  ar: 'شُكْرًا',              ar_iq: 'شُكْرًا',             ru: 'Спасибо',     fr: 'Merci',        es: 'Gracias',   de: 'Danke',      ja: 'ありがとう',  zh: '谢谢' },
+  { fa: 'لطفاً',   en: 'Please',     ar: 'مِنْ فَضْلِكَ',         ar_iq: 'لَوْ تِسْمَحْ',       ru: 'Пожалуйста',  fr: "S'il vous plaît", es: 'Por favor', de: 'Bitte',  ja: 'お願いします', zh: '请' },
+  { fa: 'بله',     en: 'Yes',        ar: 'نَعَمْ',               ar_iq: 'إِي',                 ru: 'Да',          fr: 'Oui',          es: 'Sí',        de: 'Ja',         ja: 'はい',        zh: '是' },
+  { fa: 'نه',      en: 'No',         ar: 'لَا',                  ar_iq: 'لَا',                 ru: 'Нет',         fr: 'Non',          es: 'No',        de: 'Nein',       ja: 'いいえ',      zh: '不' },
+  { fa: 'آب',      en: 'Water',      ar: 'مَاء',                 ar_iq: 'مَيَّة',              ru: 'Вода',        fr: 'Eau',          es: 'Agua',      de: 'Wasser',     ja: '水',          zh: '水' },
+  { fa: 'نان',     en: 'Bread',      ar: 'خُبْز',                ar_iq: 'خُبْز',               ru: 'Хлеб',        fr: 'Pain',         es: 'Pan',       de: 'Brot',       ja: 'パン',        zh: '面包' },
+  { fa: 'کتاب',    en: 'Book',       ar: 'كِتَاب',               ar_iq: 'كِتَاب',              ru: 'Книга',       fr: 'Livre',        es: 'Libro',     de: 'Buch',       ja: '本',          zh: '书' },
+  { fa: 'دوست',    en: 'Friend',     ar: 'صَدِيق',               ar_iq: 'صَدِيق',              ru: 'Друг',        fr: 'Ami',          es: 'Amigo',     de: 'Freund',     ja: '友達',        zh: '朋友' },
+  { fa: 'خانه',    en: 'House',      ar: 'بَيْت',                ar_iq: 'بَيْت',               ru: 'Дом',         fr: 'Maison',       es: 'Casa',      de: 'Haus',       ja: '家',          zh: '家' },
+  { fa: 'مادر',    en: 'Mother',     ar: 'أُمّ',                 ar_iq: 'أُمّ',                ru: 'Мать',        fr: 'Mère',         es: 'Madre',     de: 'Mutter',     ja: '母',          zh: '母亲' },
+  { fa: 'پدر',     en: 'Father',     ar: 'أَب',                  ar_iq: 'أَبُو',               ru: 'Отец',        fr: 'Père',         es: 'Padre',     de: 'Vater',      ja: '父',          zh: '父亲' },
+  { fa: 'عشق',     en: 'Love',       ar: 'حُبّ',                 ar_iq: 'حُبّ',                ru: 'Любовь',      fr: 'Amour',        es: 'Amor',      de: 'Liebe',      ja: '愛',          zh: '爱' },
+  { fa: 'شب',      en: 'Night',      ar: 'لَيْل',                ar_iq: 'لَيْل',               ru: 'Ночь',        fr: 'Nuit',         es: 'Noche',     de: 'Nacht',      ja: '夜',          zh: '夜晚' },
+  { fa: 'روز',     en: 'Day',        ar: 'يَوْم',                ar_iq: 'يَوْم',               ru: 'День',        fr: 'Jour',         es: 'Día',       de: 'Tag',        ja: '日',          zh: '白天' },
+  { fa: 'غذا',     en: 'Food',       ar: 'طَعَام',               ar_iq: 'أَكِل',               ru: 'Еда',         fr: 'Nourriture',   es: 'Comida',    de: 'Essen',      ja: '食べ物',      zh: '食物' },
+  { fa: 'مدرسه',   en: 'School',     ar: 'مَدْرَسَة',            ar_iq: 'مَدْرَسَة',           ru: 'Школа',       fr: 'École',        es: 'Escuela',   de: 'Schule',     ja: '学校',        zh: '学校' },
+  { fa: 'خوشحال',  en: 'Happy',      ar: 'سَعِيد',               ar_iq: 'فَرْحَان',            ru: 'Счастливый',  fr: 'Heureux',      es: 'Feliz',     de: 'Glücklich',  ja: '幸せ',        zh: '快乐' },
+  { fa: 'زیبا',    en: 'Beautiful',  ar: 'جَمِيل',               ar_iq: 'حِلْو',               ru: 'Красивый',    fr: 'Beau',         es: 'Hermoso',   de: 'Schön',      ja: '美しい',      zh: '美丽' },
+  { fa: 'گربه',    en: 'Cat',        ar: 'قِطَّة',                ar_iq: 'بِسَّة',              ru: 'Кошка',       fr: 'Chat',         es: 'Gato',      de: 'Katze',      ja: '猫',          zh: '猫' },
+  { fa: 'سگ',      en: 'Dog',        ar: 'كَلْب',                ar_iq: 'جِلِب',               ru: 'Собака',      fr: 'Chien',        es: 'Perro',     de: 'Hund',       ja: '犬',          zh: '狗' },
+  { fa: 'خورشید',  en: 'Sun',        ar: 'الشَّمْس',              ar_iq: 'الشَّمْس',             ru: 'Солнце',      fr: 'Soleil',       es: 'Sol',       de: 'Sonne',      ja: '太陽',        zh: '太阳' },
+  { fa: 'ماه',     en: 'Moon',       ar: 'الْقَمَر',              ar_iq: 'الْقَمَر',             ru: 'Луна',        fr: 'Lune',         es: 'Luna',      de: 'Mond',       ja: '月',          zh: '月亮' },
+  { fa: 'گل',      en: 'Flower',     ar: 'الْوَرْدَة',            ar_iq: 'الْوَرْدَة',           ru: 'Цветок',      fr: 'Fleur',        es: 'Flor',      de: 'Blume',      ja: '花',          zh: '花' },
+  { fa: 'درخت',    en: 'Tree',       ar: 'الشَّجَرَة',            ar_iq: 'الشَّجَرَة',           ru: 'Дерево',      fr: 'Arbre',        es: 'Árbol',     de: 'Baum',       ja: '木',          zh: '树' },
+  { fa: 'ماشین',   en: 'Car',        ar: 'سَيَّارَة',             ar_iq: 'سَيَّارَة',            ru: 'Машина',      fr: 'Voiture',      es: 'Coche',     de: 'Auto',       ja: '車',          zh: '车' },
+  { fa: 'پول',     en: 'Money',      ar: 'مَال',                 ar_iq: 'فُلُوس',              ru: 'Деньги',      fr: 'Argent',       es: 'Dinero',    de: 'Geld',       ja: 'お金',        zh: '钱' },
+  { fa: 'وقت',     en: 'Time',       ar: 'الْوَقْت',              ar_iq: 'الْوَقْت',             ru: 'Время',       fr: 'Temps',        es: 'Tiempo',    de: 'Zeit',       ja: '時間',        zh: '时间' },
+  { fa: 'رنگ',     en: 'Color',      ar: 'لَوْن',                ar_iq: 'لَوْن',               ru: 'Цвет',        fr: 'Couleur',      es: 'Color',     de: 'Farbe',      ja: '色',          zh: '颜色' },
+  { fa: 'سفید',    en: 'White',      ar: 'أَبْيَض',               ar_iq: 'أَبْيَض',              ru: 'Белый',       fr: 'Blanc',        es: 'Blanco',    de: 'Weiß',       ja: '白',          zh: '白色' }
+];
+
+/* ═══ جملات برای سطح جمله ═══ */
+const sentences = [
+  { fa: 'سلام! امروز چطوری؟',
+    en: 'Hello! How are you today?',
+    ar: 'مَرْحَبًا! كَيْفَ حَالُكَ الْيَوْمَ؟',
+    ar_iq: 'سَلَامْ عَلَيْكُمْ! أَشْلُونَكْ الْيَوْمْ؟',
+    ru: 'Привет! Как дела сегодня?',
+    fr: 'Bonjour ! Comment ça va ?',
+    es: '¡Hola! ¿Cómo estás hoy?',
+    de: 'Hallo! Wie geht es dir heute?',
+    ja: 'こんにちは！今日は元気ですか？',
+    zh: '你好！你今天怎么样？'
+  },
+  { fa: 'من هر روز آب می‌نوشم.',
+    en: 'I drink water every day.',
+    ar: 'أَشْرَبُ الْمَاءَ كُلَّ يَوْمٍ.',
+    ar_iq: 'أَشْرَبْ ماي كُلْ يَوْمْ.',
+    ru: 'Я пью воду каждый день.',
+    fr: "Je bois de l'eau chaque jour.",
+    es: 'Bebo agua todos los días.',
+    de: 'Ich trinke jeden Tag Wasser.',
+    ja: '毎日水を飲みます。',
+    zh: '我每天喝水。'
+  },
+  { fa: 'دوست من خیلی مهربان است.',
+    en: 'My friend is very kind.',
+    ar: 'صَدِيقِي لَطِيفٌ جِدًّا.',
+    ar_iq: 'صَدِيقِي طَيِّبْ هَوَايَة.',
+    ru: 'Мой друг очень добрый.',
+    fr: 'Mon ami est très gentil.',
+    es: 'Mi amigo es muy amable.',
+    de: 'Mein Freund ist sehr freundlich.',
+    ja: '私の友達はとても親切です。',
+    zh: '我的朋友很善良。'
+  },
+  { fa: 'خانه من بزرگ است.',
+    en: 'My house is big.',
+    ar: 'بَيْتِي كَبِيرٌ.',
+    ar_iq: 'بَيْتِي چْبِيرْ.',
+    ru: 'Мой дом большой.',
+    fr: 'Ma maison est grande.',
+    es: 'Mi casa es grande.',
+    de: 'Mein Haus ist groß.',
+    ja: '私の家は大きいです。',
+    zh: '我的房子很大。'
+  },
+  { fa: 'امروز خیلی خوشحالم.',
+    en: 'I am very happy today.',
+    ar: 'أَنَا سَعِيدٌ جِدًّا الْيَوْمَ.',
+    ar_iq: 'أَنَا فَرْحَانْ هَوَايَة الْيَوْمْ.',
+    ru: 'Я очень счастлив сегодня.',
+    fr: "Je suis très heureux aujourd'hui.",
+    es: 'Estoy muy feliz hoy.',
+    de: 'Ich bin heute sehr glücklich.',
+    ja: '今日はとても幸せです。',
+    zh: '我今天很开心。'
+  },
+  { fa: 'گربه در خواب است.',
+    en: 'The cat is sleeping.',
+    ar: 'الْقِطَّةُ نَائِمَةٌ.',
+    ar_iq: 'الْبِسَّة نَايْمَة.',
+    ru: 'Кошка спит.',
+    fr: 'Le chat dort.',
+    es: 'El gato está durmiendo.',
+    de: 'Die Katze schläft.',
+    ja: '猫が寝ています。',
+    zh: '猫在睡觉。'
+  },
+  { fa: 'خورشید می‌درخشد.',
+    en: 'The sun is shining.',
+    ar: 'الشَّمْسُ مُشْرِقَةٌ.',
+    ar_iq: 'الشَّمْسْ مُشْرِقَة.',
+    ru: 'Солнце светит.',
+    fr: 'Le soleil brille.',
+    es: 'El sol está brillando.',
+    de: 'Die Sonne scheint.',
+    ja: '太陽が輝いています。',
+    zh: '阳光明媚。'
+  },
+  { fa: 'به پول نیاز دارم.',
+    en: 'I need money.',
+    ar: 'أَحْتَاجُ إِلَى الْمَالِ.',
+    ar_iq: 'أَحْتَاجْ فُلُوسْ.',
+    ru: 'Мне нужны деньги.',
+    fr: "J'ai besoin d'argent.",
+    es: 'Necesito dinero.',
+    de: 'Ich brauche Geld.',
+    ja: 'お金が必要です。',
+    zh: '我需要钱。'
+  }
+];
+
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ — Google TTS + Web Speech
+   ══════════════════════════════════════════════════════════════ */
+
+const googleTTSLangMap = {
+  fa: 'fa', en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let currentAudio = null;
+let speechRate = 1.0;
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e){}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+}
+
+function speakWebSpeech(text, langKey, btnElement, customRate) {
+  if (!('speechSynthesis' in window) || !text) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    const locale = speechLocaleMap[langKey] || langKey;
+    utter.lang = locale;
+    utter.rate = customRate !== undefined ? customRate : speechRate;
+    utter.pitch = 1;
+    utter.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === locale.toLowerCase());
+    if (!voice) {
+      voice = voices.find(v => v.lang.toLowerCase().startsWith(langKey + '-'));
+    }
+    if (voice) utter.voice = voice;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+      utter.onerror = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch (err) {
+    console.warn('Web Speech error:', err);
+  }
+}
+
+async function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+
+  try {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    currentAudio = audio;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      audio.onended = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+      audio.onerror = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+    }
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        if (btnElement) btnElement.classList.remove('speaking');
+        speakWebSpeech(text, langKey, btnElement);
+      });
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function speakText(text, langKey, btnElement, customRate) {
+  if (!text) return;
+  stopSpeaking();
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  
+  if (isFirefox || customRate !== undefined) {
+    speakWebSpeech(text, langKey, btnElement, customRate);
+    return;
+  }
+  speakGoogle(text, langKey, btnElement);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎧 منطق بخش Listening
+   ══════════════════════════════════════════════════════════════ */
+
+let selectedLang = 'en';
+let selectedLevel = 'word';
+let selectedCount = 10;
+
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let currentQuestion = null;
+let playCount = 0;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+/* ═══ انتخاب زبان ═══ */
+document.querySelectorAll('#langChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#langChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedLang = chip.dataset.lang;
+  });
+});
+
+/* ═══ انتخاب سطح ═══ */
+document.querySelectorAll('.level-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    selectedLevel = card.dataset.level;
+  });
+});
+
+/* ═══ انتخاب تعداد ═══ */
+document.querySelectorAll('#countChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#countChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedCount = parseInt(chip.dataset.count);
+  });
+});
+
+/* ═══ شروع تمرین ═══ */
+function startPractice() {
+  // ساخت سوالات
+  currentQuestions = [];
+  
+  if (selectedLevel === 'word') {
+    const shuffled = [...words].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffled.slice(0, selectedCount).map(w => ({
+      type: 'word',
+      text: w[selectedLang],
+      fa: w.fa,
+      correct: w[selectedLang]
+    }));
+  } else if (selectedLevel === 'sentence') {
+    const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffled.slice(0, Math.min(selectedCount, sentences.length)).map(s => ({
+      type: 'sentence',
+      text: s[selectedLang],
+      fa: s.fa,
+      correct: s[selectedLang]
+    }));
+  } else {
+    // ترکیبی
+    const half = Math.floor(selectedCount / 2);
+    const wordQs = [...words].sort(() => Math.random() - 0.5).slice(0, half).map(w => ({
+      type: 'word',
+      text: w[selectedLang],
+      fa: w.fa,
+      correct: w[selectedLang]
+    }));
+    const sentQs = [...sentences].sort(() => Math.random() - 0.5).slice(0, selectedCount - half).map(s => ({
+      type: 'sentence',
+      text: s[selectedLang],
+      fa: s.fa,
+      correct: s[selectedLang]
+    }));
+    currentQuestions = [...wordQs, ...sentQs].sort(() => Math.random() - 0.5);
+  }
+
+  // ریست
+  currentQuestionIndex = 0;
+  score = 0;
+  correctCount = 0;
+  wrongCount = 0;
+
+  // نمایش
+  document.getElementById('setupPanel').classList.add('hidden');
+  document.getElementById('practiceView').classList.add('active');
+  document.getElementById('endView').classList.remove('active');
+
+  document.getElementById('totalNum').textContent = toPersianNum(currentQuestions.length);
+
+  loadQuestion();
+}
+
+/* ═══ بارگذاری سوال ═══ */
+function loadQuestion() {
+  if (currentQuestionIndex >= currentQuestions.length) {
+    endPractice();
+    return;
+  }
+
+  answered = false;
+  playCount = 0;
+  currentQuestion = currentQuestions[currentQuestionIndex];
+
+  // به‌روزرسانی UI
+  document.getElementById('currentNum').textContent = toPersianNum(currentQuestionIndex + 1);
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+  document.getElementById('playCount').textContent = toPersianNum(playCount);
+
+  const progress = (currentQuestionIndex / currentQuestions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  // ریست ورودی
+  document.getElementById('answerInput').value = '';
+  document.getElementById('answerInput').disabled = false;
+  document.getElementById('feedback').classList.remove('show');
+
+  // نمایش آیکون مناسب
+  const icon = document.getElementById('audioIcon');
+  if (currentQuestion.type === 'word') {
+    icon.textContent = '📝';
+    document.getElementById('instruction').textContent = 'کلمه‌ای می‌شنوی — آن را بنویس';
+  } else {
+    icon.textContent = '📖';
+    document.getElementById('instruction').textContent = 'جمله‌ای می‌شنوی — آن را بنویس';
+  }
+
+  // پخش خودکار
+  setTimeout(() => playAudio(false), 400);
+}
+
+/* ═══ پخش صدا ═══ */
+function playAudio(slow = false, repeat = 1) {
+  if (!currentQuestion) return;
+
+  const text = currentQuestion.text;
+  const rate = slow ? 0.6 : 1.0;
+
+  let count = 0;
+  const playOnce = () => {
+    count++;
+    playCount++;
+    document.getElementById('playCount').textContent = toPersianNum(playCount);
+
+    const btn = document.getElementById('playBtn');
+    speakText(text, selectedLang, btn, rate);
+
+    if (count < repeat) {
+      setTimeout(playOnce, 1500);
+    }
+  };
+
+  playOnce();
+}
+
+/* ═══ بررسی پاسخ ═══ */
+function checkAnswer() {
+  if (answered) return;
+
+  const input = document.getElementById('answerInput');
+  const userAnswer = input.value.trim();
+  if (!userAnswer) {
+    showFeedback('wrong', '❗ لطفاً چیزی بنویس یا از دکمه «رد کن» استفاده کن');
+    return;
+  }
+
+  answered = true;
+  input.disabled = true;
+
+  const correct = currentQuestion.correct;
+  const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(correct);
+
+  if (isCorrect) {
+    correctCount++;
+    score += 10;
+    showFeedback('correct', `✅ آفرین! پاسخ درست بود`, correct);
+  } else {
+    wrongCount++;
+    showFeedback('wrong', `❌ اشتباه بود! پاسخ درست:`, correct);
+  }
+
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+
+  // رفتن به سوال بعدی
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 2500);
+}
+
+/* ═══ رد کردن سوال ═══ */
+function skipQuestion() {
+  if (answered) return;
+  answered = true;
+  wrongCount++;
+  
+  const correct = currentQuestion.correct;
+  showFeedback('wrong', `⏭️ سوال رد شد. پاسخ درست:`, correct);
+  document.getElementById('answerInput').disabled = true;
+  
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 2500);
+}
+
+/* ═══ نمایش راهنما ═══ */
+function showHint() {
+  if (answered) return;
+
+  const correct = currentQuestion.correct;
+  const words = correct.split(' ');
+  const hiddenWords = words.map((w, i) => {
+    if (i === 0) return w[0] + '●'.repeat(Math.max(1, w.length - 1));
+    return '●'.repeat(w.length);
+  }).join(' ');
+
+  // شمارش حروف
+  const totalChars = correct.replace(/\s/g, '').length;
+  const wordCount = words.length;
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback show';
+  feedback.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1))';
+  feedback.style.border = '2px solid rgba(251, 191, 36, 0.4)';
+  feedback.style.color = '#fbbf24';
+  feedback.innerHTML = `
+    💡 راهنما:<br>
+    <span style="direction:ltr; display:inline-block; font-family: monospace; font-size: 18px; margin-top: 8px;">${hiddenWords}</span><br>
+    <span style="font-size: 13px; color: #94a3b8; margin-top: 8px; display: block;">
+      تعداد کلمات: ${toPersianNum(wordCount)} — تعداد حروف: ${toPersianNum(totalChars)}
+    </span>
+  `;
+}
+
+/* ═══ نمایش بازخورد ═══ */
+function showFeedback(type, message, correctAnswer) {
+  const feedback = document.getElementById('feedback');
+  feedback.className = `feedback show ${type}`;
+
+  let html = `<div style="font-size: 16px; margin-bottom: 8px;">${message}</div>`;
+  
+  if (correctAnswer) {
+    html += `<div style="direction:ltr; text-align:left; margin-top: 8px;">
+      <span class="answer-highlight">${correctAnswer}</span>
+    </div>`;
+    html += `<span class="translation">🇮🇷 ترجمه: ${currentQuestion.fa}</span>`;
+  }
+
+  feedback.innerHTML = html;
+}
+
+/* ═══ پایان تمرین ═══ */
+function endPractice() {
+  document.getElementById('practiceView').classList.remove('active');
+  document.getElementById('endView').classList.add('active');
+
+  document.getElementById('endCorrect').textContent = toPersianNum(correctCount);
+  document.getElementById('endWrong').textContent = toPersianNum(wrongCount);
+  document.getElementById('endScore').textContent = toPersianNum(score);
+
+  // امتیاز ویژه
+  const total = correctCount + wrongCount;
+  if (total > 0 && correctCount === total) {
+    document.querySelector('#endView .end-icon').textContent = '🏆';
+  } else if (total > 0 && correctCount / total >= 0.7) {
+    document.querySelector('#endView .end-icon').textContent = '🎉';
+  } else {
+    document.querySelector('#endView .end-icon').textContent = '💪';
+  }
+}
+
+/* ═══ تمرین مجدد ═══ */
+function restartPractice() {
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('setupPanel').classList.remove('hidden');
+  document.getElementById('practiceView').classList.remove('active');
+}
+
+/* ═══ نرمال‌سازی پاسخ ═══ */
+/* ══════════════════════════════════════════════════════════════
+   🔍 سیستم بررسی هوشمند پاسخ
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * نرمال‌سازی پیشرفته متن برای مقایسه
+ */
+ function normalizeAnswer(text) {
+  if (!text) return '';
+  
+  let normalized = text
+    .trim()
+    .toLowerCase()
+    // ═══ ۱. حذف علائم نگارشی فارسی و عربی و انگلیسی ═══
+    .replace(/[.,!?؟،؛;:'"«»()\[\]{}\-_\u060C\u061B\u061F]/g, '')
+    // ═══ ۲. حذف اعراب عربی (فتحه، کسره، ضمه، تشدید، تنوین) ═══
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    // ═══ ۳. یکسان‌سازی حروف عربی/فارسی ═══
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/[ىي]/g, 'ی')
+    .replace(/[ؤئ]/g, 'ی')
+    .replace(/ة/g, 'ه')
+    .replace(/ک/g, 'ک')
+    .replace(/گ/g, 'گ')
+    // ═══ ۴. یکسان‌سازی حروف لاتین با علائم ═══
+    .replace(/[àáâãäå]/g, 'a')
+    .replace(/[èéêë]/g, 'e')
+    .replace(/[ìíîï]/g, 'i')
+    .replace(/[òóôõö]/g, 'o')
+    .replace(/[ùúûü]/g, 'u')
+    .replace(/[ýÿ]/g, 'y')
+    .replace(/[ñ]/g, 'n')
+    .replace(/[ç]/g, 'c')
+    .replace(/[š]/g, 's')
+    .replace(/[ž]/g, 'z')
+    .replace(/[ß]/g, 'ss')
+    // ═══ ۵. تبدیل اعداد عربی/فارسی به انگلیسی ═══
+    .replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    // ═══ ۶. حذف فاصله‌های اضافی ═══
+    .replace(/\s+/g, ' ');
+  
+  return normalized;
+}
+
+/**
+ * حذف فاصله‌ها برای مقایسه سخت‌گیرانه‌تر
+ */
+function removeSpaces(text) {
+  return text.replace(/\s+/g, '');
+}
+
+/**
+ * حذف حروف تکراری (مثل hello → helo)
+ */
+function removeDuplicateChars(text) {
+  return text.replace(/(.)\1+/g, '$1');
+}
+
+/**
+ * محاسبه فاصله Levenshtein بین دو رشته
+ */
+function levenshteinDistance(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,  // substitution
+          matrix[i][j - 1] + 1,       // insertion
+          matrix[i - 1][j] + 1        // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+/**
+ * بررسی سازگاری دو پاسخ با تحمل خطا
+ * @returns {boolean} - آیا پاسخ قبول می‌شود؟
+ */
+function isAnswerCompatible(userAnswer, correctAnswer) {
+  if (!userAnswer || !correctAnswer) return false;
+
+  const userNorm = normalizeAnswer(userAnswer);
+  const correctNorm = normalizeAnswer(correctAnswer);
+
+  // ═══ ۱. مقایسه مستقیم ═══
+  if (userNorm === correctNorm) return true;
+
+  // ═══ ۲. مقایسه بدون فاصله ═══
+  const userNoSpace = removeSpaces(userNorm);
+  const correctNoSpace = removeSpaces(correctNorm);
+  if (userNoSpace === correctNoSpace) return true;
+
+  // ═══ ۳. مقایسه با حذف حروف تکراری ═══
+  if (removeDuplicateChars(userNoSpace) === removeDuplicateChars(correctNoSpace)) return true;
+
+  // ═══ ۴. محاسبه تشابه Levenshtein ═══
+  const distance = levenshteinDistance(userNoSpace, correctNoSpace);
+  const maxLen = Math.max(userNoSpace.length, correctNoSpace.length);
+  
+  // تحمل خطا: حداکثر ۱۵٪ یا ۲ حرف (هرکدام کمتر بود)
+  const maxAllowedDistance = Math.min(2, Math.floor(maxLen * 0.15));
+  
+  if (distance <= maxAllowedDistance) return true;
+
+  // ═══ ۵. بررسی کلمات جداگانه (برای جملات) ═══
+  const userWords = userNorm.split(' ').filter(w => w);
+  const correctWords = correctNorm.split(' ').filter(w => w);
+  
+  if (userWords.length === correctWords.length && userWords.length > 1) {
+    let allMatch = true;
+    for (let i = 0; i < correctWords.length; i++) {
+      const dist = levenshteinDistance(userWords[i], correctWords[i]);
+      const wordMaxLen = Math.max(userWords[i].length, correctWords[i].length);
+      const wordAllowedDist = Math.min(2, Math.floor(wordMaxLen * 0.25));
+      
+      if (dist > wordAllowedDist) {
+        allMatch = false;
+        break;
+      }
+    }
+    if (allMatch) return true;
+  }
+
+  return false;
+}
+
+/* ═══ تبدیل اعداد ═══ */
+function toPersianNum(num) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(num).replace(/\d/g, d => persianDigits[d]);
+}
+
+/* ═══ کلید Enter ═══ */
+document.getElementById('answerInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    checkAnswer();
+  }
+});
+
+/* ═══ بارگذاری صداها ═══ */
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+/* ═══ راه‌اندازی ═══ */
+window.addEventListener('load', () => {
+  // هیچ‌کاری لازم نیست، فقط آماده‌سازی
+});
+</script>
+
+</body>
+</html>

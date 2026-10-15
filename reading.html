@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 بخش خواندن — درسنامه بازی زبان</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: #e2e8f0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 950px; margin: 0 auto; }
+
+  /* ═══ هدر ═══ */
+  .main-header {
+    position: relative;
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+    border-radius: 25px;
+    border: 2px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .main-header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #22c55e, #10b981, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .main-header p { color: #94a3b8; font-size: 15px; line-height: 1.8; }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 15px rgba(251, 191, 36, 0.4);
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 22px rgba(251, 191, 36, 0.6);
+  }
+
+  /* ═══ صفحه تنظیمات ═══ */
+  .setup-panel {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 25px;
+  }
+
+  .setup-section { margin-bottom: 25px; }
+  .setup-section:last-child { margin-bottom: 0; }
+
+  .setup-section h3 {
+    font-size: 15px;
+    color: #cbd5e1;
+    font-weight: 900;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .lang-chip {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+    user-select: none;
+  }
+
+  .lang-chip:hover {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: #22c55e;
+    transform: translateY(-2px);
+  }
+
+  .lang-chip.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .lang-chip .flag { font-size: 20px; line-height: 1; }
+
+  /* سطوح داستان */
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .level-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  .level-card:hover {
+    transform: translateY(-5px);
+    border-color: #22c55e;
+    box-shadow: 0 15px 35px rgba(34, 197, 94, 0.3);
+  }
+
+  .level-card.active {
+    border-color: #22c55e;
+    background: linear-gradient(135deg, #064e3b, #065f46);
+  }
+
+  .level-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+  .level-name { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+  .level-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+  /* دکمه شروع */
+  .start-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
+  }
+
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(34, 197, 94, 0.6);
+  }
+
+  /* ═══ صفحه داستان ═══ */
+  .story-view, .question-view, .end-view {
+    display: none;
+  }
+
+  .story-view.active, .question-view.active, .end-view.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* کارت داستان */
+  .story-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(34, 197, 94, 0.3);
+    border-radius: 25px;
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .story-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #22c55e;
+    margin-bottom: 15px;
+  }
+
+  .story-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .story-title-en {
+    font-size: 18px;
+    color: #fbbf24;
+    margin-bottom: 25px;
+    direction: ltr;
+    text-align: left;
+    font-weight: 700;
+  }
+
+  .story-text {
+    font-size: 17px;
+    line-height: 2.2;
+    color: #e2e8f0;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 15px;
+    border-right: 4px solid #22c55e;
+  }
+
+  .story-text.ar {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 18px;
+  }
+
+  .story-text.en {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .story-text.ja, .story-text.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  /* دکمه‌های کمکی داستان */
+  .story-tools {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .story-tool-btn {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.15);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    color: #cbd5e1;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .story-tool-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+  }
+
+  .story-tool-btn.translate {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+  }
+
+  .story-tool-btn.translate:hover {
+    background: rgba(251, 191, 36, 0.3);
+  }
+
+  .story-tool-btn.speaking {
+    animation: speakPulse 0.8s ease infinite;
+    background: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  /* ترجمه داستان */
+  .story-translation {
+    display: none;
+    padding: 20px;
+    background: rgba(251, 191, 36, 0.08);
+    border: 2px solid rgba(251, 191, 36, 0.25);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    color: #fbbf24;
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  .story-translation.show { display: block; animation: fadeIn 0.4s ease; }
+
+  .story-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+  }
+
+  .story-btn {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .story-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  /* ═══ صفحه سوالات ═══ */
+  .question-progress {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 120px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #fbbf24);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .question-counter {
+    font-size: 14px;
+    font-weight: 900;
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.1);
+    padding: 8px 14px;
+    border-radius: 10px;
+  }
+
+  .question-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 25px;
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .question-number {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 900;
+    color: #38bdf8;
+    margin-bottom: 20px;
+  }
+
+  .question-text {
+    font-size: 19px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 25px;
+    line-height: 1.7;
+  }
+
+  .question-text.en {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .question-text.ar {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .question-text.ja, .question-text.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  /* گزینه‌ها */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .option {
+    padding: 18px 22px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-align: right;
+    font-family: inherit;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
+    transform: translateX(-4px);
+  }
+
+  .option.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .option-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(148, 163, 184, 0.15);
+    color: #cbd5e1;
+    font-weight: 900;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .option.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(16, 185, 129, 0.15));
+    border-color: #22c55e;
+    color: #86efac;
+    animation: correctPulse 0.5s ease;
+  }
+
+  .option.correct .option-letter {
+    background: #22c55e;
+    color: #fff;
+  }
+
+  .option.wrong {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.15));
+    border-color: #ef4444;
+    color: #fca5a5;
+    animation: shake 0.5s ease;
+  }
+
+  .option.wrong .option-letter {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  @keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+
+  /* بازخورد */
+  .question-feedback {
+    margin-top: 20px;
+    padding: 18px 22px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.7;
+    display: none;
+  }
+
+  .question-feedback.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .question-feedback.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1));
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  .question-feedback.wrong {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
+
+  /* ═══ صفحه پایان ═══ */
+  .end-view {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .end-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .end-view h2 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #22c55e, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+  }
+
+  .end-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+
+  .end-stat {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+  }
+
+  .end-stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: #22c55e;
+    margin-bottom: 8px;
+  }
+
+  .end-stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .end-stat.wrong .end-stat-value { color: #ef4444; }
+  .end-stat.score .end-stat-value { color: #fbbf24; }
+
+  .end-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .end-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .end-btn.primary {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .end-btn.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  .end-btn.secondary {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+  }
+
+  .end-btn.secondary:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  /* ═══ رسیپانسیو ═══ */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .main-header { padding: 25px 15px; }
+    .main-header h1 { font-size: 24px; }
+    .main-header p { font-size: 13px; }
+    .back-btn { position: static; margin-bottom: 15px; }
+    .setup-panel { padding: 18px; }
+    .lang-chip { padding: 8px 14px; font-size: 13px; }
+    .levels-grid { grid-template-columns: 1fr; }
+    .story-card { padding: 25px 18px; }
+    .story-text { font-size: 15px; line-height: 2; padding: 15px; }
+    .story-title { font-size: 18px; }
+    .question-card { padding: 25px 18px; }
+    .question-text { font-size: 16px; }
+    .option { padding: 15px 16px; font-size: 14px; }
+    .option-letter { width: 30px; height: 30px; font-size: 13px; }
+    .end-stats { grid-template-columns: 1fr; }
+    .end-view h2 { font-size: 22px; }
+    .story-actions { flex-direction: column; }
+    .story-btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ هدر ═══ -->
+  <div class="main-header">
+    <a href="lesson.html" class="back-btn">📖 بازگشت به درسنامه</a>
+    <h1>📖 بخش خواندن</h1>
+    <p>متن را بخوان، معنی را بفهم و به سؤالات پاسخ بده</p>
+  </div>
+
+  <!-- ═══ صفحه تنظیمات ═══ -->
+  <div class="setup-panel" id="setupPanel">
+    
+    <div class="setup-section">
+      <h3>🌍 زبان داستان را انتخاب کن:</h3>
+      <div class="lang-chips" id="langChips">
+        <div class="lang-chip active" data-lang="en"><span class="flag">🇬🇧</span> انگلیسی</div>
+        <div class="lang-chip" data-lang="ar"><span class="flag">🇸🇦</span> عربی فصیح</div>
+        <div class="lang-chip" data-lang="ar_iq"><span class="flag">🇮🇶</span> عربی عراقی</div>
+        <div class="lang-chip" data-lang="ru"><span class="flag">🇷🇺</span> روسی</div>
+        <div class="lang-chip" data-lang="fr"><span class="flag">🇫🇷</span> فرانسوی</div>
+        <div class="lang-chip" data-lang="es"><span class="flag">🇪🇸</span> اسپانیایی</div>
+        <div class="lang-chip" data-lang="de"><span class="flag">🇩🇪</span> آلمانی</div>
+        <div class="lang-chip" data-lang="ja"><span class="flag">🇯🇵</span> ژاپنی</div>
+        <div class="lang-chip" data-lang="zh"><span class="flag">🇨🇳</span> چینی</div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <h3>📚 داستان را انتخاب کن:</h3>
+      <div class="levels-grid" id="storiesGrid"></div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="openStory()">
+      ▶ شروع خواندن
+    </button>
+
+  </div>
+
+  <!-- ═══ صفحه داستان ═══ -->
+  <div class="story-view" id="storyView">
+    <div class="story-card">
+      <span class="story-badge" id="storyLevel">مبتدی</span>
+      <h2 class="story-title" id="storyTitle">—</h2>
+      <h3 class="story-title-en" id="storyTitleEn">—</h3>
+      
+      <div class="story-tools">
+        <button class="story-tool-btn" id="storySpeakBtn" onclick="speakStory(this)">
+          🔊 خواندن متن
+        </button>
+        <button class="story-tool-btn slow" onclick="speakStorySlow(this)">
+          🐢 خواندن آرام
+        </button>
+        <button class="story-tool-btn translate" id="translateBtn" onclick="toggleTranslation()">
+          🌍 نمایش ترجمه
+        </button>
+      </div>
+      
+      <div class="story-text" id="storyText">—</div>
+      
+      <div class="story-translation" id="storyTranslation">—</div>
+    </div>
+
+    <div class="story-actions">
+      <button class="story-btn" onclick="startQuestions()">
+        📝 شروع سوالات
+      </button>
+      <button class="story-btn secondary" onclick="backToSetup()" style="background: rgba(148, 163, 184, 0.15); border: 2px solid rgba(148, 163, 184, 0.3); color: #cbd5e1; box-shadow: none;">
+        ↩ بازگشت
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ صفحه سوالات ═══ -->
+  <div class="question-view" id="questionView">
+    <div class="question-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="question-counter">
+        سوال <strong id="qCurrent">1</strong> از <strong id="qTotal">5</strong>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-number">سوال <span id="qNum">1</span></span>
+      <div class="question-text" id="questionText">—</div>
+      
+      <div class="options" id="optionsContainer"></div>
+      
+      <div class="question-feedback" id="questionFeedback"></div>
+    </div>
+  </div>
+
+  <!-- ═══ صفحه پایان ═══ -->
+  <div class="end-view" id="endView">
+    <div class="end-icon" id="endIcon">🏆</div>
+    <h2>تمرین خواندن تمام شد!</h2>
+    
+    <div class="end-stats">
+      <div class="end-stat">
+        <div class="end-stat-value" id="endCorrect">0</div>
+        <div class="end-stat-label">پاسخ درست</div>
+      </div>
+      <div class="end-stat wrong">
+        <div class="end-stat-value" id="endWrong">0</div>
+        <div class="end-stat-label">پاسخ غلط</div>
+      </div>
+      <div class="end-stat score">
+        <div class="end-stat-value" id="endScore">0</div>
+        <div class="end-stat-label">امتیاز کل</div>
+      </div>
+    </div>
+
+    <div class="end-actions">
+      <button class="end-btn primary" onclick="restartReading()">🔄 تمرین مجدد</button>
+      <a href="lesson.html" class="end-btn secondary">📖 درسنامه</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   📚 داده‌های داستان‌ها
+   ══════════════════════════════════════════════════════════════ */
+
+const stories = [
+  // ═══════════ داستان ۱: سلام و احوالپرسی (مبتدی) ═══════════
+  {
+    id: 'greeting',
+    level: 'مبتدی',
+    levelColor: '#22c55e',
+    titleFa: 'روز اول مدرسه',
+    title: {
+      en: 'The First Day of School',
+      ar: 'أَوَّلُ يَوْمٍ فِي الْمَدْرَسَةِ',
+      ar_iq: 'أَوَّلْ يَوْمْ بِالْمَدْرَسَة',
+      ru: 'Первый день в школе',
+      fr: 'Le premier jour d\'école',
+      es: 'El primer día de escuela',
+      de: 'Der erste Schultag',
+      ja: '学校の初日',
+      zh: '开学的第一天'
+    },
+    text: {
+      en: 'Hello! My name is Sara. Today is my first day at school. I am very happy. My friend Maryam is here too. She says: "Hello Sara! How are you today?" I say: "I am fine, thank you!" We go to class together. Our teacher is very kind. Goodbye, see you tomorrow!',
+      ar: 'مَرْحَبًا! اسْمِي سَارَة. الْيَوْمُ هُوَ أَوَّلُ يَوْمٍ لِي فِي الْمَدْرَسَةِ. أَنَا سَعِيدَةٌ جِدًّا. صَدِيقَتِي مَرْيَم هُنَا أَيْضًا. تَقُولُ: "مَرْحَبًا سَارَة! كَيْفَ حَالُكِ الْيَوْمَ؟" أَقُولُ: "أَنَا بِخَيْرٍ، شُكْرًا!" نَذْهَبُ إِلَى الصَّفِّ مَعًا. مُعَلِّمَتُنَا لَطِيفَةٌ جِدًّا. مَعَ السَّلَامَةِ، أَرَاكِ غَدًا!',
+      ar_iq: 'سَلَامْ عَلَيْكُمْ! اسْمِي سَارَة. الْيَوْمْ أَوَّلْ يَوْمْ إِلِي بِالْمَدْرَسَة. أَنَا فَرْحَانَة هَوَايَة. صَدِيقَتِي مَرْيَم هَمْ مَوْجُودَة. تِكُولْ: "سَلَامْ عَلَيْكُمْ سَارَة! أَشْلُونِچْ الْيَوْمْ؟" أَكُولْ: "أَنَا زِينَة، شُكْرًا!" نْرُوحْ لِلصَّفْ سِوَا. مُعَلِّمِتْنَا طَيِّبَة هَوَايَة. بَايْ، أَشُوفِچْ بَاجِرْ!',
+      ru: 'Привет! Меня зовут Сара. Сегодня мой первый день в школе. Я очень счастлива. Моя подруга Марьям тоже здесь. Она говорит: "Привет, Сара! Как дела сегодня?" Я отвечаю: "Хорошо, спасибо!" Мы идём в класс вместе. Наша учительница очень добрая. Пока, до завтра!',
+      fr: 'Bonjour ! Je m\'appelle Sara. Aujourd\'hui, c\'est mon premier jour à l\'école. Je suis très heureuse. Mon amie Maryam est là aussi. Elle dit : "Bonjour Sara ! Comment ça va aujourd\'hui ?" Je réponds : "Je vais bien, merci !" Nous allons en classe ensemble. Notre professeur est très gentil. Au revoir, à demain !',
+      es: '¡Hola! Me llamo Sara. Hoy es mi primer día en la escuela. Estoy muy feliz. Mi amiga Maryam también está aquí. Ella dice: "¡Hola Sara! ¿Cómo estás hoy?" Yo digo: "¡Estoy bien, gracias!" Vamos a clase juntas. Nuestra maestra es muy amable. ¡Adiós, hasta mañana!',
+      de: 'Hallo! Ich heiße Sara. Heute ist mein erster Schultag. Ich bin sehr glücklich. Meine Freundin Maryam ist auch hier. Sie sagt: "Hallo Sara! Wie geht es dir heute?" Ich sage: "Mir geht es gut, danke!" Wir gehen zusammen in die Klasse. Unsere Lehrerin ist sehr freundlich. Tschüss, bis morgen!',
+      ja: 'こんにちは！私の名前はサラです。今日は学校の初日です。私はとても幸せです。友達のマリヤムもここにいます。彼女は言います：「こんにちはサラ！今日は元気ですか？」私は言います：「元気です、ありがとう！」私たちは一緒に教室へ行きます。先生はとても親切です。さようなら、また明日！',
+      zh: '你好！我叫萨拉。今天是我开学的第一天。我很开心。我的朋友玛丽亚姆也在这里。她说："你好萨拉！你今天怎么样？"我说："我很好，谢谢！"我们一起去上课。我们的老师非常友善。再见，明天见！'
+    },
+    translationFa: 'سلام! اسم من سارا است. امروز اولین روز من در مدرسه است. من خیلی خوشحالم. دوستم مریم هم اینجاست. او می‌گوید: "سلام سارا! امروز چطوری؟" من می‌گویم: "خوبم، متشکرم!" با هم به کلاس می‌رویم. معلم ما خیلی مهربان است. خداحافظ، فردا می‌بینمت!',
+    questions: [
+      {
+        q: { en: 'What is the girl\'s name?', ar: 'مَا اسْمُ الْفَتَاةِ؟', ar_iq: 'شْنُو اسْمْ الْبِنْيَة؟', ru: 'Как зовут девочку?', fr: 'Quel est le nom de la fille ?', es: '¿Cómo se llama la niña?', de: 'Wie heißt das Mädchen?', ja: '女の子の名前は何ですか？', zh: '女孩的名字是什么？' },
+        options: [
+          { text: { en: 'Maryam', ar: 'مَرْيَم', ar_iq: 'مَرْيَم', ru: 'Марьям', fr: 'Maryam', es: 'Maryam', de: 'Maryam', ja: 'マリヤム', zh: '玛丽亚姆' }, correct: false },
+          { text: { en: 'Sara', ar: 'سَارَة', ar_iq: 'سَارَة', ru: 'Сара', fr: 'Sara', es: 'Sara', de: 'Sara', ja: 'サラ', zh: '萨拉' }, correct: true },
+          { text: { en: 'Teacher', ar: 'الْمُعَلِّمَة', ar_iq: 'الْمُعَلِّمَة', ru: 'Учительница', fr: 'Professeur', es: 'Maestra', de: 'Lehrerin', ja: '先生', zh: '老师' }, correct: false },
+          { text: { en: 'Layla', ar: 'لَيْلَى', ar_iq: 'لَيْلَى', ru: 'Лейла', fr: 'Layla', es: 'Layla', de: 'Layla', ja: 'ライラ', zh: '莱拉' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'How does Sara feel today?', ar: 'كَيْفَ تَشْعُرُ سَارَة الْيَوْمَ؟', ar_iq: 'أَشْلُونْ تِحِسْ سَارَة الْيَوْمْ؟', ru: 'Как Сара себя чувствует?', fr: 'Comment se sent Sara aujourd\'hui ?', es: '¿Cómo se siente Sara hoy?', de: 'Wie fühlt sich Sara heute?', ja: 'サラは今日どんな気持ちですか？', zh: '萨拉今天感觉怎么样？' },
+        options: [
+          { text: { en: 'Sad', ar: 'حَزِينَة', ar_iq: 'حَزِينَة', ru: 'Грустная', fr: 'Triste', es: 'Triste', de: 'Traurig', ja: '悲しい', zh: '伤心' }, correct: false },
+          { text: { en: 'Tired', ar: 'مُتْعَبَة', ar_iq: 'تِعْبَانَة', ru: 'Усталая', fr: 'Fatiguée', es: 'Cansada', de: 'Müde', ja: '疲れた', zh: '累' }, correct: false },
+          { text: { en: 'Happy', ar: 'سَعِيدَة', ar_iq: 'فَرْحَانَة', ru: 'Счастливая', fr: 'Heureuse', es: 'Feliz', de: 'Glücklich', ja: '幸せ', zh: '开心' }, correct: true },
+          { text: { en: 'Angry', ar: 'غَاضِبَة', ar_iq: 'زَعْلَانَة', ru: 'Злая', fr: 'En colère', es: 'Enojada', de: 'Wütend', ja: '怒っている', zh: '生气' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'Who is Maryam?', ar: 'مَنْ هِيَ مَرْيَم؟', ar_iq: 'مِنُو مَرْيَم؟', ru: 'Кто такая Марьям?', fr: 'Qui est Maryam ?', es: '¿Quién es Maryam?', de: 'Wer ist Maryam?', ja: 'マリヤムは誰ですか？', zh: '玛丽亚姆是谁？' },
+        options: [
+          { text: { en: 'The teacher', ar: 'الْمُعَلِّمَة', ar_iq: 'الْمُعَلِّمَة', ru: 'Учительница', fr: 'Le professeur', es: 'La maestra', de: 'Die Lehrerin', ja: '先生', zh: '老师' }, correct: false },
+          { text: { en: 'Sara\'s friend', ar: 'صَدِيقَة سَارَة', ar_iq: 'صَدِيقَة سَارَة', ru: 'Подруга Сары', fr: 'L\'amie de Sara', es: 'La amiga de Sara', de: 'Saras Freundin', ja: 'サラの友達', zh: '萨拉的朋友' }, correct: true },
+          { text: { en: 'Sara\'s sister', ar: 'أُخْت سَارَة', ar_iq: 'أُخِتْ سَارَة', ru: 'Сестра Сары', fr: 'La sœur de Sara', es: 'La hermana de Sara', de: 'Saras Schwester', ja: 'サラの姉', zh: '萨拉的姐姐' }, correct: false },
+          { text: { en: 'A stranger', ar: 'غَرِيبَة', ar_iq: 'غَرِيبَة', ru: 'Незнакомка', fr: 'Une étrangère', es: 'Una extraña', de: 'Eine Fremde', ja: '見知らぬ人', zh: '陌生人' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'What does the teacher look like?', ar: 'كَيْفَ الْمُعَلِّمَة؟', ar_iq: 'أَشْلُونْ الْمُعَلِّمَة؟', ru: 'Какая учительница?', fr: 'Comment est le professeur ?', es: '¿Cómo es la maestra?', de: 'Wie ist die Lehrerin?', ja: '先生はどんな人ですか？', zh: '老师怎么样？' },
+        options: [
+          { text: { en: 'Strict', ar: 'صَارِمَة', ar_iq: 'صَارِمَة', ru: 'Строгая', fr: 'Sévère', es: 'Estricta', de: 'Streng', ja: '厳しい', zh: '严厉' }, correct: false },
+          { text: { en: 'Kind', ar: 'لَطِيفَة', ar_iq: 'طَيِّبَة', ru: 'Добрая', fr: 'Gentille', es: 'Amable', de: 'Freundlich', ja: '親切', zh: '友善' }, correct: true },
+          { text: { en: 'Old', ar: 'عَجُوز', ar_iq: 'عَجُوز', ru: 'Старая', fr: 'Vieille', es: 'Vieja', de: 'Alt', ja: '年寄り', zh: '老' }, correct: false },
+          { text: { en: 'Young', ar: 'شَابَّة', ar_iq: 'شَابَّة', ru: 'Молодая', fr: 'Jeune', es: 'Joven', de: 'Jung', ja: '若い', zh: '年轻' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'What do they do at the end?', ar: 'مَاذَا يَفْعَلُونَ فِي النِّهَايَة؟', ar_iq: 'شْنُو يِسَوُّونْ بِالنِّهَايَة؟', ru: 'Что они делают в конце?', fr: 'Que font-ils à la fin ?', es: '¿Qué hacen al final?', de: 'Was machen sie am Ende?', ja: '最後に何をしますか？', zh: '最后他们做什么？' },
+        options: [
+          { text: { en: 'Go home', ar: 'يَذْهَبُونَ لِلْبَيْت', ar_iq: 'يِرُوحُونْ لِلْبَيْت', ru: 'Идут домой', fr: 'Vont à la maison', es: 'Van a casa', de: 'Gehen nach Hause', ja: '家に帰る', zh: '回家' }, correct: false },
+          { text: { en: 'Say goodbye', ar: 'يَقُولُونَ وَدَاعًا', ar_iq: 'يِكُولُونْ بَايْ', ru: 'Прощаются', fr: 'Disent au revoir', es: 'Se despiden', de: 'Verabschieden sich', ja: 'さようならを言う', zh: '说再见' }, correct: true },
+          { text: { en: 'Eat lunch', ar: 'يَأْكُلُونَ الْغَدَاء', ar_iq: 'يَاكِلُونْ غَدَا', ru: 'Обедают', fr: 'Déjeunent', es: 'Almuerzan', de: 'Mittagessen', ja: '昼食を食べる', zh: '吃午饭' }, correct: false },
+          { text: { en: 'Play games', ar: 'يَلْعَبُونَ', ar_iq: 'يِلْعَبُونْ', ru: 'Играют', fr: 'Jouent', es: 'Juegan', de: 'Spielen', ja: '遊ぶ', zh: '玩游戏' }, correct: false }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════ داستان ۲: خانواده (متوسط) ═══════════
+  {
+    id: 'family',
+    level: 'متوسط',
+    levelColor: '#fbbf24',
+    titleFa: 'خانواده من',
+    title: {
+      en: 'My Family',
+      ar: 'عَائِلَتِي',
+      ar_iq: 'عَائِلْتِي',
+      ru: 'Моя семья',
+      fr: 'Ma famille',
+      es: 'Mi familia',
+      de: 'Meine Familie',
+      ja: '私の家族',
+      zh: '我的家庭'
+    },
+    text: {
+      en: 'I have a small family. My father is a doctor. My mother is a teacher. I have one brother and one sister. My brother is ten years old. He loves playing football. My sister is five years old. She loves flowers. We live in a big house near the school. Every evening we eat dinner together. We are a happy family.',
+      ar: 'لَدَيَّ عَائِلَةٌ صَغِيرَةٌ. أَبِي طَبِيبٌ. أُمِّي مُعَلِّمَةٌ. لَدَيَّ أَخٌ وَاحِدٌ وَأُخْتٌ وَاحِدَةٌ. أَخِي عُمْرُهُ عَشْرُ سَنَوَاتٍ. يُحِبُّ لَعِبَ كُرَةِ الْقَدَمِ. أُخْتِي عُمْرُهَا خَمْسُ سَنَوَاتٍ. تُحِبُّ الْوُرُودَ. نَسْكُنُ فِي بَيْتٍ كَبِيرٍ قَرِيبٍ مِنَ الْمَدْرَسَةِ. كُلَّ مَسَاءٍ نَأْكُلُ الْعَشَاءَ مَعًا. نَحْنُ عَائِلَةٌ سَعِيدَةٌ.',
+      ar_iq: 'عِنْدِي عَائِلَة صَغِيرَة. أَبُويْ دُكْتُورْ. أُمِّي مُعَلِّمَة. عِنْدِي أَخْ وَاحِدْ وَأُخِتْ وَاحْدَة. أَخُويْ عُمْرُهْ عَشَرْ سَنَوَاتْ. يِحِبْ يِلْعَبْ كُرَة الْقِدِمْ. أُخِتِي عُمْرُهَا خَمْسْ سَنَوَاتْ. تِحِبْ الْوَرِدْ. نِسْكِنْ بِبَيْتْ چْبِيرْ قَرِيبْ مِنْ الْمَدْرَسَة. كِلْ مِسَا نَاكِلْ الْعِشَا سِوَا. نِحْنَا عَائِلَة فَرْحَانَة.',
+      ru: 'У меня маленькая семья. Мой отец — врач. Моя мать — учительница. У меня один брат и одна сестра. Моему брату десять лет. Он любит играть в футбол. Моей сестре пять лет. Она любит цветы. Мы живём в большом доме рядом со школой. Каждый вечер мы ужинаем вместе. Мы счастливая семья.',
+      fr: 'J\'ai une petite famille. Mon père est médecin. Ma mère est professeur. J\'ai un frère et une sœur. Mon frère a dix ans. Il aime jouer au football. Ma sœur a cinq ans. Elle aime les fleurs. Nous habitons dans une grande maison près de l\'école. Chaque soir, nous dînons ensemble. Nous sommes une famille heureuse.',
+      es: 'Tengo una familia pequeña. Mi padre es médico. Mi madre es maestra. Tengo un hermano y una hermana. Mi hermano tiene diez años. Le encanta jugar al fútbol. Mi hermana tiene cinco años. Le encantan las flores. Vivimos en una casa grande cerca de la escuela. Cada noche cenamos juntos. Somos una familia feliz.',
+      de: 'Ich habe eine kleine Familie. Mein Vater ist Arzt. Meine Mutter ist Lehrerin. Ich habe einen Bruder und eine Schwester. Mein Bruder ist zehn Jahre alt. Er liebt es, Fußball zu spielen. Meine Schwester ist fünf Jahre alt. Sie liebt Blumen. Wir wohnen in einem großen Haus in der Nähe der Schule. Jeden Abend essen wir zusammen zu Abend. Wir sind eine glückliche Familie.',
+      ja: '私は小さな家族がいます。父は医者です。母は教師です。私は兄が一人と妹が一人います。兄は十歳です。彼はサッカーをするのが大好きです。妹は五歳です。彼女は花が大好きです。私たちは学校の近くの大きな家に住んでいます。毎晩一緒に夕食を食べます。私たちは幸せな家族です。',
+      zh: '我有一个小家庭。我父亲是医生。我母亲是老师。我有一个哥哥和一个妹妹。我哥哥十岁。他喜欢踢足球。我妹妹五岁。她喜欢花。我们住在学校附近的一栋大房子里。每天晚上我们一起吃晚饭。我们是一个幸福的家庭。'
+    },
+    translationFa: 'من یک خانواده کوچک دارم. پدرم دکتر است. مادرم معلم است. یک برادر و یک خواهر دارم. برادرم ده ساله است. او عاشق فوتبال بازی کردن است. خواهرم پنج ساله است. او عاشق گل‌هاست. ما در یک خانه بزرگ نزدیک مدرسه زندگی می‌کنیم. هر شب با هم شام می‌خوریم. ما یک خانواده خوشحال هستیم.',
+    questions: [
+      {
+        q: { en: 'What does the father do?', ar: 'مَاذَا يَعْمَلُ الْأَب؟', ar_iq: 'شْنُو يِشْتَغِلْ أَبُويْ؟', ru: 'Кем работает отец?', fr: 'Que fait le père ?', es: '¿Qué hace el padre?', de: 'Was macht der Vater?', ja: '父の仕事は何ですか？', zh: '父亲做什么工作？' },
+        options: [
+          { text: { en: 'Teacher', ar: 'مُعَلِّم', ar_iq: 'مُعَلِّم', ru: 'Учитель', fr: 'Professeur', es: 'Maestro', de: 'Lehrer', ja: '先生', zh: '老师' }, correct: false },
+          { text: { en: 'Doctor', ar: 'طَبِيب', ar_iq: 'دُكْتُورْ', ru: 'Врач', fr: 'Médecin', es: 'Médico', de: 'Arzt', ja: '医者', zh: '医生' }, correct: true },
+          { text: { en: 'Engineer', ar: 'مُهَنْدِس', ar_iq: 'مُهَنْدِسْ', ru: 'Инженер', fr: 'Ingénieur', es: 'Ingeniero', de: 'Ingenieur', ja: 'エンジニア', zh: '工程师' }, correct: false },
+          { text: { en: 'Driver', ar: 'سَائِق', ar_iq: 'سَوَّاقْ', ru: 'Водитель', fr: 'Chauffeur', es: 'Conductor', de: 'Fahrer', ja: '運転手', zh: '司机' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'How many siblings does the speaker have?', ar: 'كَمْ عَدَدُ الْأَخْوَة؟', ar_iq: 'كِمْ أَخْ وَأُخِتْ؟', ru: 'Сколько братьев и сестёр?', fr: 'Combien de frères et sœurs ?', es: '¿Cuántos hermanos?', de: 'Wie viele Geschwister?', ja: '兄弟は何人いますか？', zh: '有几个兄弟姐妹？' },
+        options: [
+          { text: { en: 'One', ar: 'وَاحِد', ar_iq: 'وَاحِدْ', ru: 'Один', fr: 'Un', es: 'Uno', de: 'Eins', ja: '一人', zh: '一个' }, correct: false },
+          { text: { en: 'Two', ar: 'اثْنَان', ar_iq: 'ثِنْتَيْنْ', ru: 'Два', fr: 'Deux', es: 'Dos', de: 'Zwei', ja: '二人', zh: '两个' }, correct: true },
+          { text: { en: 'Three', ar: 'ثَلَاثَة', ar_iq: 'ثَلَاثَة', ru: 'Три', fr: 'Trois', es: 'Tres', de: 'Drei', ja: '三人', zh: '三个' }, correct: false },
+          { text: { en: 'None', ar: 'لَا أَحَد', ar_iq: 'مَاكُو', ru: 'Никого', fr: 'Aucun', es: 'Ninguno', de: 'Keine', ja: 'なし', zh: '没有' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'What does the brother love?', ar: 'مَاذَا يُحِبُّ الْأَخ؟', ar_iq: 'شْنُو يِحِبْ أَخُويْ؟', ru: 'Что любит брат?', fr: 'Qu\'aime le frère ?', es: '¿Qué le gusta al hermano?', de: 'Was liebt der Bruder?', ja: '兄は何が好きですか？', zh: '哥哥喜欢什么？' },
+        options: [
+          { text: { en: 'Reading', ar: 'الْقِرَاءَة', ar_iq: 'الْقِرَايَة', ru: 'Чтение', fr: 'Lire', es: 'Leer', de: 'Lesen', ja: '読書', zh: '读书' }, correct: false },
+          { text: { en: 'Football', ar: 'كُرَةُ الْقَدَمِ', ar_iq: 'كُرَة الْقِدِمْ', ru: 'Футбол', fr: 'Le football', es: 'El fútbol', de: 'Fußball', ja: 'サッカー', zh: '足球' }, correct: true },
+          { text: { en: 'Music', ar: 'الْمُوسِيقَى', ar_iq: 'الْمُوسِيقَى', ru: 'Музыку', fr: 'La musique', es: 'La música', de: 'Musik', ja: '音楽', zh: '音乐' }, correct: false },
+          { text: { en: 'Cooking', ar: 'الطَّبْخ', ar_iq: 'الطَّبِخْ', ru: 'Готовку', fr: 'La cuisine', es: 'Cocinar', de: 'Kochen', ja: '料理', zh: '做饭' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'How old is the sister?', ar: 'كَمْ عُمْرُ الْأُخْت؟', ar_iq: 'كِمْ عُمْرْ أُخِتِي؟', ru: 'Сколько лет сестре?', fr: 'Quel âge a la sœur ?', es: '¿Cuántos años tiene la hermana?', de: 'Wie alt ist die Schwester?', ja: '妹は何歳ですか？', zh: '妹妹几岁？' },
+        options: [
+          { text: { en: 'Three', ar: 'ثَلَاثَة', ar_iq: 'ثَلَاثَة', ru: 'Три', fr: 'Trois', es: 'Tres', de: 'Drei', ja: '三歳', zh: '三岁' }, correct: false },
+          { text: { en: 'Five', ar: 'خَمْسَة', ar_iq: 'خَمْسَة', ru: 'Пять', fr: 'Cinq', es: 'Cinco', de: 'Fünf', ja: '五歳', zh: '五岁' }, correct: true },
+          { text: { en: 'Seven', ar: 'سَبْعَة', ar_iq: 'سَبْعَة', ru: 'Семь', fr: 'Sept', es: 'Siete', de: 'Sieben', ja: '七歳', zh: '七岁' }, correct: false },
+          { text: { en: 'Ten', ar: 'عَشَرَة', ar_iq: 'عَشَرَة', ru: 'Десять', fr: 'Dix', es: 'Diez', de: 'Zehn', ja: '十歳', zh: '十岁' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'Where do they live?', ar: 'أَيْنَ يَسْكُنُونَ؟', ar_iq: 'وَيْنْ يِسْكِنُونْ؟', ru: 'Где они живут?', fr: 'Où habitent-ils ?', es: '¿Dónde viven?', de: 'Wo wohnen sie?', ja: 'どこに住んでいますか？', zh: '他们住在哪里？' },
+        options: [
+          { text: { en: 'In a small house', ar: 'فِي بَيْتٍ صَغِير', ar_iq: 'بِبَيْتْ صَغِيرْ', ru: 'В маленьком доме', fr: 'Dans une petite maison', es: 'En una casa pequeña', de: 'In einem kleinen Haus', ja: '小さな家', zh: '在小房子里' }, correct: false },
+          { text: { en: 'In a big house near school', ar: 'فِي بَيْتٍ كَبِيرٍ قَرِيبٍ مِنَ الْمَدْرَسَة', ar_iq: 'بِبَيْتْ چْبِيرْ قَرِيبْ مِنْ الْمَدْرَسَة', ru: 'В большом доме у школы', fr: 'Dans une grande maison près de l\'école', es: 'En una casa grande cerca de la escuela', de: 'In einem großen Haus bei der Schule', ja: '学校の近くの大きな家', zh: '在学校附近的大房子里' }, correct: true },
+          { text: { en: 'In an apartment', ar: 'فِي شَقَّة', ar_iq: 'بِشَقَّة', ru: 'В квартире', fr: 'Dans un appartement', es: 'En un apartamento', de: 'In einer Wohnung', ja: 'アパート', zh: '在公寓里' }, correct: false },
+          { text: { en: 'In a village', ar: 'فِي قَرْيَة', ar_iq: 'بِالْقَرْيَة', ru: 'В деревне', fr: 'Dans un village', es: 'En un pueblo', de: 'In einem Dorf', ja: '村', zh: '在村庄' }, correct: false }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════ داستان ۳: سفر (پیشرفته) ═══════════
+  {
+    id: 'travel',
+    level: 'پیشرفته',
+    levelColor: '#ef4444',
+    titleFa: 'سفر به پاریس',
+    title: {
+      en: 'A Trip to Paris',
+      ar: 'رِحْلَة إِلَى بَارِيس',
+      ar_iq: 'سَفْرَة لِبَارِيس',
+      ru: 'Путешествие в Париж',
+      fr: 'Un voyage à Paris',
+      es: 'Un viaje a París',
+      de: 'Eine Reise nach Paris',
+      ja: 'パリへの旅行',
+      zh: '巴黎之行'
+    },
+    text: {
+      en: 'Last summer, I traveled to Paris with my family. We stayed in a small hotel near the Eiffel Tower. Every morning, we ate fresh bread and drank coffee in a charming café. We visited the Louvre Museum and saw the famous Mona Lisa. In the afternoon, we walked along the Seine River and took beautiful photos. The weather was warm and sunny. In the evening, we enjoyed French cuisine at a traditional restaurant. It was an unforgettable experience that I will always remember.',
+      ar: 'فِي الصَّيْفِ الْمَاضِي، سَافَرْتُ إِلَى بَارِيسَ مَعَ عَائِلَتِي. أَقَمْنَا فِي فُنْدُقٍ صَغِيرٍ قَرِيبٍ مِنْ بُرْجِ إِيفِل. كُلَّ صَبَاحٍ، كُنَّا نَأْكُلُ الْخُبْزَ الطَّازَجَ وَنَشْرَبُ الْقَهْوَةَ فِي مَقْهًى سَاحِر. زُرْنَا مَتْحَفَ اللُّوفْرِ وَرَأَيْنَا الْمُونَالِيزَا الشَّهِيرَة. بَعْدَ الظُّهْرِ، تَمَشَّيْنَا عَلَى طُولِ نَهْرِ السِّينِ وَالْتَقَطْنَا صُوَرًا جَمِيلَة. كَانَ الطَّقْسُ دَافِئًا وَمُشْمِسًا. فِي الْمَسَاءِ، اسْتَمْتَعْنَا بِالْمَطْبَخِ الْفَرَنْسِيِّ فِي مَطْعَمٍ تَقْلِيدِيّ. كَانَتْ تَجْرِبَةً لَا تُنْسَى سَأَتَذَكَّرُهَا دَائِمًا.',
+      ar_iq: 'الصَّيْفِ اللي فَات، سَافَرْت لِبَارِيس وِيَّة عَائِلْتِي. سِكْنَا بِفُنْدُق صْغِير قَرِيب مِنْ بُرْج إِيفِل. كِلْ صَبَاح، كِنَّا نَاكِلْ خُبِز طَازِج وَنِشْرَبْ قَهْوَة بِمَقْهَى حِلْو. زِرْنَا مَتْحَف اللُّوفْر وَشُفْنَا الْمُونَالِيزَا الْمَشْهُورَة. بِالْعَصِر، تِمَشَّيْنَا عَلَى نَهْر السِّين وَأَخَذْنَا صُوَر حِلْوَة. الْجَوْ كَانْ دَافِي وَشْمِس. بِالْمَسَا، اسْتَمْتَعْنَا بِالْأَكِل الْفَرَنْسِي بِمَطْعَم تَقْلِيدِي. كَانَتْ تِجْرِبَة مَا تِنْسَى رَاح أَتْذَكَّرْهَا دَائِمًا.',
+      ru: 'Прошлым летом я путешествовал в Париж с семьёй. Мы остановились в маленьком отеле рядом с Эйфелевой башней. Каждое утро мы ели свежий хлеб и пили кофе в очаровательном кафе. Мы посетили музей Лувр и увидели знаменитую Мону Лизу. Днём мы гуляли вдоль Сены и делали красивые фотографии. Погода была тёплой и солнечной. Вечером мы наслаждались французской кухней в традиционном ресторане. Это был незабываемый опыт, который я всегда буду помнить.',
+      fr: 'L\'été dernier, j\'ai voyagé à Paris avec ma famille. Nous avons séjourné dans un petit hôtel près de la Tour Eiffel. Chaque matin, nous mangions du pain frais et buvions du café dans un café charmant. Nous avons visité le musée du Louvre et vu la célèbre Joconde. L\'après-midi, nous avons marché le long de la Seine et pris de belles photos. Le temps était chaud et ensoleillé. Le soir, nous avons savouré la cuisine française dans un restaurant traditionnel. Ce fut une expérience inoubliable que je me rappellerai toujours.',
+      es: 'El verano pasado, viajé a París con mi familia. Nos alojamos en un pequeño hotel cerca de la Torre Eiffel. Cada mañana, comíamos pan fresco y bebíamos café en un encantador café. Visitamos el Museo del Louvre y vimos a la famosa Mona Lisa. Por la tarde, caminamos a lo largo del Sena y tomamos hermosas fotos. El clima era cálido y soleado. Por la noche, disfrutamos de la cocina francesa en un restaurante tradicional. Fue una experiencia inolvidable que siempre recordaré.',
+      de: 'Letzten Sommer reiste ich mit meiner Familie nach Paris. Wir übernachteten in einem kleinen Hotel in der Nähe des Eiffelturms. Jeden Morgen aßen wir frisches Brot und tranken Kaffee in einem charmanten Café. Wir besuchten den Louvre und sahen die berühmte Mona Lisa. Am Nachmittag spazierten wir entlang der Seine und machten wunderschöne Fotos. Das Wetter war warm und sonnig. Am Abend genossen wir die französische Küche in einem traditionellen Restaurant. Es war eine unvergessliche Erfahrung, an die ich mich immer erinnern werde.',
+      ja: '昨年の夏、私は家族とパリへ旅行しました。エッフェル塔の近くの小さなホテルに泊まりました。毎朝、焼きたてのパンを食べ、魅力的なカフェでコーヒーを飲みました。ルーヴル美術館を訪れ、有名なモナリザを見ました。午後にはセーヌ川沿いを散歩し、美しい写真を撮りました。天気は暖かく晴れていました。夜には伝統的なレストランでフランス料理を楽しみました。それは忘れられない経験であり、私はいつも覚えているでしょう。',
+      zh: '去年夏天，我和家人去了巴黎旅行。我们住在埃菲尔铁塔附近的一家小旅馆。每天早上，我们在一家迷人的咖啡馆吃新鲜面包、喝咖啡。我们参观了卢浮宫博物馆，看到了著名的蒙娜丽莎。下午，我们沿着塞纳河散步，拍了美丽的照片。天气温暖而晴朗。晚上，我们在一家传统餐厅享用了法国美食。这是一次难忘的经历，我会永远记住。'
+    },
+    translationFa: 'تابستان گذشته، با خانواده‌ام به پاریس سفر کردم. در هتلی کوچک نزدیک برج ایفل اقامت کردیم. هر صبح، نان تازه می‌خوردیم و در کافه‌ای جذاب قهوه می‌نوشیدیم. از موزه لوور بازدید کردیم و مونالیزای معروف را دیدیم. بعدازظهر، در کنار رود سن قدم زدیم و عکس‌های زیبایی گرفتیم. هوا گرم و آفتابی بود. عصر، از غذاهای فرانسوی در یک رستوران سنتی لذت بردیم. این یک تجربه فراموش‌نشدنی بود که همیشه به یاد خواهم داشت.',
+    questions: [
+      {
+        q: { en: 'Where did the family stay?', ar: 'أَيْنَ أَقَامَتِ الْعَائِلَة؟', ar_iq: 'وَيْن سِكْنُوا؟', ru: 'Где остановилась семья?', fr: 'Où la famille a-t-elle séjourné ?', es: '¿Dónde se alojó la familia?', de: 'Wo übernachtete die Familie?', ja: '家族はどこに泊まりましたか？', zh: '家人住在哪里？' },
+        options: [
+          { text: { en: 'In a big hotel', ar: 'فِي فُنْدُقٍ كَبِير', ar_iq: 'بِفُنْدُق چْبِير', ru: 'В большом отеле', fr: 'Dans un grand hôtel', es: 'En un gran hotel', de: 'In einem großen Hotel', ja: '大きなホテル', zh: '在大旅馆' }, correct: false },
+          { text: { en: 'In a small hotel near Eiffel Tower', ar: 'فِي فُنْدُقٍ صَغِيرٍ قَرِيبٍ مِنْ بُرْجِ إِيفِل', ar_iq: 'بِفُنْدُق صْغِير قَرِيب مِنْ بُرْج إِيفِل', ru: 'В маленьком отеле у Эйфелевой башни', fr: 'Dans un petit hôtel près de la Tour Eiffel', es: 'En un pequeño hotel cerca de la Torre Eiffel', de: 'In einem kleinen Hotel beim Eiffelturm', ja: 'エッフェル塔の近くの小さなホテル', zh: '在埃菲尔铁塔附近的小旅馆' }, correct: true },
+          { text: { en: 'With friends', ar: 'مَعَ الْأَصْدِقَاء', ar_iq: 'وِيَّة الْأَصْدِقَاء', ru: 'У друзей', fr: 'Chez des amis', es: 'Con amigos', de: 'Bei Freunden', ja: '友達の家', zh: '在朋友家' }, correct: false },
+          { text: { en: 'In a hostel', ar: 'فِي نُزُل', ar_iq: 'بِسْتِل', ru: 'В хостеле', fr: 'Dans une auberge', es: 'En un albergue', de: 'In einer Herberge', ja: 'ホステル', zh: '在旅馆' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'What did they see in the Louvre?', ar: 'مَاذَا رَأَوْا فِي اللُّوفْر؟', ar_iq: 'شْنُو شَافُوا بِاللُّوفْر؟', ru: 'Что они увидели в Лувре?', fr: 'Qu\'ont-ils vu au Louvre ?', es: '¿Qué vieron en el Louvre?', de: 'Was sahen sie im Louvre?', ja: 'ルーヴルで何を見ましたか？', zh: '他们在卢浮宫看到了什么？' },
+        options: [
+          { text: { en: 'The Eiffel Tower', ar: 'بُرْج إِيفِل', ar_iq: 'بُرْج إِيفِل', ru: 'Эйфелеву башню', fr: 'La Tour Eiffel', es: 'La Torre Eiffel', de: 'Den Eiffelturm', ja: 'エッフェル塔', zh: '埃菲尔铁塔' }, correct: false },
+          { text: { en: 'The Mona Lisa', ar: 'الْمُونَالِيزَا', ar_iq: 'الْمُونَالِيزَا', ru: 'Мону Лизу', fr: 'La Joconde', es: 'La Mona Lisa', de: 'Die Mona Lisa', ja: 'モナリザ', zh: '蒙娜丽莎' }, correct: true },
+          { text: { en: 'The Seine River', ar: 'نَهْر السِّين', ar_iq: 'نَهْر السِّين', ru: 'Сену', fr: 'La Seine', es: 'El Sena', de: 'Die Seine', ja: 'セーヌ川', zh: '塞纳河' }, correct: false },
+          { text: { en: 'Notre-Dame', ar: 'نُوتْرْدَام', ar_iq: 'نُوتْرْدَام', ru: 'Нотр-Дам', fr: 'Notre-Dame', es: 'Notre-Dame', de: 'Notre-Dame', ja: 'ノートルダム', zh: '圣母院' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'What was the weather like?', ar: 'كَيْفَ كَانَ الطَّقْس؟', ar_iq: 'شْلُون كَانْ الْجَوْ؟', ru: 'Какая была погода?', fr: 'Quel temps faisait-il ?', es: '¿Cómo estaba el tiempo?', de: 'Wie war das Wetter?', ja: '天気はどうでしたか？', zh: '天气怎么样？' },
+        options: [
+          { text: { en: 'Cold and rainy', ar: 'بَارِد وَمُمْطِر', ar_iq: 'بَارِد وَمْطِر', ru: 'Холодная и дождливая', fr: 'Froid et pluvieux', es: 'Frío y lluvioso', de: 'Kalt und regnerisch', ja: '寒くて雨', zh: '寒冷多雨' }, correct: false },
+          { text: { en: 'Warm and sunny', ar: 'دَافِئ وَمُشْمِس', ar_iq: 'دَافِي وَشْمِس', ru: 'Тёплая и солнечная', fr: 'Chaud et ensoleillé', es: 'Cálido y soleado', de: 'Warm und sonnig', ja: '暖かく晴れ', zh: '温暖晴朗' }, correct: true },
+          { text: { en: 'Snowy', ar: 'مُثْلِج', ar_iq: 'مُثْلِج', ru: 'Снежная', fr: 'Neigeux', es: 'Nevado', de: 'Schneereich', ja: '雪', zh: '下雪' }, correct: false },
+          { text: { en: 'Windy', ar: 'عَاصِف', ar_iq: 'هَوَايَة هُوَة', ru: 'Ветреная', fr: 'Venteux', es: 'Ventoso', de: 'Windig', ja: '風が強い', zh: '刮风' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'Where did they eat in the evening?', ar: 'أَيْنَ أَكَلُوا فِي الْمَسَاء؟', ar_iq: 'وَيْن تِعَشَّوا؟', ru: 'Где они ужинали?', fr: 'Où ont-ils mangé le soir ?', es: '¿Dónde comieron por la noche?', de: 'Wo aßen sie abends?', ja: '夜はどこで食べましたか？', zh: '晚上他们在哪里吃饭？' },
+        options: [
+          { text: { en: 'At the hotel', ar: 'فِي الْفُنْدُق', ar_iq: 'بِالْفُنْدُق', ru: 'В отеле', fr: 'À l\'hôtel', es: 'En el hotel', de: 'Im Hotel', ja: 'ホテルで', zh: '在旅馆' }, correct: false },
+          { text: { en: 'In a traditional restaurant', ar: 'فِي مَطْعَمٍ تَقْلِيدِيّ', ar_iq: 'بِمَطْعَم تَقْلِيدِي', ru: 'В традиционном ресторане', fr: 'Dans un restaurant traditionnel', es: 'En un restaurante tradicional', de: 'In einem traditionellen Restaurant', ja: '伝統的なレストラン', zh: '在传统餐厅' }, correct: true },
+          { text: { en: 'By the river', ar: 'عَلَى النَّهْر', ar_iq: 'عَلَى النَّهْر', ru: 'У реки', fr: 'Au bord de la rivière', es: 'Junto al río', de: 'Am Fluss', ja: '川のそば', zh: '在河边' }, correct: false },
+          { text: { en: 'In a café', ar: 'فِي مَقْهًى', ar_iq: 'بِمَقْهَى', ru: 'В кафе', fr: 'Dans un café', es: 'En un café', de: 'In einem Café', ja: 'カフェで', zh: '在咖啡馆' }, correct: false }
+        ]
+      },
+      {
+        q: { en: 'How does the writer describe the trip?', ar: 'كَيْفَ يَصِفُ الْكَاتِبُ الرِّحْلَة؟', ar_iq: 'شْلُون يُوصِف الْكَاتِب السَّفْرَة؟', ru: 'Как автор описывает поездку?', fr: 'Comment l\'auteur décrit-il le voyage ?', es: '¿Cómo describe el autor el viaje?', de: 'Wie beschreibt der Autor die Reise?', ja: '筆者は旅行をどう表現していますか？', zh: '作者如何描述这次旅行？' },
+        options: [
+          { text: { en: 'Boring', ar: 'مُمِلَّة', ar_iq: 'مَلَل', ru: 'Скучная', fr: 'Ennuyeux', es: 'Aburrido', de: 'Langweilig', ja: '退屈', zh: '无聊' }, correct: false },
+          { text: { en: 'Unforgettable', ar: 'لَا تُنْسَى', ar_iq: 'مَا تِنْسَى', ru: 'Незабываемая', fr: 'Inoubliable', es: 'Inolvidable', de: 'Unvergesslich', ja: '忘れられない', zh: '难忘' }, correct: true },
+          { text: { en: 'Short', ar: 'قَصِيرَة', ar_iq: 'قَصِيرَة', ru: 'Короткая', fr: 'Courte', es: 'Corto', de: 'Kurz', ja: '短い', zh: '短暂' }, correct: false },
+          { text: { en: 'Expensive', ar: 'مُكْلِفَة', ar_iq: 'غَالْيَة', ru: 'Дорогая', fr: 'Chère', es: 'Cara', de: 'Teuer', ja: '高価', zh: '昂贵' }, correct: false }
+        ]
+      }
+    ]
+  }
+];
+
+/* ═══ زبان‌ها ═══ */
+const languages = {
+  en:    { name: 'انگلیسی',      flag: '🇬🇧', font: "'Vazirmatn', sans-serif" },
+  ar:    { name: 'عربی فصیح',   flag: '🇸🇦', font: "'Noto Naskh Arabic', serif" },
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶', font: "'Noto Naskh Arabic', serif" },
+  ru:    { name: 'روسی',         flag: '🇷🇺', font: "'Vazirmatn', sans-serif" },
+  fr:    { name: 'فرانسوی',      flag: '🇫🇷', font: "'Vazirmatn', sans-serif" },
+  es:    { name: 'اسپانیایی',    flag: '🇪🇸', font: "'Vazirmatn', sans-serif" },
+  de:    { name: 'آلمانی',       flag: '🇩🇪', font: "'Vazirmatn', sans-serif" },
+  ja:    { name: 'ژاپنی',        flag: '🇯🇵', font: "'Noto Sans JP', sans-serif" },
+  zh:    { name: 'چینی',         flag: '🇨🇳', font: "'Noto Sans SC', sans-serif" }
+};
+
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ
+   ══════════════════════════════════════════════════════════════ */
+
+const googleTTSLangMap = {
+  en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let currentAudio = null;
+let speechRate = 1.0;
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e){}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+}
+
+function speakWebSpeech(text, langKey, btnElement, customRate) {
+  if (!('speechSynthesis' in window) || !text) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    const locale = speechLocaleMap[langKey] || langKey;
+    utter.lang = locale;
+    utter.rate = customRate !== undefined ? customRate : speechRate;
+    utter.pitch = 1;
+    utter.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === locale.toLowerCase());
+    if (!voice) voice = voices.find(v => v.lang.toLowerCase().startsWith(langKey + '-'));
+    if (voice) utter.voice = voice;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+      utter.onerror = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch (err) { console.warn('Web Speech error:', err); }
+}
+
+async function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+
+  try {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    currentAudio = audio;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      audio.onended = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+      audio.onerror = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+    }
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        if (btnElement) btnElement.classList.remove('speaking');
+        speakWebSpeech(text, langKey, btnElement);
+      });
+    }
+    return true;
+  } catch (err) { return false; }
+}
+
+function speakText(text, langKey, btnElement, customRate) {
+  if (!text) return;
+  stopSpeaking();
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  if (isFirefox || customRate !== undefined) {
+    speakWebSpeech(text, langKey, btnElement, customRate);
+    return;
+  }
+  speakGoogle(text, langKey, btnElement);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   📖 منطق بخش Reading
+   ══════════════════════════════════════════════════════════════ */
+
+let selectedLang = 'en';
+let selectedStory = null;
+let currentQuestionIndex = 0;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+/* ═══ رندر فهرست داستان‌ها ═══ */
+function renderStories() {
+  const grid = document.getElementById('storiesGrid');
+  grid.innerHTML = '';
+  stories.forEach(story => {
+    const card = document.createElement('div');
+    card.className = 'level-card';
+    card.dataset.storyId = story.id;
+    card.innerHTML = `
+      <span class="level-icon">${story.id === 'greeting' ? '👋' : story.id === 'family' ? '👨‍👩‍👧' : '🗼'}</span>
+      <div class="level-name">${story.titleFa}</div>
+      <div class="level-desc">سطح: ${story.level}</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('#storiesGrid .level-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      selectedStory = story;
+    });
+    grid.appendChild(card);
+  });
+  // انتخاب اولین به‌صورت پیش‌فرض
+  const first = grid.querySelector('.level-card');
+  if (first) {
+    first.classList.add('active');
+    selectedStory = stories[0];
+  }
+}
+
+/* ═══ انتخاب زبان ═══ */
+document.querySelectorAll('#langChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#langChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedLang = chip.dataset.lang;
+  });
+});
+
+/* ═══ باز کردن داستان ═══ */
+function openStory() {
+  if (!selectedStory) return;
+  
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('storyView').classList.add('active');
+  document.getElementById('questionView').classList.remove('active');
+  document.getElementById('endView').classList.remove('active');
+
+  const story = selectedStory;
+  const lang = languages[selectedLang];
+  
+  document.getElementById('storyLevel').textContent = story.level;
+  document.getElementById('storyLevel').style.color = story.levelColor;
+  document.getElementById('storyLevel').style.borderColor = story.levelColor;
+  
+  document.getElementById('storyTitle').textContent = story.titleFa;
+  document.getElementById('storyTitleEn').textContent = story.title[selectedLang] || '';
+  
+  const textEl = document.getElementById('storyText');
+  textEl.textContent = story.text[selectedLang] || '—';
+  textEl.className = 'story-text ' + selectedLang;
+  textEl.style.fontFamily = lang.font;
+  
+  document.getElementById('storyTranslation').textContent = story.translationFa;
+  document.getElementById('storyTranslation').classList.remove('show');
+  document.getElementById('translateBtn').textContent = '🌍 نمایش ترجمه';
+}
+
+/* ═══ تلفظ داستان ═══ */
+function speakStory(btn) {
+  if (!selectedStory) return;
+  const text = selectedStory.text[selectedLang];
+  speakText(text, selectedLang, btn);
+}
+
+function speakStorySlow(btn) {
+  if (!selectedStory) return;
+  const text = selectedStory.text[selectedLang];
+  speakText(text, selectedLang, btn, 0.6);
+}
+
+/* ═══ نمایش ترجمه ═══ */
+function toggleTranslation() {
+  const el = document.getElementById('storyTranslation');
+  const btn = document.getElementById('translateBtn');
+  if (el.classList.contains('show')) {
+    el.classList.remove('show');
+    btn.textContent = '🌍 نمایش ترجمه';
+  } else {
+    el.classList.add('show');
+    btn.textContent = '❌ بستن ترجمه';
+  }
+}
+
+/* ═══ بازگشت به تنظیمات ═══ */
+function backToSetup() {
+  stopSpeaking();
+  document.getElementById('storyView').classList.remove('active');
+  document.getElementById('setupPanel').style.display = 'block';
+}
+
+/* ═══ شروع سوالات ═══ */
+function startQuestions() {
+  stopSpeaking();
+  currentQuestionIndex = 0;
+  score = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  
+  document.getElementById('storyView').classList.remove('active');
+  document.getElementById('questionView').classList.add('active');
+  document.getElementById('qTotal').textContent = toPersianNum(selectedStory.questions.length);
+  
+  loadQuestion();
+}
+
+/* ═══ بارگذاری سوال ═══ */
+function loadQuestion() {
+  const qs = selectedStory.questions;
+  if (currentQuestionIndex >= qs.length) {
+    endReading();
+    return;
+  }
+
+  answered = false;
+  const q = qs[currentQuestionIndex];
+
+  document.getElementById('qNum').textContent = toPersianNum(currentQuestionIndex + 1);
+  document.getElementById('qCurrent').textContent = toPersianNum(currentQuestionIndex + 1);
+  
+  const progress = (currentQuestionIndex / qs.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  const questionTextEl = document.getElementById('questionText');
+  questionTextEl.textContent = q.q[selectedLang] || q.q.en;
+  questionTextEl.className = 'question-text ' + selectedLang;
+  questionTextEl.style.fontFamily = languages[selectedLang].font;
+
+  // ساخت گزینه‌ها
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  
+  // مرتب‌سازی تصادفی گزینه‌ها
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+  const letters = ['A', 'B', 'C', 'D'];
+
+  shuffled.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    const optText = opt.text[selectedLang] || opt.text.en;
+    btn.innerHTML = `
+      <span class="option-letter">${letters[i]}</span>
+      <span style="font-family:${languages[selectedLang].font}">${optText}</span>
+    `;
+    btn.addEventListener('click', () => handleAnswer(opt, btn));
+    container.appendChild(btn);
+  });
+
+  // پاک کردن بازخورد
+  const fb = document.getElementById('questionFeedback');
+  fb.className = 'question-feedback';
+  fb.innerHTML = '';
+}
+
+/* ═══ بررسی پاسخ ═══ */
+function handleAnswer(option, btn) {
+  if (answered) return;
+  answered = true;
+
+  const allOptions = document.querySelectorAll('.option');
+  allOptions.forEach(o => o.classList.add('disabled'));
+
+  const fb = document.getElementById('questionFeedback');
+  const correctAnswer = selectedStory.questions[currentQuestionIndex].options.find(o => o.correct);
+
+  if (option.correct) {
+    btn.classList.add('correct');
+    score += 10;
+    correctCount++;
+    fb.className = 'question-feedback show correct';
+    fb.innerHTML = '✅ <strong>آفرین! پاسخ درست بود.</strong>';
+  } else {
+    btn.classList.add('wrong');
+    wrongCount++;
+    fb.className = 'question-feedback show wrong';
+    const correctText = correctAnswer.text[selectedLang] || correctAnswer.text.en;
+    fb.innerHTML = `❌ <strong>اشتباه بود!</strong><br>پاسخ درست: <span style="color:#86efac; font-weight:900;">${correctText}</span>`;
+    
+    // هایلایت پاسخ درست
+    allOptions.forEach(o => {
+      if (o.textContent.includes(correctText)) {
+        o.classList.add('correct');
+      }
+    });
+  }
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 2000);
+}
+
+/* ═══ پایان ═══ */
+function endReading() {
+  document.getElementById('questionView').classList.remove('active');
+  document.getElementById('endView').classList.add('active');
+
+  document.getElementById('endCorrect').textContent = toPersianNum(correctCount);
+  document.getElementById('endWrong').textContent = toPersianNum(wrongCount);
+  document.getElementById('endScore').textContent = toPersianNum(score);
+
+  const total = correctCount + wrongCount;
+  if (total > 0 && correctCount === total) {
+    document.getElementById('endIcon').textContent = '🏆';
+  } else if (total > 0 && correctCount / total >= 0.7) {
+    document.getElementById('endIcon').textContent = '🎉';
+  } else {
+    document.getElementById('endIcon').textContent = '💪';
+  }
+}
+
+/* ═══ تمرین مجدد ═══ */
+function restartReading() {
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('setupPanel').style.display = 'block';
+}
+
+/* ═══ تبدیل اعداد ═══ */
+function toPersianNum(num) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(num).replace(/\d/g, d => persianDigits[d]);
+}
+
+/* ═══ راه‌اندازی ═══ */
+window.addEventListener('load', () => {
+  renderStories();
+  
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+});
+</script>
+
+</body>
+</html>

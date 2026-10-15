@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎤 بخش مکالمه — درسنامه بازی زبان</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: #e2e8f0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 1000px; margin: 0 auto; }
+
+  /* ═══ هدر ═══ */
+  .main-header {
+    position: relative;
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+    border-radius: 25px;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .main-header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ef4444, #dc2626, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .main-header p { color: #94a3b8; font-size: 15px; line-height: 1.8; }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 15px rgba(251, 191, 36, 0.4);
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 22px rgba(251, 191, 36, 0.6);
+  }
+
+  /* ═══ صفحه تنظیمات ═══ */
+  .setup-panel {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 25px;
+  }
+
+  .setup-section { margin-bottom: 25px; }
+  .setup-section:last-child { margin-bottom: 0; }
+
+  .setup-section h3 {
+    font-size: 15px;
+    color: #cbd5e1;
+    font-weight: 900;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .lang-chip {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+    user-select: none;
+  }
+
+  .lang-chip:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    transform: translateY(-2px);
+  }
+
+  .lang-chip.active {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  }
+
+  .lang-chip .flag { font-size: 20px; line-height: 1; }
+
+  /* سناریوها */
+  .scenes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .scene-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  .scene-card:hover {
+    transform: translateY(-5px);
+    border-color: #ef4444;
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.3);
+  }
+
+  .scene-card.active {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, #7f1d1d, #991b1b);
+  }
+
+  .scene-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+  .scene-name { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+  .scene-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+  /* دکمه شروع */
+  .start-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+  }
+
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.6);
+  }
+
+  /* ═══ صفحه صحنه ═══ */
+  .scene-view { display: none; }
+  .scene-view.active { display: block; animation: fadeIn 0.4s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .scene-container {
+    position: relative;
+    height: 420px;
+    border-radius: 25px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* پس‌زمینه‌های مختلف صحنه */
+  .scene-container.restaurant {
+    background: linear-gradient(180deg, #78350f 0%, #92400e 40%, #a16207 100%);
+  }
+
+  .scene-container.shop {
+    background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 40%, #3b82f6 100%);
+  }
+
+  .scene-container.airport {
+    background: linear-gradient(180deg, #0c4a6e 0%, #075985 40%, #0ea5e9 100%);
+  }
+
+  .scene-container.hotel {
+    background: linear-gradient(180deg, #4c1d95 0%, #5b21b6 40%, #7c3aed 100%);
+  }
+
+  .scene-container.school {
+    background: linear-gradient(180deg, #14532d 0%, #166534 40%, #22c55e 100%);
+  }
+
+  /* عناصر صحنه */
+  .scene-elements {
+    position: absolute;
+    inset: 0;
+    padding: 20px;
+  }
+
+  /* گفتگو */
+  .dialogue-box {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 20px 24px;
+    color: #fff;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .speaker-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+  }
+
+  .speaker-avatar.speaking {
+    animation: pulseAvatar 0.8s ease infinite;
+  }
+
+  @keyframes pulseAvatar {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); }
+    50% { transform: scale(1.1); box-shadow: 0 8px 25px rgba(251, 191, 36, 0.7); }
+  }
+
+  .dialogue-content {
+    flex: 1;
+  }
+
+  .dialogue-name {
+    font-size: 13px;
+    color: #fbbf24;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .dialogue-text {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .dialogue-text.fa,
+  .dialogue-text.ar,
+  .dialogue-text.ar_iq {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .dialogue-text.ja,
+  .dialogue-text.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  .dialogue-translation {
+    font-size: 14px;
+    color: #94a3b8;
+    font-style: italic;
+    direction: rtl;
+    text-align: right;
+  }
+
+  /* شخصیت‌ها */
+  .character {
+    position: absolute;
+    font-size: 80px;
+    bottom: 130px;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+    transition: all 0.3s;
+  }
+
+  .character.left { left: 60px; }
+  .character.right { right: 60px; }
+
+  .character.talking {
+    animation: talkAnim 1s ease infinite;
+  }
+
+  @keyframes talkAnim {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.05); }
+  }
+
+  .character.listening {
+    animation: listenAnim 1.5s ease infinite;
+  }
+
+  @keyframes listenAnim {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* ═══ بخش میکروفون و پاسخ ═══ */
+  .answer-section {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 20px;
+  }
+
+  .answer-label {
+    font-size: 15px;
+    color: #cbd5e1;
+    font-weight: 900;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* دکمه‌های تلفظ */
+  .play-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .play-btn {
+    padding: 12px 20px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .play-btn:hover {
+    background: rgba(56, 189, 248, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .play-btn.speaking {
+    animation: pulseBtn 0.8s ease infinite;
+    background: rgba(56, 189, 248, 0.4);
+  }
+
+  @keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* میکروفون */
+  .mic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 25px 20px;
+  }
+
+  .mic-btn {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    font-size: 45px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 15px 40px rgba(239, 68, 68, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .mic-btn::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 3px solid rgba(239, 68, 68, 0.4);
+    animation: micRing 2s ease-out infinite;
+  }
+
+  @keyframes micRing {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .mic-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 50px rgba(239, 68, 68, 0.7);
+  }
+
+  .mic-btn.recording {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 15px 40px rgba(34, 197, 94, 0.7);
+    animation: micRecording 1s ease infinite;
+  }
+
+  .mic-btn.recording::before {
+    border-color: rgba(34, 197, 94, 0.6);
+    animation: micRing 1s ease-out infinite;
+  }
+
+  @keyframes micRecording {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  .mic-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    animation: none;
+  }
+
+  .mic-status {
+    font-size: 16px;
+    font-weight: 900;
+    color: #cbd5e1;
+    text-align: center;
+    min-height: 30px;
+  }
+
+  .mic-status.recording {
+    color: #22c55e;
+    animation: pulse 1s ease infinite;
+  }
+
+  .mic-status.error {
+    color: #ef4444;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .mic-hint {
+    font-size: 13px;
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* نمایش متن شنیده‌شده */
+  .heard-text {
+    padding: 15px 20px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 2px dashed rgba(56, 189, 248, 0.4);
+    border-radius: 12px;
+    color: #38bdf8;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
+    min-height: 55px;
+    margin-top: 15px;
+    display: none;
+    direction: ltr;
+    font-family: 'Courier New', monospace;
+  }
+
+  .heard-text.show { display: block; }
+
+  /* بازخورد */
+  .feedback-box {
+    padding: 22px 25px;
+    border-radius: 18px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.9;
+    display: none;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .feedback-box.show { display: block; }
+
+  .feedback-box.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1));
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  .feedback-box.wrong {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
+
+  .feedback-box .highlight {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    display: inline-block;
+    margin: 0 4px;
+  }
+
+  /* نوار پیشرفت */
+  .progress-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 120px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #fbbf24);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-counter {
+    font-size: 14px;
+    font-weight: 900;
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.1);
+    padding: 8px 14px;
+    border-radius: 10px;
+  }
+
+  .progress-score {
+    font-size: 14px;
+    font-weight: 900;
+    color: #1e293b;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    padding: 8px 14px;
+    border-radius: 10px;
+  }
+
+  /* دکمه‌های پایین */
+  .bottom-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .bottom-btn {
+    padding: 14px 26px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bottom-btn.skip {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+  }
+
+  .bottom-btn.skip:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  .bottom-btn.next {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+    display: none;
+  }
+
+  .bottom-btn.next.show {
+    display: inline-flex;
+  }
+
+  .bottom-btn.next:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  /* ═══ صفحه پایان ═══ */
+  .end-view {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .end-view.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .end-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .end-view h2 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ef4444, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+  }
+
+  .end-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+
+  .end-stat {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+  }
+
+  .end-stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: #ef4444;
+    margin-bottom: 8px;
+  }
+
+  .end-stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .end-stat.correct .end-stat-value { color: #22c55e; }
+  .end-stat.wrong .end-stat-value { color: #ef4444; }
+
+  .end-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .end-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .end-btn.primary {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  }
+
+  .end-btn.primary:hover {
+    transform: translateY(-3px);
+  }
+
+  .end-btn.secondary {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+  }
+
+  /* هشدار میکروفون */
+  .mic-warning {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
+    border: 2px solid rgba(251, 191, 36, 0.4);
+    color: #fbbf24;
+    padding: 18px 22px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: none;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .mic-warning.show { display: block; }
+
+  .mic-warning strong { color: #fff; }
+
+  /* ═══ رسیپانسیو ═══ */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .main-header { padding: 25px 15px; }
+    .main-header h1 { font-size: 24px; }
+    .main-header p { font-size: 13px; }
+    .back-btn { position: static; margin-bottom: 15px; }
+    .setup-panel { padding: 18px; }
+    .lang-chip { padding: 8px 14px; font-size: 13px; }
+    .scenes-grid { grid-template-columns: 1fr; }
+    .scene-container { height: 340px; border-radius: 18px; }
+    .character { font-size: 55px; bottom: 120px; }
+    .character.left { left: 20px; }
+    .character.right { right: 20px; }
+    .dialogue-box { padding: 15px; gap: 10px; bottom: 15px; right: 15px; left: 15px; }
+    .speaker-avatar { width: 50px; height: 50px; font-size: 26px; }
+    .dialogue-text { font-size: 15px; }
+    .dialogue-translation { font-size: 12px; }
+    .mic-btn { width: 90px; height: 90px; font-size: 36px; }
+    .answer-section { padding: 18px; }
+    .play-controls { flex-direction: column; }
+    .play-btn { width: 100%; justify-content: center; }
+    .end-stats { grid-template-columns: 1fr; }
+    .end-view h2 { font-size: 22px; }
+    .heard-text { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ هدر ═══ -->
+  <div class="main-header">
+    <a href="lesson.html" class="back-btn">📖 بازگشت به درسنامه</a>
+    <h1>🎤 بخش مکالمه</h1>
+    <p>جمله را از میکروفون بگو و امتیاز بگیر</p>
+  </div>
+
+  <!-- ═══ صفحه تنظیمات ═══ -->
+  <div class="setup-panel" id="setupPanel">
+    
+    <div class="setup-section">
+      <h3>🌍 زبان مکالمه را انتخاب کن:</h3>
+      <div class="lang-chips" id="langChips">
+        <div class="lang-chip active" data-lang="en"><span class="flag">🇬🇧</span> انگلیسی</div>
+        <div class="lang-chip" data-lang="ar"><span class="flag">🇸🇦</span> عربی فصیح</div>
+        <div class="lang-chip" data-lang="ar_iq"><span class="flag">🇮🇶</span> عربی عراقی</div>
+        <div class="lang-chip" data-lang="ru"><span class="flag">🇷🇺</span> روسی</div>
+        <div class="lang-chip" data-lang="fr"><span class="flag">🇫🇷</span> فرانسوی</div>
+        <div class="lang-chip" data-lang="es"><span class="flag">🇪🇸</span> اسپانیایی</div>
+        <div class="lang-chip" data-lang="de"><span class="flag">🇩🇪</span> آلمانی</div>
+        <div class="lang-chip" data-lang="ja"><span class="flag">🇯🇵</span> ژاپنی</div>
+        <div class="lang-chip" data-lang="zh"><span class="flag">🇨🇳</span> چینی</div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <h3>🎬 صحنه را انتخاب کن:</h3>
+      <div class="scenes-grid" id="scenesGrid"></div>
+    </div>
+
+    <div class="mic-warning" id="micWarning">
+      🎤 <strong>توجه:</strong> برای استفاده از بخش مکالمه، باید به مرورگر اجازه‌ی دسترسی به میکروفون بدهید.<br>
+      اگر در تلگرام هستید، ممکن است میکروفون کار نکند. از مرورگر Chrome/Edge استفاده کنید.
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startSpeaking()">
+      ▶ شروع مکالمه
+    </button>
+
+  </div>
+
+  <!-- ═══ صفحه صحنه ═══ -->
+  <div class="scene-view" id="sceneView">
+    
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-counter">
+        سوال <strong id="currentNum">1</strong> / <strong id="totalNum">5</strong>
+      </div>
+      <div class="progress-score">
+        ⭐ <strong id="scoreNum">0</strong>
+      </div>
+    </div>
+
+    <!-- صحنه -->
+    <div class="scene-container" id="sceneContainer">
+      <div class="scene-elements">
+        <div class="character left" id="characterLeft">🧑</div>
+        <div class="character right" id="characterRight">👨‍🍳</div>
+      </div>
+      
+      <div class="dialogue-box">
+        <div class="speaker-avatar" id="speakerAvatar">👨‍🍳</div>
+        <div class="dialogue-content">
+          <div class="dialogue-name" id="speakerName">—</div>
+          <div class="dialogue-text" id="dialogueText">—</div>
+          <div class="dialogue-translation" id="dialogueTranslation">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- بخش پاسخ -->
+    <div class="answer-section">
+      <div class="answer-label">🎯 جمله‌ای که باید بگویی:</div>
+      
+      <div class="play-controls">
+        <button class="play-btn" id="playBtn" onclick="playTargetSentence(this)">
+          🔊 شنیدن جمله
+        </button>
+        <button class="play-btn slow" onclick="playTargetSentenceSlow(this)">
+          🐢 شنیدن آرام
+        </button>
+        <button class="play-btn" onclick="playDialogue()">
+          💬 پخش مکالمه
+        </button>
+      </div>
+
+      <div class="mic-container">
+        <button class="mic-btn" id="micBtn" onclick="toggleRecording()">
+          🎤
+        </button>
+        <div class="mic-status" id="micStatus">برای شروع ضبط، روی میکروفون کلیک کن</div>
+        <div class="mic-hint" id="micHint">
+          📌 جمله را واضح و شمرده بگو
+        </div>
+        <div class="heard-text" id="heardText"></div>
+      </div>
+
+      <div class="feedback-box" id="feedbackBox"></div>
+
+      <div class="bottom-actions">
+        <button class="bottom-btn skip" onclick="skipQuestion()">⏭️ رد کن</button>
+        <button class="bottom-btn next" id="nextBtn" onclick="nextQuestion()">▶ سوال بعدی</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ صفحه پایان ═══ -->
+  <div class="end-view" id="endView">
+    <div class="end-icon" id="endIcon">🏆</div>
+    <h2>مکالمه تمام شد!</h2>
+    
+    <div class="end-stats">
+      <div class="end-stat correct">
+        <div class="end-stat-value" id="endCorrect">0</div>
+        <div class="end-stat-label">پاسخ درست</div>
+      </div>
+      <div class="end-stat wrong">
+        <div class="end-stat-value" id="endWrong">0</div>
+        <div class="end-stat-label">پاسخ غلط</div>
+      </div>
+      <div class="end-stat">
+        <div class="end-stat-value" id="endScore">0</div>
+        <div class="end-stat-label">امتیاز کل</div>
+      </div>
+    </div>
+
+    <div class="end-actions">
+      <button class="end-btn primary" onclick="restartSpeaking()">🔄 تمرین مجدد</button>
+      <a href="lesson.html" class="end-btn secondary">📖 درسنامه</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   📚 داده‌های مکالمه (سناریوها)
+   ══════════════════════════════════════════════════════════════ */
+
+const languages = {
+  fa:    { name: 'فارسی',        flag: '🇮🇷', font: "'Vazirmatn', sans-serif" },
+  en:    { name: 'انگلیسی',      flag: '🇬🇧', font: "'Vazirmatn', sans-serif" },
+  ar:    { name: 'عربی فصیح',   flag: '🇸🇦', font: "'Noto Naskh Arabic', serif" },
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶', font: "'Noto Naskh Arabic', serif" },
+  ru:    { name: 'روسی',         flag: '🇷🇺', font: "'Vazirmatn', sans-serif" },
+  fr:    { name: 'فرانسوی',      flag: '🇫🇷', font: "'Vazirmatn', sans-serif" },
+  es:    { name: 'اسپانیایی',    flag: '🇪🇸', font: "'Vazirmatn', sans-serif" },
+  de:    { name: 'آلمانی',       flag: '🇩🇪', font: "'Vazirmatn', sans-serif" },
+  ja:    { name: 'ژاپنی',        flag: '🇯🇵', font: "'Noto Sans JP', sans-serif" },
+  zh:    { name: 'چینی',         flag: '🇨🇳', font: "'Noto Sans SC', sans-serif" }
+};
+
+/* ═══ سناریوها ═══ */
+const scenes = [
+  // ═══════════ سناریو ۱: رستوران ═══════════
+  {
+    id: 'restaurant',
+    name: 'رستوران',
+    icon: '🍽️',
+    desc: 'سفارش غذا در رستوران',
+    className: 'restaurant',
+    characterLeft: '🧑',
+    characterRight: '👨‍🍳',
+    steps: [
+      {
+        speaker: 'right',
+        speakerName: { fa: 'گارسون', en: 'Waiter', ar: 'النَّادِل', ar_iq: 'الْجَرْسُون', ru: 'Официант', fr: 'Serveur', es: 'Camarero', de: 'Kellner', ja: 'ウェイター', zh: '服务员' },
+        avatar: '👨‍🍳',
+        dialogue: {
+          en: 'Welcome! What would you like to order?',
+          ar: 'مَرْحَبًا! مَاذَا تُرِيدُ أَنْ تَطْلُبَ؟',
+          ar_iq: 'سَلَامٌ عَلَيْكُمْ! شِنُو تِحِبْ تِطْلُبْ؟',
+          ru: 'Добро пожаловать! Что вы хотите заказать?',
+          fr: 'Bienvenue ! Que voulez-vous commander ?',
+          es: '¡Bienvenido! ¿Qué desea ordenar?',
+          de: 'Willkommen! Was möchten Sie bestellen?',
+          ja: 'いらっしゃいませ！何をご注文ですか？',
+          zh: '欢迎光临！您想点什么？'
+        },
+        dialogueFa: 'خوش آمدید! چه چیزی می‌خواهید سفارش دهید؟',
+        userAnswer: {
+          en: 'I would like a cup of tea, please.',
+          ar: 'أُرِيدُ كُوبًا مِنَ الشَّايِ، مِنْ فَضْلِكَ.',
+          ar_iq: 'أُرِيدْ گْلَاصْ جَايْ، لَوْ تِسْمَحْ.',
+          ru: 'Я хотел бы чашку чая, пожалуйста.',
+          fr: 'Je voudrais une tasse de thé, s\'il vous plaît.',
+          es: 'Me gustaría una taza de té, por favor.',
+          de: 'Ich möchte eine Tasse Tee, bitte.',
+          ja: 'お茶を一杯ください。',
+          zh: '我想要一杯茶，谢谢。'
+        },
+        userAnswerFa: 'یک فنجان چای می‌خواهم، لطفاً.',
+        hint: { fa: 'می‌خواهم یک فنجان چای...', en: 'I would like a cup of...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'گارسون', en: 'Waiter', ar: 'النَّادِل', ar_iq: 'الْجَرْسُون', ru: 'Официант', fr: 'Serveur', es: 'Camarero', de: 'Kellner', ja: 'ウェイター', zh: '服务员' },
+        avatar: '👨‍🍳',
+        dialogue: {
+          en: 'Would you like something to eat?',
+          ar: 'هَلْ تُرِيدُ شَيْئًا لِتَأْكُلَهُ؟',
+          ar_iq: 'تِحِبْ تَاكُلْ شِي؟',
+          ru: 'Хотите что-нибудь поесть?',
+          fr: 'Voulez-vous quelque chose à manger ?',
+          es: '¿Quiere algo para comer?',
+          de: 'Möchten Sie etwas essen?',
+          ja: '何か食べ物はいかがですか？',
+          zh: '您想吃点什么吗？'
+        },
+        dialogueFa: 'چیزی برای خوردن می‌خواهید؟',
+        userAnswer: {
+          en: 'Yes, please bring me a sandwich.',
+          ar: 'نَعَمْ، مِنْ فَضْلِكَ أَحْضِرْ لِي شَطِيرَةً.',
+          ar_iq: 'إِي، جِيبْلِي سَانْدْوِيتْشْ.',
+          ru: 'Да, пожалуйста, принесите мне сэндвич.',
+          fr: 'Oui, apportez-moi un sandwich s\'il vous plaît.',
+          es: 'Sí, por favor tráigame un sándwich.',
+          de: 'Ja, bringen Sie mir bitte ein Sandwich.',
+          ja: 'はい、サンドイッチをお願いします。',
+          zh: '是的，请给我一个三明治。'
+        },
+        userAnswerFa: 'بله، لطفاً یک ساندویچ برایم بیاورید.',
+        hint: { fa: 'بله، لطفاً یک ساندویچ...', en: 'Yes, please bring me a...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'گارسون', en: 'Waiter', ar: 'النَّادِل', ar_iq: 'الْجَرْسُون', ru: 'Официант', fr: 'Serveur', es: 'Camarero', de: 'Kellner', ja: 'ウェイター', zh: '服务员' },
+        avatar: '👨‍🍳',
+        dialogue: {
+          en: 'How would you like to pay?',
+          ar: 'كَيْفَ تُرِيدُ أَنْ تَدْفَعَ؟',
+          ar_iq: 'شْلُونْ تِحِبْ تِدْفَعْ؟',
+          ru: 'Как вы хотите оплатить?',
+          fr: 'Comment souhaitez-vous payer ?',
+          es: '¿Cómo desea pagar?',
+          de: 'Wie möchten Sie bezahlen?',
+          ja: 'お支払いはどうされますか？',
+          zh: '您想怎么付款？'
+        },
+        dialogueFa: 'چطور می‌خواهید پرداخت کنید؟',
+        userAnswer: {
+          en: 'By credit card, please.',
+          ar: 'بِبِطَاقَةِ الِائْتِمَانِ، مِنْ فَضْلِكَ.',
+          ar_iq: 'بِالْبِطَاقَةْ، لَوْ تِسْمَحْ.',
+          ru: 'Кредитной картой, пожалуйста.',
+          fr: 'Par carte de crédit, s\'il vous plaît.',
+          es: 'Con tarjeta de crédito, por favor.',
+          de: 'Mit Kreditkarte, bitte.',
+          ja: 'クレジットカードでお願いします。',
+          zh: '用信用卡，谢谢。'
+        },
+        userAnswerFa: 'با کارت اعتباری، لطفاً.',
+        hint: { fa: 'با کارت...', en: 'By credit...' }
+      }
+    ]
+  },
+
+  // ═══════════ سناریو ۲: مغازه ═══════════
+  {
+    id: 'shop',
+    name: 'مغازه',
+    icon: '🛒',
+    desc: 'خرید از مغازه',
+    className: 'shop',
+    characterLeft: '🧑',
+    characterRight: '👩‍💼',
+    steps: [
+      {
+        speaker: 'right',
+        speakerName: { fa: 'فروشنده', en: 'Seller', ar: 'الْبَائِع', ar_iq: 'الْبَاعَة', ru: 'Продавец', fr: 'Vendeur', es: 'Vendedor', de: 'Verkäufer', ja: '店員', zh: '卖家' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'Hello! How can I help you?',
+          ar: 'مَرْحَبًا! كَيْفَ يُمْكِنُنِي مُسَاعَدَتُكَ؟',
+          ar_iq: 'سَلَامٌ عَلَيْكُمْ! شْلُونْ أَسَاعْدَكْ؟',
+          ru: 'Здравствуйте! Чем я могу вам помочь?',
+          fr: 'Bonjour ! Comment puis-je vous aider ?',
+          es: '¡Hola! ¿Cómo puedo ayudarle?',
+          de: 'Hallo! Wie kann ich Ihnen helfen?',
+          ja: 'こんにちは！何かお探しですか？',
+          zh: '你好！我能帮您什么？'
+        },
+        dialogueFa: 'سلام! چطور می‌توانم کمک کنم؟',
+        userAnswer: {
+          en: 'I am looking for a book.',
+          ar: 'أَبْحَثُ عَنْ كِتَابٍ.',
+          ar_iq: 'أَدَوِّرْ عَلَى كِتَابْ.',
+          ru: 'Я ищу книгу.',
+          fr: 'Je cherche un livre.',
+          es: 'Estoy buscando un libro.',
+          de: 'Ich suche ein Buch.',
+          ja: '本を探しています。',
+          zh: '我在找一本书。'
+        },
+        userAnswerFa: 'من دنبال یک کتاب هستم.',
+        hint: { fa: 'من دنبال یک...', en: 'I am looking for a...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'فروشنده', en: 'Seller', ar: 'الْبَائِع', ar_iq: 'الْبَاعَة', ru: 'Продавец', fr: 'Vendeur', es: 'Vendedor', de: 'Verkäufer', ja: '店員', zh: '卖家' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'What color would you like?',
+          ar: 'مَا اللَّوْنُ الَّذِي تُرِيدُهُ؟',
+          ar_iq: 'شِنُو اللَّوْنْ الِّي تْرِيدْهْ؟',
+          ru: 'Какого цвета вы хотите?',
+          fr: 'Quelle couleur voulez-vous ?',
+          es: '¿Qué color desea?',
+          de: 'Welche Farbe möchten Sie?',
+          ja: 'どんな色がいいですか？',
+          zh: '您想要什么颜色？'
+        },
+        dialogueFa: 'چه رنگی می‌خواهید؟',
+        userAnswer: {
+          en: 'The blue one, please.',
+          ar: 'الْأَزْرَقَ، مِنْ فَضْلِكَ.',
+          ar_iq: 'الْأَزْرَقْ، لَوْ تِسْمَحْ.',
+          ru: 'Синий, пожалуйста.',
+          fr: 'Le bleu, s\'il vous plaît.',
+          es: 'El azul, por favor.',
+          de: 'Das blaue, bitte.',
+          ja: '青いのをお願いします。',
+          zh: '蓝色的，谢谢。'
+        },
+        userAnswerFa: 'آبی‌اش، لطفاً.',
+        hint: { fa: 'رنگ مورد نظرت را بگو', en: 'The (color) one' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'فروشنده', en: 'Seller', ar: 'الْبَائِع', ar_iq: 'الْبَاعَة', ru: 'Продавец', fr: 'Vendeur', es: 'Vendedor', de: 'Verkäufer', ja: '店員', zh: '卖家' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'Would you like a bag?',
+          ar: 'هَلْ تُرِيدُ كِيسًا؟',
+          ar_iq: 'تْرِيدْ كِيسْ؟',
+          ru: 'Вам нужен пакет?',
+          fr: 'Voulez-vous un sac ?',
+          es: '¿Quiere una bolsa?',
+          de: 'Möchten Sie eine Tüte?',
+          ja: '袋はご入用ですか？',
+          zh: '您需要袋子吗？'
+        },
+        dialogueFa: 'کیسه می‌خواهید؟',
+        userAnswer: {
+          en: 'No, thank you.',
+          ar: 'لَا، شُكْرًا.',
+          ar_iq: 'لَا، شُكْرًا.',
+          ru: 'Нет, спасибо.',
+          fr: 'Non, merci.',
+          es: 'No, gracias.',
+          de: 'Nein, danke.',
+          ja: 'いいえ、結構です。',
+          zh: '不，谢谢。'
+        },
+        userAnswerFa: 'نه، متشکرم.',
+        hint: { fa: 'نه...', en: 'No, thank...' }
+      }
+    ]
+  },
+
+  // ═══════════ سناریو ۳: فرودگاه ═══════════
+  {
+    id: 'airport',
+    name: 'فرودگاه',
+    icon: '✈️',
+    desc: 'چک‌این در فرودگاه',
+    className: 'airport',
+    characterLeft: '🧑',
+    characterRight: '👮',
+    steps: [
+      {
+        speaker: 'right',
+        speakerName: { fa: 'مامور فرودگاه', en: 'Airport Officer', ar: 'مُوَظَّفُ الْمَطَارِ', ar_iq: 'مُوَظَّفْ الْمَطَارْ', ru: 'Сотрудник аэропорта', fr: 'Agent de l\'aéroport', es: 'Oficial del aeropuerto', de: 'Flughafenbeamter', ja: '空港係員', zh: '机场人员' },
+        avatar: '👮',
+        dialogue: {
+          en: 'May I see your passport, please?',
+          ar: 'هَلْ يُمْكِنُنِي أَنْ أَرَى جَوَازَ سَفَرِكَ، مِنْ فَضْلِكَ؟',
+          ar_iq: 'أَشُوفْ جَوَازْ سَفَرَكْ، لَوْ تِسْمَحْ؟',
+          ru: 'Могу я увидеть ваш паспорт?',
+          fr: 'Puis-je voir votre passeport, s\'il vous plaît ?',
+          es: '¿Puedo ver su pasaporte, por favor?',
+          de: 'Darf ich bitte Ihren Pass sehen?',
+          ja: 'パスポートを見せていただけますか？',
+          zh: '请出示您的护照。'
+        },
+        dialogueFa: 'می‌توانم پاسپورت شما را ببینم، لطفاً؟',
+        userAnswer: {
+          en: 'Here is my passport.',
+          ar: 'هَذَا هُوَ جَوَازُ سَفَرِي.',
+          ar_iq: 'هَذَا جَوَازْ سَفَرِي.',
+          ru: 'Вот мой паспорт.',
+          fr: 'Voici mon passeport.',
+          es: 'Aquí está mi pasaporte.',
+          de: 'Hier ist mein Pass.',
+          ja: 'はい、これが私のパスポートです。',
+          zh: '这是我的护照。'
+        },
+        userAnswerFa: 'این پاسپورت من است.',
+        hint: { fa: 'این پاسپورت...', en: 'Here is my...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'مامور فرودگاه', en: 'Airport Officer', ar: 'مُوَظَّفُ الْمَطَارِ', ar_iq: 'مُوَظَّفْ الْمَطَارْ', ru: 'Сотрудник аэропорта', fr: 'Agent de l\'aéroport', es: 'Oficial del aeropuerto', de: 'Flughafenbeamter', ja: '空港係員', zh: '机场人员' },
+        avatar: '👮',
+        dialogue: {
+          en: 'Where are you traveling to?',
+          ar: 'إِلَى أَيْنَ تُسَافِرُ؟',
+          ar_iq: 'وَيْنْ مُسَافِرْ؟',
+          ru: 'Куда вы летите?',
+          fr: 'Où voyagez-vous ?',
+          es: '¿A dónde viaja?',
+          de: 'Wohin reisen Sie?',
+          ja: 'どちらへ行かれますか？',
+          zh: '您要去哪里？'
+        },
+        dialogueFa: 'کجا سفر می‌کنید؟',
+        userAnswer: {
+          en: 'I am traveling to Paris.',
+          ar: 'أُسَافِرُ إِلَى بَارِيسَ.',
+          ar_iq: 'مُسَافِرْ لِبَارِيسْ.',
+          ru: 'Я лечу в Париж.',
+          fr: 'Je voyage à Paris.',
+          es: 'Viajo a París.',
+          de: 'Ich reise nach Paris.',
+          ja: 'パリへ行きます。',
+          zh: '我要去巴黎。'
+        },
+        userAnswerFa: 'به پاریس سفر می‌کنم.',
+        hint: { fa: 'به ... سفر می‌کنم', en: 'I am traveling to...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'مامور فرودگاه', en: 'Airport Officer', ar: 'مُوَظَّفُ الْمَطَارِ', ar_iq: 'مُوَظَّفْ الْمَطَارْ', ru: 'Сотрудник аэропорта', fr: 'Agent de l\'aéroport', es: 'Oficial del aeropuerto', de: 'Flughafenbeamter', ja: '空港係員', zh: '机场人员' },
+        avatar: '👮',
+        dialogue: {
+          en: 'Have a safe flight!',
+          ar: 'رِحْلَةً سَعِيدَةً!',
+          ar_iq: 'سَفْرَةً سَعِيدَةً!',
+          ru: 'Хорошего полёта!',
+          fr: 'Bon voyage !',
+          es: '¡Buen viaje!',
+          de: 'Gute Reise!',
+          ja: '良い旅を！',
+          zh: '旅途愉快！'
+        },
+        dialogueFa: 'سفر خوبی داشته باشید!',
+        userAnswer: {
+          en: 'Thank you very much!',
+          ar: 'شُكْرًا جَزِيلًا!',
+          ar_iq: 'شُكْرًا جَزِيلًا!',
+          ru: 'Большое спасибо!',
+          fr: 'Merci beaucoup !',
+          es: '¡Muchas gracias!',
+          de: 'Vielen Dank!',
+          ja: 'どうもありがとうございます！',
+          zh: '非常感谢！'
+        },
+        userAnswerFa: 'خیلی متشکرم!',
+        hint: { fa: 'خیلی...', en: 'Thank you very...' }
+      }
+    ]
+  },
+
+  // ═══════════ سناریو ۴: هتل ═══════════
+  {
+    id: 'hotel',
+    name: 'هتل',
+    icon: '🏨',
+    desc: 'رزرو اتاق در هتل',
+    className: 'hotel',
+    characterLeft: '🧑',
+    characterRight: '👩‍💼',
+    steps: [
+      {
+        speaker: 'right',
+        speakerName: { fa: 'پذیرش', en: 'Receptionist', ar: 'مُوَظَّفُ الِاسْتِقْبَالِ', ar_iq: 'مُوَظَّفْ الِاسْتِقْبَالْ', ru: 'Администратор', fr: 'Réceptionniste', es: 'Recepcionista', de: 'Rezeptionist', ja: 'フロント', zh: '前台' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'Good evening! Do you have a reservation?',
+          ar: 'مَسَاءَ الْخَيْرِ! هَلْ لَدَيْكَ حَجْزٌ؟',
+          ar_iq: 'مَسَا الْخِيرْ! عِنْدَكْ حَجْزْ؟',
+          ru: 'Добрый вечер! У вас есть бронь?',
+          fr: 'Bonsoir ! Avez-vous une réservation ?',
+          es: '¡Buenas noches! ¿Tiene una reserva?',
+          de: 'Guten Abend! Haben Sie eine Reservierung?',
+          ja: 'こんばんは！ご予約はありますか？',
+          zh: '晚上好！您有预订吗？'
+        },
+        dialogueFa: 'عصر بخیر! رزرو دارید؟',
+        userAnswer: {
+          en: 'Yes, I have a reservation.',
+          ar: 'نَعَمْ، لَدَيَّ حَجْزٌ.',
+          ar_iq: 'إِي، عِنْدِي حَجْزْ.',
+          ru: 'Да, у меня есть бронь.',
+          fr: 'Oui, j\'ai une réservation.',
+          es: 'Sí, tengo una reserva.',
+          de: 'Ja, ich habe eine Reservierung.',
+          ja: 'はい、予約しています。',
+          zh: '是的，我有预订。'
+        },
+        userAnswerFa: 'بله، من رزرو دارم.',
+        hint: { fa: 'بله، من ...', en: 'Yes, I have a...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'پذیرش', en: 'Receptionist', ar: 'مُوَظَّفُ الِاسْتِقْبَالِ', ar_iq: 'مُوَظَّفْ الِاسْتِقْبَالْ', ru: 'Администратор', fr: 'Réceptionniste', es: 'Recepcionista', de: 'Rezeptionist', ja: 'フロント', zh: '前台' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'Under what name?',
+          ar: 'بِأَيِّ اسْمٍ؟',
+          ar_iq: 'بِأَيِّ اسْمْ؟',
+          ru: 'На какое имя?',
+          fr: 'À quel nom ?',
+          es: '¿A nombre de quién?',
+          de: 'Auf welchen Namen?',
+          ja: 'お名前は？',
+          zh: '以谁的名字？'
+        },
+        dialogueFa: 'به نام چه کسی؟',
+        userAnswer: {
+          en: 'Under the name of Ahmad.',
+          ar: 'بِاسْمِ أَحْمَدَ.',
+          ar_iq: 'بِاسْمْ أَحْمَدْ.',
+          ru: 'На имя Ахмада.',
+          fr: 'Au nom d\'Ahmad.',
+          es: 'A nombre de Ahmad.',
+          de: 'Auf den Namen Ahmad.',
+          ja: 'アフマドの名前で。',
+          zh: '以艾哈迈德的名字。'
+        },
+        userAnswerFa: 'به نام احمد.',
+        hint: { fa: 'به نام...', en: 'Under the name of...' }
+      },
+      {
+        speaker: 'right',
+        speakerName: { fa: 'پذیرش', en: 'Receptionist', ar: 'مُوَظَّفُ الِاسْتِقْبَالِ', ar_iq: 'مُوَظَّفْ الِاسْتِقْبَالْ', ru: 'Администратор', fr: 'Réceptionniste', es: 'Recepcionista', de: 'Rezeptionist', ja: 'フロント', zh: '前台' },
+        avatar: '👩‍💼',
+        dialogue: {
+          en: 'Here is your room key. Enjoy your stay!',
+          ar: 'هَذَا مِفْتَاحُ غُرْفَتِكَ. اسْتَمْتِعْ بِإِقَامَتِكَ!',
+          ar_iq: 'هَذَا مِفْتَاحْ غُرْفَتَكْ. اسْتَمْتِعْ بِجَلْسَتْكْ!',
+          ru: 'Вот ключ от вашей комнаты. Приятного пребывания!',
+          fr: 'Voici la clé de votre chambre. Bon séjour !',
+          es: 'Aquí está la llave de su habitación. ¡Disfrute su estancia!',
+          de: 'Hier ist Ihr Zimmerschlüssel. Genießen Sie Ihren Aufenthalt!',
+          ja: 'こちらがお部屋の鍵です。ごゆっくりどうぞ！',
+          zh: '这是您的房间钥匙。祝您入住愉快！'
+        },
+        dialogueFa: 'این کلید اتاق شماست. اقامت خوبی داشته باشید!',
+        userAnswer: {
+          en: 'Thank you very much!',
+          ar: 'شُكْرًا جَزِيلًا!',
+          ar_iq: 'شُكْرًا جَزِيلًا!',
+          ru: 'Большое спасибо!',
+          fr: 'Merci beaucoup !',
+          es: '¡Muchas gracias!',
+          de: 'Vielen Dank!',
+          ja: 'ありがとうございます！',
+          zh: '非常感谢！'
+        },
+        userAnswerFa: 'خیلی متشکرم!',
+        hint: { fa: 'خیلی...', en: 'Thank you very...' }
+      }
+    ]
+  }
+];
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ
+   ══════════════════════════════════════════════════════════════ */
+
+const googleTTSLangMap = {
+  fa: 'fa', en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let currentAudio = null;
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e){}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+}
+
+function speakWebSpeech(text, langKey, btnElement, customRate) {
+  if (!('speechSynthesis' in window) || !text) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    const locale = speechLocaleMap[langKey] || langKey;
+    utter.lang = locale;
+    utter.rate = customRate !== undefined ? customRate : 1.0;
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === locale.toLowerCase());
+    if (!voice) voice = voices.find(v => v.lang.toLowerCase().startsWith(langKey + '-'));
+    if (voice) utter.voice = voice;
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch (err) {}
+}
+
+function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+  try {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    currentAudio = audio;
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      audio.onended = () => btnElement.classList.remove('speaking');
+    }
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => speakWebSpeech(text, langKey, btnElement));
+    }
+    return true;
+  } catch (err) { return false; }
+}
+
+function speakText(text, langKey, btnElement, customRate) {
+  if (!text) return;
+  stopSpeaking();
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  if (isFirefox || customRate !== undefined) {
+    speakWebSpeech(text, langKey, btnElement, customRate);
+    return;
+  }
+  speakGoogle(text, langKey, btnElement);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎤 تشخیص گفتار (Speech Recognition)
+   ══════════════════════════════════════════════════════════════ */
+
+const recognitionLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let recognition = null;
+let isRecording = false;
+
+function initRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showMicWarning('❌ مرورگر شما از تشخیص گفتار پشتیبانی نمی‌کند. از Chrome یا Edge استفاده کنید.');
+    return null;
+  }
+  const rec = new SpeechRecognition();
+  rec.continuous = false;
+  rec.interimResults = false;
+  rec.maxAlternatives = 3;
+  return rec;
+}
+
+function showMicWarning(message) {
+  const warning = document.getElementById('micWarning');
+  if (warning) {
+    warning.innerHTML = message;
+    warning.classList.add('show');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎬 منطق بخش Speaking
+   ══════════════════════════════════════════════════════════════ */
+
+let selectedLang = 'en';
+let selectedScene = null;
+let currentQuestionIndex = 0;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+/* ═══ رندر صحنه‌ها ═══ */
+function renderScenes() {
+  const grid = document.getElementById('scenesGrid');
+  grid.innerHTML = '';
+  scenes.forEach(scene => {
+    const card = document.createElement('div');
+    card.className = 'scene-card';
+    card.dataset.sceneId = scene.id;
+    card.innerHTML = `
+      <span class="scene-icon">${scene.icon}</span>
+      <div class="scene-name">${scene.name}</div>
+      <div class="scene-desc">${scene.desc}</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.scene-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      selectedScene = scene;
+    });
+    grid.appendChild(card);
+  });
+  // انتخاب اولین صحنه
+  const first = grid.querySelector('.scene-card');
+  if (first) {
+    first.classList.add('active');
+    selectedScene = scenes[0];
+  }
+}
+
+/* ═══ انتخاب زبان ═══ */
+document.querySelectorAll('#langChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#langChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedLang = chip.dataset.lang;
+  });
+});
+
+/* ═══ شروع مکالمه ═══ */
+function startSpeaking() {
+  if (!selectedScene) return;
+  
+  // بررسی پشتیبانی
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showMicWarning('❌ مرورگر شما از تشخیص گفتار پشتیبانی نمی‌کند. لطفاً از <strong>Chrome</strong> یا <strong>Edge</strong> استفاده کنید.');
+    return;
+  }
+
+  currentQuestionIndex = 0;
+  score = 0;
+  correctCount = 0;
+  wrongCount = 0;
+
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('sceneView').classList.add('active');
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('totalNum').textContent = toPersianNum(selectedScene.steps.length);
+
+  // تنظیم صحنه
+  const container = document.getElementById('sceneContainer');
+  container.className = 'scene-container ' + selectedScene.className;
+  document.getElementById('characterLeft').textContent = selectedScene.characterLeft;
+  document.getElementById('characterRight').textContent = selectedScene.characterRight;
+
+  loadStep();
+}
+
+/* ═══ بارگذاری مرحله ═══ */
+function loadStep() {
+  const steps = selectedScene.steps;
+  if (currentQuestionIndex >= steps.length) {
+    endSpeaking();
+    return;
+  }
+
+  answered = false;
+  const step = steps[currentQuestionIndex];
+
+  document.getElementById('currentNum').textContent = toPersianNum(currentQuestionIndex + 1);
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+  const progress = (currentQuestionIndex / steps.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  // نمایش گفتگوی NPC
+  document.getElementById('speakerAvatar').textContent = step.avatar;
+  document.getElementById('speakerName').textContent = step.speakerName[selectedLang] || step.speakerName.en;
+  document.getElementById('dialogueText').textContent = step.dialogue[selectedLang] || step.dialogue.en;
+  document.getElementById('dialogueText').className = 'dialogue-text ' + selectedLang;
+  document.getElementById('dialogueText').style.fontFamily = languages[selectedLang].font;
+  document.getElementById('dialogueTranslation').textContent = step.dialogueFa;
+
+  // شخصیت صحنه
+  const charRight = document.getElementById('characterRight');
+  const charLeft = document.getElementById('characterLeft');
+  charRight.classList.remove('talking');
+  charLeft.classList.remove('talking');
+
+  // انیمیشن صحبت NPC
+  charRight.classList.add('talking');
+
+  // پخش خودکار گفتگو
+  setTimeout(() => {
+    speakText(step.dialogue[selectedLang], selectedLang, null);
+    setTimeout(() => charRight.classList.remove('talking'), 3000);
+  }, 500);
+
+  // پاک کردن بازخورد
+  document.getElementById('feedbackBox').classList.remove('show');
+  document.getElementById('heardText').classList.remove('show');
+  document.getElementById('heardText').textContent = '';
+  document.getElementById('micStatus').textContent = 'برای شروع ضبط، روی میکروفون کلیک کن';
+  document.getElementById('micStatus').className = 'mic-status';
+  document.getElementById('micBtn').classList.remove('recording');
+  document.getElementById('micBtn').disabled = false;
+  document.getElementById('nextBtn').classList.remove('show');
+  
+  // نمایش راهنمای جمله
+  document.getElementById('micHint').innerHTML = 
+    `📌 باید بگویی: <strong style="color:#fbbf24; direction:ltr; display:inline-block; font-family:${languages[selectedLang].font};">«${step.userAnswer[selectedLang]}»</strong><br>
+     <span style="color:#94a3b8; font-size:12px;">ترجمه فارسی: ${step.userAnswerFa}</span>`;
+}
+
+/* ═══ پخش جمله هدف ═══ */
+function playTargetSentence(btn) {
+  if (!selectedScene) return;
+  const step = selectedScene.steps[currentQuestionIndex];
+  speakText(step.userAnswer[selectedLang], selectedLang, btn);
+}
+
+function playTargetSentenceSlow(btn) {
+  if (!selectedScene) return;
+  const step = selectedScene.steps[currentQuestionIndex];
+  speakText(step.userAnswer[selectedLang], selectedLang, btn, 0.6);
+}
+
+function playDialogue() {
+  if (!selectedScene) return;
+  const step = selectedScene.steps[currentQuestionIndex];
+  speakText(step.dialogue[selectedLang], selectedLang, null);
+}
+
+/* ═══ شروع/توقف ضبط ═══ */
+function toggleRecording() {
+  if (answered) return;
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  stopSpeaking();
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showMicWarning('❌ مرورگر شما از تشخیص گفتار پشتیبانی نمی‌کند.');
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 3;
+  recognition.lang = recognitionLocaleMap[selectedLang] || selectedLang;
+
+  const micBtn = document.getElementById('micBtn');
+  const micStatus = document.getElementById('micStatus');
+  const heardText = document.getElementById('heardText');
+
+  recognition.onstart = () => {
+    isRecording = true;
+    micBtn.classList.add('recording');
+    micBtn.textContent = '⏹️';
+    micStatus.className = 'mic-status recording';
+    micStatus.textContent = '🔴 در حال ضبط... صحبت کن';
+    heardText.classList.remove('show');
+  };
+
+  recognition.onresult = (event) => {
+    const results = event.results[0];
+    let bestTranscript = '';
+    let alternatives = [];
+    
+    for (let i = 0; i < results.length; i++) {
+      alternatives.push(results[i].transcript.trim());
+    }
+    bestTranscript = alternatives[0];
+    
+    heardText.textContent = `"${bestTranscript}"`;
+    heardText.classList.add('show');
+    
+    // بررسی پاسخ
+    checkSpokenAnswer(bestTranscript, alternatives);
+  };
+
+  recognition.onerror = (event) => {
+    isRecording = false;
+    micBtn.classList.remove('recording');
+    micBtn.textContent = '🎤';
+    
+    if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+      micStatus.className = 'mic-status error';
+      micStatus.textContent = '❌ دسترسی به میکروفون داده نشد';
+      showMicWarning('🔒 لطفاً به مرورگر اجازه‌ی دسترسی به میکروفون را بدهید.<br>در Chrome: روی آیکون قفل در نوار آدرس کلیک کنید و Microphone را Allow کنید.');
+    } else if (event.error === 'no-speech') {
+      micStatus.className = 'mic-status error';
+      micStatus.textContent = '🔇 صدایی شنیده نشد. دوباره تلاش کن';
+    } else {
+      micStatus.className = 'mic-status error';
+      micStatus.textContent = '❌ خطا: ' + event.error;
+    }
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    micBtn.classList.remove('recording');
+    micBtn.textContent = '🎤';
+    if (micStatus.classList.contains('recording')) {
+      micStatus.className = 'mic-status';
+      micStatus.textContent = 'ضبط تمام شد';
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch (err) {
+    micStatus.className = 'mic-status error';
+    micStatus.textContent = '❌ خطا در شروع ضبط: ' + err.message;
+  }
+}
+
+function stopRecording() {
+  if (recognition && isRecording) {
+    recognition.stop();
+  }
+}
+
+/* ═══ بررسی پاسخ گفتاری ═══ */
+function checkSpokenAnswer(transcript, alternatives) {
+  answered = true;
+  const step = selectedScene.steps[currentQuestionIndex];
+  const correctAnswer = step.userAnswer[selectedLang];
+  
+  // بررسی همه‌ی گزینه‌ها
+  let isCorrect = false;
+  const allAnswers = [transcript, ...alternatives];
+  
+  for (const ans of allAnswers) {
+    if (isAnswerCompatible(ans, correctAnswer)) {
+      isCorrect = true;
+      break;
+    }
+  }
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  const micBtn = document.getElementById('micBtn');
+
+  if (isCorrect) {
+    correctCount++;
+    score += 10;
+    feedbackBox.className = 'feedback-box show correct';
+    feedbackBox.innerHTML = `
+      ✅ <strong>آفرین! تلفظت درست بود.</strong><br>
+      <span style="color:#94a3b8; font-size:14px;">شنیده شد: <span class="highlight">"${transcript}"</span></span>
+    `;
+    // پخش صدای تشویق
+    speakText('Correct!', 'en', null);
+  } else {
+    wrongCount++;
+    feedbackBox.className = 'feedback-box show wrong';
+    feedbackBox.innerHTML = `
+      ❌ <strong>تلفظت مطابقت نداشت!</strong><br>
+      <span style="color:#94a3b8; font-size:14px;">شنیده شد: <span class="highlight">"${transcript}"</span></span><br>
+      <span style="color:#86efac; font-size:14px;">پاسخ درست: <span class="highlight">"${correctAnswer}"</span></span>
+    `;
+    // پخش پاسخ درست
+    setTimeout(() => {
+      speakText(correctAnswer, selectedLang, null);
+    }, 500);
+  }
+
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+  micBtn.disabled = true;
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+/* ═══ سوال بعدی ═══ */
+function nextQuestion() {
+  currentQuestionIndex++;
+  loadStep();
+}
+
+/* ═══ رد کردن ═══ */
+function skipQuestion() {
+  if (answered) return;
+  answered = true;
+  wrongCount++;
+
+  const step = selectedScene.steps[currentQuestionIndex];
+  const correctAnswer = step.userAnswer[selectedLang];
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  feedbackBox.className = 'feedback-box show wrong';
+  feedbackBox.innerHTML = `
+    ⏭️ <strong>سوال رد شد.</strong><br>
+    پاسخ درست: <span class="highlight">"${correctAnswer}"</span>
+  `;
+
+  document.getElementById('micBtn').disabled = true;
+  document.getElementById('nextBtn').classList.add('show');
+  speakText(correctAnswer, selectedLang, null);
+}
+
+/* ═══ پایان مکالمه ═══ */
+function endSpeaking() {
+  document.getElementById('sceneView').classList.remove('active');
+  document.getElementById('endView').classList.add('active');
+
+  document.getElementById('endCorrect').textContent = toPersianNum(correctCount);
+  document.getElementById('endWrong').textContent = toPersianNum(wrongCount);
+  document.getElementById('endScore').textContent = toPersianNum(score);
+
+  const total = correctCount + wrongCount;
+  if (total > 0 && correctCount === total) {
+    document.getElementById('endIcon').textContent = '🏆';
+  } else if (total > 0 && correctCount / total >= 0.7) {
+    document.getElementById('endIcon').textContent = '🎉';
+  } else {
+    document.getElementById('endIcon').textContent = '💪';
+  }
+}
+
+/* ═══ تمرین مجدد ═══ */
+function restartSpeaking() {
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('setupPanel').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🔍 بررسی هوشمند پاسخ
+   ══════════════════════════════════════════════════════════════ */
+
+function normalizeAnswer(text) {
+  if (!text) return '';
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[.,!?؟،؛;:'"«»()\[\]{}\-_\u060C\u061B\u061F]/g, '')
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/[ىي]/g, 'ی')
+    .replace(/[ؤئ]/g, 'ی')
+    .replace(/ة/g, 'ه')
+    .replace(/[àáâãäå]/g, 'a')
+    .replace(/[èéêë]/g, 'e')
+    .replace(/[ìíîï]/g, 'i')
+    .replace(/[òóôõö]/g, 'o')
+    .replace(/[ùúûü]/g, 'u')
+    .replace(/[ñ]/g, 'n')
+    .replace(/[ç]/g, 'c')
+    .replace(/[ß]/g, 'ss')
+    .replace(/\s+/g, ' ');
+}
+
+function removeSpaces(text) {
+  return text.replace(/\s+/g, '');
+}
+
+function levenshteinDistance(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function isAnswerCompatible(userAnswer, correctAnswer) {
+  if (!userAnswer || !correctAnswer) return false;
+
+  const userNorm = normalizeAnswer(userAnswer);
+  const correctNorm = normalizeAnswer(correctAnswer);
+
+  if (userNorm === correctNorm) return true;
+  if (removeSpaces(userNorm) === removeSpaces(correctNorm)) return true;
+
+  const userNoSpace = removeSpaces(userNorm);
+  const correctNoSpace = removeSpaces(correctNorm);
+
+  // برای جملات کوتاه
+  if (userNoSpace.length < 10) {
+    const distance = levenshteinDistance(userNoSpace, correctNoSpace);
+    const maxLen = Math.max(userNoSpace.length, correctNoSpace.length);
+    const maxAllowed = Math.min(1, Math.floor(maxLen * 0.15));
+    if (distance <= maxAllowed) return true;
+  } else {
+    // برای جملات بلند، بررسی کلمه‌به‌کلمه
+    const userWords = userNorm.split(' ').filter(w => w);
+    const correctWords = correctNorm.split(' ').filter(w => w);
+
+    // اگر تعداد کلمات نزدیک باشد
+    if (Math.abs(userWords.length - correctWords.length) <= 2) {
+      let matchCount = 0;
+      const usedCorrectIndices = new Set();
+      
+      for (const uWord of userWords) {
+        for (let i = 0; i < correctWords.length; i++) {
+          if (usedCorrectIndices.has(i)) continue;
+          const cWord = correctWords[i];
+          const dist = levenshteinDistance(uWord, cWord);
+          const wordMaxLen = Math.max(uWord.length, cWord.length);
+          const wordAllowed = Math.min(2, Math.floor(wordMaxLen * 0.25));
+          
+          if (dist <= wordAllowed) {
+            matchCount++;
+            usedCorrectIndices.add(i);
+            break;
+          }
+        }
+      }
+      
+      // اگر ۷۰٪ کلمات مطابقت داشتند
+      if (matchCount / correctWords.length >= 0.7) return true;
+    }
+  }
+
+  return false;
+}
+
+/* ═══ تبدیل اعداد ═══ */
+function toPersianNum(num) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(num).replace(/\d/g, d => persianDigits[d]);
+}
+
+/* ═══ راه‌اندازی ═══ */
+window.addEventListener('load', () => {
+  renderScenes();
+
+  // بررسی پشتیبانی از تشخیص گفتار
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showMicWarning('❌ مرورگر شما از تشخیص گفتار (Speech Recognition) پشتیبانی نمی‌کند.<br>لطفاً از <strong>Chrome</strong> یا <strong>Edge</strong> استفاده کنید.');
+  } else if (window.Telegram && window.Telegram.WebApp) {
+    showMicWarning('⚠️ در تلگرام، دسترسی به میکروفون ممکن است محدود باشد. برای بهترین تجربه از مرورگر Chrome/Edge استفاده کنید.');
+  }
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+});
+</script>
+
+</body>
+</html>

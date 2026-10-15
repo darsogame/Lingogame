@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 درسنامه بازی زبان</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: #e2e8f0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 🏠 هدر اصلی                                             */
+  /* ═══════════════════════════════════════════════════════ */
+  .main-header {
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(167, 139, 250, 0.1));
+    border-radius: 25px;
+    border: 2px solid rgba(56, 189, 248, 0.2);
+  }
+
+  .main-header h1 {
+    font-size: 38px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #38bdf8, #a78bfa, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .main-header p {
+    color: #94a3b8;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 🎯 انتخاب زبان                                          */
+  /* ═══════════════════════════════════════════════════════ */
+  .lang-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  .lang-selector .label {
+    width: 100%;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .lang-chip {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+    user-select: none;
+  }
+
+  .lang-chip:hover {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+  }
+
+  .lang-chip.active {
+    background: linear-gradient(135deg, #38bdf8, #a78bfa);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+  }
+
+  .lang-chip .flag {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* ⚡ کنترل سرعت تلفظ                                       */
+  /* ═══════════════════════════════════════════════════════ */
+  .speed-control-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 15px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .speed-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #cbd5e1;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .speed-value {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    min-width: 55px;
+    text-align: center;
+  }
+
+  .speed-slider {
+    flex: 1;
+    max-width: 250px;
+    min-width: 120px;
+    accent-color: #38bdf8;
+    cursor: pointer;
+  }
+
+  .speed-reset {
+    background: rgba(148, 163, 184, 0.15);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .speed-reset:hover {
+    background: rgba(148, 163, 184, 0.3);
+    transform: rotate(180deg);
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 📌 نوار زبان انتخاب‌شده                                   */
+  /* ═══════════════════════════════════════════════════════ */
+  .selected-langs-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(34, 197, 94, 0.08));
+    border-radius: 18px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    flex-wrap: wrap;
+  }
+
+  .selected-lang {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+  }
+
+  .selected-lang.target {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+  }
+
+  .sel-flag { font-size: 20px; }
+  .sel-name { font-weight: 900; }
+  .sel-role {
+    font-size: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3px 8px;
+    border-radius: 8px;
+    color: #94a3b8;
+  }
+
+  .selected-arrow {
+    font-size: 22px;
+    color: #a78bfa;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 📑 فهرست دسته‌ها                                         */
+  /* ═══════════════════════════════════════════════════════ */
+  .categories-view { display: block; }
+  .categories-view.hidden { display: none; }
+
+  .categories-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #f1f5f9;
+    margin-bottom: 20px;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .category-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-card:hover {
+    transform: translateY(-6px);
+    border-color: #38bdf8;
+    box-shadow: 0 20px 45px rgba(56, 189, 248, 0.25);
+  }
+
+  .cat-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .cat-name {
+    font-size: 19px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .cat-desc {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .cat-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+  }
+
+  .cat-count {
+    font-size: 12px;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+  .cat-start {
+    font-size: 12px;
+    color: #22c55e;
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 📄 صفحه یک درس                                          */
+  /* ═══════════════════════════════════════════════════════ */
+  .lesson-view { display: none; }
+  .lesson-view.active { display: block; }
+
+  .lesson-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+  }
+
+  .back-btn {
+    background: rgba(148, 163, 184, 0.15);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .back-btn:hover {
+    background: rgba(148, 163, 184, 0.25);
+    transform: translateX(-3px);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 120px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #a78bfa, #fbbf24);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .counter {
+    font-size: 14px;
+    font-weight: 900;
+    color: #94a3b8;
+    min-width: 70px;
+    text-align: center;
+    background: rgba(148, 163, 184, 0.1);
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
+
+  /* ═══ کارت اصلی کلمه ═══ */
+  .word-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 25px;
+    padding: 40px 35px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: cardSlide 0.5s ease;
+  }
+
+  @keyframes cardSlide {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .word-main {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed rgba(148, 163, 184, 0.2);
+    margin-bottom: 30px;
+  }
+
+  .word-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 18px;
+  }
+
+  .word-icon {
+    font-size: 90px;
+    display: block;
+    margin-bottom: 18px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ═══ نمایش دو زبانه ═══ */
+  .bilingual-display {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin: 25px 0;
+    padding: 25px 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+  }
+
+  .bilingual-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    border-radius: 15px;
+    transition: all 0.3s;
+  }
+
+  .bilingual-side.source {
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+  }
+
+  .bilingual-side.target {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+  }
+
+  .bilingual-side:hover {
+    transform: translateY(-3px);
+  }
+
+  .bilingual-flag {
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  .bilingual-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .bilingual-word {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+    margin: 5px 0;
+  }
+
+  .bilingual-side.target .bilingual-word {
+    color: #fbbf24;
+  }
+
+  .bilingual-arrow {
+    font-size: 36px;
+    color: #a78bfa;
+    animation: pulseArrow 1.5s ease infinite;
+  }
+
+  @keyframes pulseArrow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.7; }
+  }
+
+  .word-speak-small {
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .word-speak-small:hover {
+    background: rgba(56, 189, 248, 0.4);
+    transform: scale(1.1);
+  }
+
+  .word-speak-small.speaking {
+    animation: speakPulse 0.8s ease infinite;
+    background: rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  /* ═══ بخش دکمه‌های تلفظ ═══ */
+  .speak-both-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .speak-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .word-speak {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    background: linear-gradient(135deg, #38bdf8, #a78bfa);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+  }
+
+  .word-speak:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 28px rgba(56, 189, 248, 0.6);
+  }
+
+  .word-speak.speaking {
+    animation: speakPulse 0.8s ease infinite;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+  }
+
+  .word-speak.target {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .word-speak.target:hover {
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  .speak-options {
+    display: flex;
+    gap: 6px;
+  }
+
+  .speak-mini {
+    background: rgba(148, 163, 184, 0.15);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    color: #cbd5e1;
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-weight: 700;
+  }
+
+  .speak-mini:hover {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+  }
+
+  .speak-mini.slow:hover {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border-color: #fbbf24;
+  }
+
+  .speak-mini.speaking {
+    background: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+  }
+
+  /* ═══ نمایش وضعیت صدا ═══ */
+  .voice-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 12px;
+    font-size: 12px;
+    color: #86efac;
+    margin-top: 15px;
+    font-weight: 700;
+  }
+
+  .voice-info .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulse 1.5s infinite;
+  }
+
+  .voice-info.unavailable {
+    background: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #f87171;
+  }
+
+  .voice-info.unavailable .dot {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+    animation: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ═══ بخش‌های محتوا ═══ */
+  .section-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .translations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .translations-grid.two-cols {
+    grid-template-columns: 1fr 1fr;
+    max-width: 700px;
+    margin: 0 auto 25px;
+  }
+
+  .trans-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    transition: all 0.25s;
+    text-align: center;
+  }
+
+  .trans-card:hover {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
+    transform: translateY(-3px);
+  }
+
+  .trans-card.source-card {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.05);
+  }
+
+  .trans-card.target-card {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.05);
+  }
+
+  .trans-flag {
+    font-size: 30px;
+    display: block;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .trans-lang {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .trans-text {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    min-height: 26px;
+  }
+
+  .trans-card.target-card .trans-text {
+    color: #fbbf24;
+  }
+
+  .trans-text.ar {
+    font-family: 'Noto Naskh Arabic', serif;
+    direction: rtl;
+  }
+
+  .trans-text.ja, .trans-text.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  .trans-speak {
+    background: rgba(56, 189, 248, 0.15);
+    border: none;
+    color: #38bdf8;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-weight: 700;
+  }
+
+  .trans-speak:hover {
+    background: rgba(56, 189, 248, 0.3);
+    transform: scale(1.05);
+  }
+
+  .trans-speak.speaking {
+    background: rgba(34, 197, 94, 0.3);
+    color: #86efac;
+    animation: speakPulse 0.8s ease infinite;
+  }
+
+  /* ═══ مثال‌ها ═══ */
+  .examples-section {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.05));
+    border: 2px solid rgba(251, 191, 36, 0.25);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+
+  .example-item {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-right: 4px solid #fbbf24;
+    transition: all 0.25s;
+  }
+
+  .example-item:last-child { margin-bottom: 0; }
+
+  .example-item:hover {
+    background: rgba(15, 23, 42, 0.8);
+    transform: translateX(-4px);
+  }
+
+  .example-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .example-flag { font-size: 16px; }
+
+  .example-text {
+    font-size: 17px;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 6px;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .example-text.fa, .example-text.ar, .example-text.ar_iq {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .example-text.ar, .example-text.ar_iq {
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .example-text.ja, .example-text.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  .example-trans {
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+    direction: rtl;
+    text-align: right;
+  }
+
+  .example-speak-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .example-speak-btn {
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .example-speak-btn:hover {
+    background: rgba(251, 191, 36, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .example-speak-btn.slow {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+  }
+
+  .example-speak-btn.speaking {
+    animation: speakPulse 0.8s ease infinite;
+  }
+
+  /* ═══ نکات گرامری ═══ */
+  .grammar-section {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(139, 92, 246, 0.05));
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+
+  .grammar-section .section-title {
+    color: #a78bfa;
+  }
+
+  .grammar-content {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  .grammar-content strong { color: #fbbf24; font-weight: 900; }
+
+  .grammar-content code {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3px 10px;
+    border-radius: 8px;
+    color: #38bdf8;
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    display: inline-block;
+    margin: 0 4px;
+  }
+
+  /* ═══ دکمه‌های ناوبری ═══ */
+  .nav-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+  }
+
+  .nav-btn {
+    padding: 14px 26px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    flex: 1;
+    min-width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .nav-btn.prev, .nav-btn.next {
+    background: rgba(148, 163, 184, 0.15);
+    color: #cbd5e1;
+    border: 2px solid rgba(148, 163, 184, 0.3);
+  }
+
+  .nav-btn.prev:hover:not(:disabled), .nav-btn.next:hover:not(:disabled) {
+    background: rgba(148, 163, 184, 0.3);
+    transform: translateY(-2px);
+    border-color: #38bdf8;
+  }
+
+  .nav-btn.practice {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+    flex: 1.5;
+  }
+
+  .nav-btn.practice:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════ */
+  /* 📱 ریسپانسیو موبایل                                      */
+  /* ═══════════════════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .main-header { padding: 20px 15px; border-radius: 18px; }
+    .main-header h1 { font-size: 26px; }
+    .main-header p { font-size: 14px; }
+    .lang-selector { padding: 15px; }
+    .lang-chip { padding: 8px 14px; font-size: 13px; }
+    .lang-chip .flag { font-size: 18px; }
+    .speed-control-bar { padding: 12px 15px; gap: 10px; }
+    .speed-label { font-size: 13px; }
+    .speed-slider { max-width: 140px; }
+    .selected-langs-bar { padding: 12px; gap: 10px; }
+    .selected-lang { padding: 6px 12px; font-size: 13px; }
+    .categories-grid { grid-template-columns: 1fr; }
+    .category-card { padding: 20px; }
+    .cat-icon { font-size: 40px; }
+    .word-card { padding: 25px 18px; border-radius: 20px; }
+    .word-icon { font-size: 65px; }
+    .bilingual-display {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 15px 12px;
+    }
+    .bilingual-arrow { transform: rotate(90deg); font-size: 28px; }
+    .bilingual-word { font-size: 24px; }
+    .bilingual-flag { font-size: 28px; }
+    .translations-grid.two-cols { grid-template-columns: 1fr; }
+    .speak-both-row { flex-direction: column; align-items: stretch; gap: 12px; }
+    .word-speak { width: 100%; justify-content: center; }
+    .nav-actions { flex-direction: column; }
+    .nav-btn { width: 100%; }
+    .lesson-nav { padding: 12px 15px; gap: 10px; }
+    .back-btn { padding: 8px 14px; font-size: 12px; }
+    .examples-section, .grammar-section { padding: 18px; }
+    .example-text { font-size: 15px; }
+    .translations-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .trans-card { padding: 12px 8px; }
+    .trans-flag { font-size: 24px; }
+    .trans-text { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ هدر اصلی ═══ -->
+  <div class="main-header">
+    <h1>📖 درسنامه بازی زبان</h1>
+    <p>کلمات را قدم‌به‌قدم با مثال جمله‌ای، تلفظ دقیق و نکات گرامری یاد بگیر</p>
+  </div>
+
+  <!-- ═══ انتخاب زبان مقصد ═══ -->
+  <div class="lang-selector">
+    <div class="label">🎯 زبان مقصد را انتخاب کن (زبان مبدا: فارسی):</div>
+    <div class="lang-chip active" data-lang="en"><span class="flag">🇬🇧</span> انگلیسی</div>
+    <div class="lang-chip" data-lang="ar"><span class="flag">🇸🇦</span> عربی فصیح</div>
+    <div class="lang-chip" data-lang="ar_iq"><span class="flag">🇮🇶</span> عربی عراقی</div>
+    <div class="lang-chip" data-lang="ru"><span class="flag">🇷🇺</span> روسی</div>
+    <div class="lang-chip" data-lang="fr"><span class="flag">🇫🇷</span> فرانسوی</div>
+    <div class="lang-chip" data-lang="es"><span class="flag">🇪🇸</span> اسپانیایی</div>
+    <div class="lang-chip" data-lang="de"><span class="flag">🇩🇪</span> آلمانی</div>
+    <div class="lang-chip" data-lang="ja"><span class="flag">🇯🇵</span> ژاپنی</div>
+    <div class="lang-chip" data-lang="zh"><span class="flag">🇨🇳</span> چینی</div>
+  </div>
+
+  <!-- ═══ کنترل سرعت تلفظ ═══ -->
+  <div class="speed-control-bar">
+    <div class="speed-label">
+      <span>⚡ سرعت تلفظ:</span>
+      <span class="speed-value" id="speedValue">1.0x</span>
+    </div>
+    <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="1.5" step="0.1" value="1.0">
+    <button class="speed-reset" id="speedReset" title="بازگشت به حالت عادی">↺</button>
+  </div>
+
+  <!-- ═══ نوار زبان انتخاب‌شده ═══ -->
+  <div class="selected-langs-bar">
+    <div class="selected-lang">
+      <span class="sel-flag">🇮🇷</span>
+      <span class="sel-name">فارسی</span>
+      <span class="sel-role">مبدا</span>
+    </div>
+    <div class="selected-arrow">⇄</div>
+    <div class="selected-lang target" id="selectedTargetLang">
+      <span class="sel-flag">🇬🇧</span>
+      <span class="sel-name">انگلیسی</span>
+      <span class="sel-role">مقصد</span>
+    </div>
+  </div>
+
+  <!-- ═══ فهرست درس‌ها ═══ -->
+  <div class="categories-view" id="categoriesView">
+    <h2 class="categories-title">📚 درس‌ها را انتخاب کن</h2>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </div>
+
+  <!-- ═══ صفحه درس ═══ -->
+  <div class="lesson-view" id="lessonView">
+    <div class="lesson-nav">
+      <button class="back-btn" id="backBtn">↩ بازگشت</button>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="counter" id="counter">۱ / ۶</div>
+    </div>
+
+    <div id="lessonContent"></div>
+
+    <div class="nav-actions">
+      <button class="nav-btn prev" id="prevBtn">◀ کلمه قبلی</button>
+      <button class="nav-btn practice" id="practiceBtn">🎮 تمرین این کلمه</button>
+      <button class="nav-btn next" id="nextBtn">کلمه بعدی ▶</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   📚 داده‌های درسنامه
+   ══════════════════════════════════════════════════════════════ */
+
+/* ═══ زبان‌ها ═══ */
+const languages = {
+  fa:    { name: 'فارسی',        flag: '🇮🇷', font: "'Vazirmatn', sans-serif" },
+  en:    { name: 'انگلیسی',      flag: '🇬🇧', font: "'Vazirmatn', sans-serif" },
+  ar:    { name: 'عربی فصیح',   flag: '🇸🇦', font: "'Noto Naskh Arabic', serif" },
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶', font: "'Noto Naskh Arabic', serif" },
+  ru:    { name: 'روسی',         flag: '🇷🇺', font: "'Vazirmatn', sans-serif" },
+  fr:    { name: 'فرانسوی',      flag: '🇫🇷', font: "'Vazirmatn', sans-serif" },
+  es:    { name: 'اسپانیایی',    flag: '🇪🇸', font: "'Vazirmatn', sans-serif" },
+  de:    { name: 'آلمانی',       flag: '🇩🇪', font: "'Vazirmatn', sans-serif" },
+  ja:    { name: 'ژاپنی',        flag: '🇯🇵', font: "'Noto Sans JP', sans-serif" },
+  zh:    { name: 'چینی',         flag: '🇨🇳', font: "'Noto Sans SC', sans-serif" }
+};
+
+/* ═══ کلمات ═══ */
+const vocabulary = [
+  { fa: 'سلام',    icon: '👋', en: 'Hello',      ar: 'مَرْحَبًا',       ar_iq: 'سَلَامْ عَلَيْكُمْ', ru: 'Привет',      fr: 'Bonjour',      es: 'Hola',      de: 'Hallo',      ja: 'こんにちは',  zh: '你好' },
+  { fa: 'خداحافظ', icon: '👋', en: 'Goodbye',    ar: 'مَعَ السَّلَامَةِ',  ar_iq: 'بْايْ',           ru: 'Пока',        fr: 'Au revoir',    es: 'Adiós',     de: 'Tschüss',    ja: 'さようなら',  zh: '再见' },
+  { fa: 'متشکرم',  icon: '🙏', en: 'Thank you',  ar: 'شُكْرًا',         ar_iq: 'شُكْرًا',         ru: 'Спасибо',     fr: 'Merci',        es: 'Gracias',   de: 'Danke',      ja: 'ありがとう',  zh: '谢谢' },
+  { fa: 'لطفاً',   icon: '🙏', en: 'Please',     ar: 'مِنْ فَضْلِكَ',   ar_iq: 'لَوْ تِسْمَحْ',   ru: 'Пожалуйста',  fr: "S'il vous plaît", es: 'Por favor', de: 'Bitte',  ja: 'お願いします', zh: '请' },
+  { fa: 'بله',     icon: '✅', en: 'Yes',        ar: 'نَعَمْ',          ar_iq: 'إِي',             ru: 'Да',          fr: 'Oui',          es: 'Sí',        de: 'Ja',         ja: 'はい',        zh: '是' },
+  { fa: 'نه',      icon: '❌', en: 'No',         ar: 'لَا',             ar_iq: 'لَا',             ru: 'Нет',         fr: 'Non',          es: 'No',        de: 'Nein',       ja: 'いいえ',      zh: '不' },
+  { fa: 'آب',      icon: '💧', en: 'Water',      ar: 'مَاء',            ar_iq: 'ماي',          ru: 'Вода',        fr: 'Eau',          es: 'Agua',      de: 'Wasser',     ja: '水',          zh: '水' },
+  { fa: 'نان',     icon: '🍞', en: 'Bread',      ar: 'خُبْز',           ar_iq: 'خُبْز',           ru: 'Хлеб',        fr: 'Pain',         es: 'Pan',       de: 'Brot',       ja: 'パン',        zh: '面包' },
+  { fa: 'کتاب',    icon: '📚', en: 'Book',       ar: 'كِتَاب',          ar_iq: 'كِتَاب',          ru: 'Книга',       fr: 'Livre',        es: 'Libro',     de: 'Buch',       ja: '本',          zh: '书' },
+  { fa: 'دوست',    icon: '🤝', en: 'Friend',     ar: 'صَدِيق',          ar_iq: 'صَدِيق',          ru: 'Друг',        fr: 'Ami',          es: 'Amigo',     de: 'Freund',     ja: '友達',        zh: '朋友' },
+  { fa: 'خانه',    icon: '🏠', en: 'House',      ar: 'بَيْت',           ar_iq: 'بَيْت',           ru: 'Дом',         fr: 'Maison',       es: 'Casa',      de: 'Haus',       ja: '家',          zh: '家' },
+  { fa: 'مادر',    icon: '👩', en: 'Mother',     ar: 'أُمّ',            ar_iq: 'أُمّ',            ru: 'Мать',        fr: 'Mère',         es: 'Madre',     de: 'Mutter',     ja: '母',          zh: '母亲' },
+  { fa: 'پدر',     icon: '👨', en: 'Father',     ar: 'أَب',             ar_iq: 'أَبُو',           ru: 'Отец',        fr: 'Père',         es: 'Padre',     de: 'Vater',      ja: '父',          zh: '父亲' },
+  { fa: 'عشق',     icon: '❤️', en: 'Love',       ar: 'حُبّ',            ar_iq: 'حُبّ',            ru: 'Любовь',      fr: 'Amour',        es: 'Amor',      de: 'Liebe',      ja: '愛',          zh: '爱' },
+  { fa: 'شب',      icon: '🌙', en: 'Night',      ar: 'لَيْل',           ar_iq: 'لَيْل',           ru: 'Ночь',        fr: 'Nuit',         es: 'Noche',     de: 'Nacht',      ja: '夜',          zh: '夜晚' },
+  { fa: 'روز',     icon: '☀️', en: 'Day',        ar: 'يَوْم',           ar_iq: 'يَوْم',           ru: 'День',        fr: 'Jour',         es: 'Día',       de: 'Tag',        ja: '日',          zh: '白天' },
+  { fa: 'غذا',     icon: '🍽️', en: 'Food',       ar: 'طَعَام',          ar_iq: 'أَكِل',           ru: 'Еда',         fr: 'Nourriture',   es: 'Comida',    de: 'Essen',      ja: '食べ物',      zh: '食物' },
+  { fa: 'مدرسه',   icon: '🏫', en: 'School',     ar: 'مَدْرَسَة',       ar_iq: 'مَدْرَسَة',       ru: 'Школа',       fr: 'École',        es: 'Escuela',   de: 'Schule',     ja: '学校',        zh: '学校' },
+  { fa: 'خوشحال',  icon: '😊', en: 'Happy',      ar: 'سَعِيد',          ar_iq: 'فَرْحَان',        ru: 'Счастливый',  fr: 'Heureux',      es: 'Feliz',     de: 'Glücklich',  ja: '幸せ',        zh: '快乐' },
+  { fa: 'زیبا',    icon: '🌸', en: 'Beautiful',  ar: 'جَمِيل',          ar_iq: 'حِلْو',           ru: 'Красивый',    fr: 'Beau',         es: 'Hermoso',   de: 'Schön',      ja: '美しい',      zh: '美丽' },
+  { fa: 'گربه',    icon: '🐱', en: 'Cat',        ar: 'قِطَّة',           ar_iq: 'بِسَّة',          ru: 'Кошка',       fr: 'Chat',         es: 'Gato',      de: 'Katze',      ja: '猫',          zh: '猫' },
+  { fa: 'سگ',      icon: '🐶', en: 'Dog',        ar: 'كَلْب',           ar_iq: 'جِلِب',           ru: 'Собака',      fr: 'Chien',        es: 'Perro',     de: 'Hund',       ja: '犬',          zh: '狗' },
+  { fa: 'خورشید',  icon: '☀️', en: 'Sun',        ar: 'الشَّمْس',         ar_iq: 'الشَّمْس',        ru: 'Солнце',      fr: 'Soleil',       es: 'Sol',       de: 'Sonne',      ja: '太陽',        zh: '太阳' },
+  { fa: 'ماه',     icon: '🌕', en: 'Moon',       ar: 'الْقَمَر',         ar_iq: 'الْقَمَر',        ru: 'Луна',        fr: 'Lune',         es: 'Luna',      de: 'Mond',       ja: '月',          zh: '月亮' },
+  { fa: 'گل',      icon: '🌹', en: 'Flower',     ar: 'الْوَرْدَة',       ar_iq: 'الْوَرْدَة',      ru: 'Цветок',      fr: 'Fleur',        es: 'Flor',      de: 'Blume',      ja: '花',          zh: '花' },
+  { fa: 'درخت',    icon: '🌳', en: 'Tree',       ar: 'الشَّجَرَة',       ar_iq: 'الشَّجَرَة',      ru: 'Дерево',      fr: 'Arbre',        es: 'Árbol',     de: 'Baum',       ja: '木',          zh: '树' },
+  { fa: 'ماشین',   icon: '🚗', en: 'Car',        ar: 'سَيَّارَة',        ar_iq: 'سَيَّارَة',       ru: 'Машина',      fr: 'Voiture',      es: 'Coche',     de: 'Auto',       ja: '車',          zh: '车' },
+  { fa: 'پول',     icon: '💰', en: 'Money',      ar: 'مَال',            ar_iq: 'فُلُوس',          ru: 'Деньги',      fr: 'Argent',       es: 'Dinero',    de: 'Geld',       ja: 'お金',        zh: '钱' },
+  { fa: 'وقت',     icon: '⏰', en: 'Time',       ar: 'الْوَقْت',         ar_iq: 'الْوَقْت',        ru: 'Время',       fr: 'Temps',        es: 'Tiempo',    de: 'Zeit',       ja: '時間',        zh: '时间' },
+  { fa: 'رنگ',     icon: '🎨', en: 'Color',      ar: 'لَوْن',           ar_iq: 'لَوْن',           ru: 'Цвет',        fr: 'Couleur',      es: 'Color',     de: 'Farbe',      ja: '色',          zh: '颜色' },
+  { fa: 'سفید',    icon: '⚪', en: 'White',      ar: 'أَبْيَض',          ar_iq: 'أَبْيَض',         ru: 'Белый',       fr: 'Blanc',        es: 'Blanco',    de: 'Weiß',       ja: '白',          zh: '白色' }
+];
+
+/* ═══ دسته‌بندی ═══ */
+const categories = [
+  { id: 'basics',    name: 'سلام و احوالپرسی',  icon: '👋', description: 'شروع یادگیری با کلمات پرکاربرد روزمره',   wordIndices: [0, 1, 2, 3, 4, 5] },
+  { id: 'essentials',name: 'نیازهای اولیه',      icon: '🍞', description: 'کلمات ضروری برای زندگی روزمره',           wordIndices: [6, 7, 8, 9, 10] },
+  { id: 'family',    name: 'خانواده و عشق',     icon: '❤️', description: 'اعضای خانواده و احساسات اصلی',             wordIndices: [11, 12, 13] },
+  { id: 'time',      name: 'زمان',              icon: '⏰', description: 'شب، روز و مفاهیم زمانی',                  wordIndices: [14, 15, 28] },
+  { id: 'nature',    name: 'طبیعت و حیوانات',   icon: '🌳', description: 'خورشید، ماه، گل، درخت و حیوانات',          wordIndices: [16, 19, 20, 21, 22, 23, 24] },
+  { id: 'things',    name: 'اشیا و مفاهیم',     icon: '🚗', description: 'ماشین، پول، رنگ و صفت‌های پایه',          wordIndices: [17, 18, 25, 26, 27, 29] }
+];
+
+/* ═══ مثال‌های جمله‌ای ═══ */
+const examples = {
+  'سلام': {
+    en: { text: 'Hello! How are you today?', trans: 'سلام! امروز چطوری؟' },
+    ar: { text: 'مَرْحَبًا! كَيْفَ حَالُكَ الْيَوْمَ؟', trans: 'سلام! امروز چطوری؟' },
+    ar_iq: { text: 'سَلَامْ عَلَيْكُمْ! أَشْلُونَكْ الْيَوْمْ؟', trans: 'سلام! امروز چطوری؟' },
+    ru: { text: 'Привет! Как дела сегодня?', trans: 'سلام! امروز چطوری؟' },
+    fr: { text: 'Bonjour ! Comment ça va ?', trans: 'سلام! چطوری؟' },
+    es: { text: '¡Hola! ¿Cómo estás hoy?', trans: 'سلام! امروز چطوری؟' },
+    de: { text: 'Hallo! Wie geht es dir heute?', trans: 'سلام! امروز چطوری؟' },
+    ja: { text: 'こんにちは！今日は元気ですか？', trans: 'سلام! امروز خوبی؟' },
+    zh: { text: '你好！你今天怎么样？', trans: 'سلام! امروز چطوری؟' }
+  },
+  'خداحافظ': {
+    en: { text: 'Goodbye! See you tomorrow.', trans: 'خداحافظ! فردا می‌بینمت.' },
+    ar: { text: 'مَعَ السَّلَامَةِ! أَرَاكَ غَدًا.', trans: 'خداحافظ! فردا می‌بینمت.' },
+    ar_iq: { text: 'بْايْ! أَشُوفَكْ بَاجِرْ.', trans: 'خداحافظ! فردا می‌بینمت.' },
+    ru: { text: 'Пока! До завтра.', trans: 'خداحافظ! تا فردا.' },
+    fr: { text: 'Au revoir ! À demain.', trans: 'خداحافظ! تا فردا.' },
+    es: { text: '¡Adiós! Hasta mañana.', trans: 'خداحافظ! تا فردا.' },
+    de: { text: 'Tschüss! Bis morgen.', trans: 'خداحافظ! تا فردا.' },
+    ja: { text: 'さようなら！また明日。', trans: 'خداحافظ! تا فردا.' },
+    zh: { text: '再见！明天见。', trans: 'خداحافظ! فردا می‌بینمت.' }
+  },
+  'متشکرم': {
+    en: { text: 'Thank you very much!', trans: 'خیلی متشکرم!' },
+    ar: { text: 'شُكْرًا جَزِيلًا!', trans: 'خیلی متشکرم!' },
+    ar_iq: { text: 'شُكْرًا جَزِيلًا!', trans: 'خیلی متشکرم!' },
+    ru: { text: 'Большое спасибо!', trans: 'خیلی متشکرم!' },
+    fr: { text: 'Merci beaucoup !', trans: 'خیلی متشکرم!' },
+    es: { text: '¡Muchas gracias!', trans: 'خیلی متشکرم!' },
+    de: { text: 'Vielen Dank!', trans: 'خیلی متشکرم!' },
+    ja: { text: 'どうもありがとうございます！', trans: 'خیلی متشکرم!' },
+    zh: { text: '非常感谢！', trans: 'خیلی متشکرم!' }
+  },
+  'لطفاً': {
+    en: { text: 'Please help me.', trans: 'لطفاً به من کمک کن.' },
+    ar: { text: 'مِنْ فَضْلِكَ سَاعِدْنِي.', trans: 'لطفاً به من کمک کن.' },
+    ar_iq: { text: 'لَوْ تِسْمَحْ سَاعِدْنِي.', trans: 'لطفاً به من کمک کن.' },
+    ru: { text: 'Пожалуйста, помоги мне.', trans: 'لطفاً به من کمک کن.' },
+    fr: { text: "S'il vous plaît, aidez-moi.", trans: 'لطفاً به من کمک کن.' },
+    es: { text: 'Por favor, ayúdame.', trans: 'لطفاً به من کمک کن.' },
+    de: { text: 'Bitte hilf mir.', trans: 'لطفاً به من کمک کن.' },
+    ja: { text: 'お願いします、助けてください。', trans: 'لطفاً کمکم کن.' },
+    zh: { text: '请帮助我。', trans: 'لطفاً به من کمک کن.' }
+  },
+  'بله': {
+    en: { text: 'Yes, I agree with you.', trans: 'بله، با تو موافقم.' },
+    ar: { text: 'نَعَمْ، أُوَافِقُكَ الرَّأْيَ.', trans: 'بله، با تو موافقم.' },
+    ar_iq: { text: 'إِي، أُوَافِقَكْ.', trans: 'بله، با تو موافقم.' },
+    ru: { text: 'Да, я согласен с тобой.', trans: 'بله، با تو موافقم.' },
+    fr: { text: 'Oui, je suis d\'accord avec toi.', trans: 'بله، با تو موافقم.' },
+    es: { text: 'Sí, estoy de acuerdo contigo.', trans: 'بله، با تو موافقم.' },
+    de: { text: 'Ja, ich stimme dir zu.', trans: 'بله، با تو موافقم.' },
+    ja: { text: 'はい、賛成です。', trans: 'بله، موافقم.' },
+    zh: { text: '是的，我同意。', trans: 'بله، موافقم.' }
+  },
+  'نه': {
+    en: { text: 'No, thank you.', trans: 'نه، متشکرم.' },
+    ar: { text: 'لَا، شُكْرًا.', trans: 'نه، متشکرم.' },
+    ar_iq: { text: 'لَا، شُكْرًا.', trans: 'نه، متشکرم.' },
+    ru: { text: 'Нет, спасибо.', trans: 'نه، متشکرم.' },
+    fr: { text: 'Non, merci.', trans: 'نه، متشکرم.' },
+    es: { text: 'No, gracias.', trans: 'نه، متشکرم.' },
+    de: { text: 'Nein, danke.', trans: 'نه، متشکرم.' },
+    ja: { text: 'いいえ、結構です。', trans: 'نه، متشکرم.' },
+    zh: { text: '不，谢谢。', trans: 'نه، متشکرم.' }
+  },
+  'آب': {
+    en: { text: 'I drink water every day.', trans: 'هر روز آب می‌نوشم.' },
+    ar: { text: 'أَشْرَبُ الْمَاءَ كُلَّ يَوْمٍ.', trans: 'هر روز آب می‌نوشم.' },
+    ar_iq: { text: 'أَشْرَبْ ماي كُلْ يَوْمْ.', trans: 'هر روز آب می‌نوشم.' },
+    ru: { text: 'Я пью воду каждый день.', trans: 'هر روز آب می‌نوشم.' },
+    fr: { text: "Je bois de l'eau chaque jour.", trans: 'هر روز آب می‌نوشم.' },
+    es: { text: 'Bebo agua todos los días.', trans: 'هر روز آب می‌نوشم.' },
+    de: { text: 'Ich trinke jeden Tag Wasser.', trans: 'هر روز آب می‌نوشم.' },
+    ja: { text: '毎日水を飲みます。', trans: 'هر روز آب می‌نوشم.' },
+    zh: { text: '我每天喝水。', trans: 'هر روز آب می‌نوشم.' }
+  },
+  'نان': {
+    en: { text: 'This bread is fresh.', trans: 'این نان تازه است.' },
+    ar: { text: 'هَذَا الْخُبْزُ طَازَجٌ.', trans: 'این نان تازه است.' },
+    ar_iq: { text: 'هَذَا الْخُبْزْ طَازَجْ.', trans: 'این نان تازه است.' },
+    ru: { text: 'Этот хлеб свежий.', trans: 'این نان تازه است.' },
+    fr: { text: 'Ce pain est frais.', trans: 'این نان تازه است.' },
+    es: { text: 'Este pan está fresco.', trans: 'این نان تازه است.' },
+    de: { text: 'Dieses Brot ist frisch.', trans: 'این نان تازه است.' },
+    ja: { text: 'このパンは新鮮です。', trans: 'این نان تازه است.' },
+    zh: { text: '这个面包很新鲜。', trans: 'این نان تازه است.' }
+  },
+  'کتاب': {
+    en: { text: 'I read an interesting book.', trans: 'یک کتاب جالب می‌خوانم.' },
+    ar: { text: 'أَقْرَأُ كِتَابًا مُمْتِعًا.', trans: 'یک کتاب جالب می‌خوانم.' },
+    ar_iq: { text: 'أَقْرَة كِتَابْ حِلْوْ.', trans: 'یک کتاب جالب می‌خوانم.' },
+    ru: { text: 'Я читаю интересную книгу.', trans: 'یک کتاب جالب می‌خوانم.' },
+    fr: { text: 'Je lis un livre intéressant.', trans: 'یک کتاب جالب می‌خوانم.' },
+    es: { text: 'Leo un libro interesante.', trans: 'یک کتاب جالب می‌خوانم.' },
+    de: { text: 'Ich lese ein interessantes Buch.', trans: 'یک کتاب جالب می‌خوانم.' },
+    ja: { text: '面白い本を読んでいます。', trans: 'یک کتاب جالب می‌خوانم.' },
+    zh: { text: '我在读一本有趣的书。', trans: 'یک کتاب جالب می‌خوانم.' }
+  },
+  'دوست': {
+    en: { text: 'My friend is very kind.', trans: 'دوست من خیلی مهربان است.' },
+    ar: { text: 'صَدِيقِي لَطِيفٌ جِدًّا.', trans: 'دوست من خیلی مهربان است.' },
+    ar_iq: { text: 'صَدِيقِي طَيِّبْ هَوَايَة.', trans: 'دوست من خیلی مهربان است.' },
+    ru: { text: 'Мой друг очень добрый.', trans: 'دوست من خیلی مهربان است.' },
+    fr: { text: 'Mon ami est très gentil.', trans: 'دوست من خیلی مهربان است.' },
+    es: { text: 'Mi amigo es muy amable.', trans: 'دوست من خیلی مهربان است.' },
+    de: { text: 'Mein Freund ist sehr freundlich.', trans: 'دوست من خیلی مهربان است.' },
+    ja: { text: '私の友達はとても親切です。', trans: 'دوست من خیلی مهربان است.' },
+    zh: { text: '我的朋友很善良。', trans: 'دوست من خیلی مهربان است.' }
+  },
+  'خانه': {
+    en: { text: 'My house is big.', trans: 'خانه من بزرگ است.' },
+    ar: { text: 'بَيْتِي كَبِيرٌ.', trans: 'خانه من بزرگ است.' },
+    ar_iq: { text: 'بَيْتِي چْبِيرْ.', trans: 'خانه من بزرگ است.' },
+    ru: { text: 'Мой дом большой.', trans: 'خانه من بزرگ است.' },
+    fr: { text: 'Ma maison est grande.', trans: 'خانه من بزرگ است.' },
+    es: { text: 'Mi casa es grande.', trans: 'خانه من بزرگ است.' },
+    de: { text: 'Mein Haus ist groß.', trans: 'خانه من بزرگ است.' },
+    ja: { text: '私の家は大きいです。', trans: 'خانه من بزرگ است.' },
+    zh: { text: '我的房子很大。', trans: 'خانه من بزرگ است.' }
+  },
+  'مادر': {
+    en: { text: 'My mother is beautiful.', trans: 'مادرم زیباست.' },
+    ar: { text: 'أُمِّي جَمِيلَةٌ.', trans: 'مادرم زیباست.' },
+    ar_iq: { text: 'أُمِّي حِلْوَة.', trans: 'مادرم زیباست.' },
+    ru: { text: 'Моя мама красивая.', trans: 'مادرم زیباست.' },
+    fr: { text: 'Ma mère est belle.', trans: 'مادرم زیباست.' },
+    es: { text: 'Mi madre es hermosa.', trans: 'مادرم زیباست.' },
+    de: { text: 'Meine Mutter ist schön.', trans: 'مادرم زیباست.' },
+    ja: { text: '私の母は美しいです。', trans: 'مادرم زیباست.' },
+    zh: { text: '我的母亲很美丽。', trans: 'مادرم زیباست.' }
+  },
+  'پدر': {
+    en: { text: 'My father is strong.', trans: 'پدرم قوی است.' },
+    ar: { text: 'أَبِي قَوِيٌّ.', trans: 'پدرم قوی است.' },
+    ar_iq: { text: 'أَبُويْ قَوِيْ.', trans: 'پدرم قوی است.' },
+    ru: { text: 'Мой отец сильный.', trans: 'پدرم قوی است.' },
+    fr: { text: 'Mon père est fort.', trans: 'پدرم قوی است.' },
+    es: { text: 'Mi padre es fuerte.', trans: 'پدرم قوی است.' },
+    de: { text: 'Mein Vater ist stark.', trans: 'پدرم قوی است.' },
+    ja: { text: '私の父は強いです。', trans: 'پدرم قوی است.' },
+    zh: { text: '我的父亲很强壮。', trans: 'پدرم قوی است.' }
+  },
+  'عشق': {
+    en: { text: 'Love is the most beautiful feeling.', trans: 'عشق زیباترین احساس است.' },
+    ar: { text: 'الْحُبُّ أَجْمَلُ شُعُورٍ.', trans: 'عشق زیباترین احساس است.' },
+    ar_iq: { text: 'الْحُبْ أَحْلَى شُعُورْ.', trans: 'عشق زیباترین احساس است.' },
+    ru: { text: 'Любовь — самое красивое чувство.', trans: 'عشق زیباترین احساس است.' },
+    fr: { text: "L'amour est le plus beau sentiment.", trans: 'عشق زیباترین احساس است.' },
+    es: { text: 'El amor es el sentimiento más hermoso.', trans: 'عشق زیباترین احساس است.' },
+    de: { text: 'Liebe ist das schönste Gefühl.', trans: 'عشق زیباترین احساس است.' },
+    ja: { text: '愛は最も美しい感情です。', trans: 'عشق زیباترین احساس است.' },
+    zh: { text: '爱是最美的情感。', trans: 'عشق زیباترین احساس است.' }
+  },
+  'شب': {
+    en: { text: 'Good night!', trans: 'شب بخیر!' },
+    ar: { text: 'لَيْلَةً سَعِيدَةً!', trans: 'شب بخیر!' },
+    ar_iq: { text: 'تِصْبَحْ عَلَى خِيرْ!', trans: 'شب بخیر!' },
+    ru: { text: 'Спокойной ночи!', trans: 'شب بخیر!' },
+    fr: { text: 'Bonne nuit !', trans: 'شب بخیر!' },
+    es: { text: '¡Buenas noches!', trans: 'شب بخیر!' },
+    de: { text: 'Gute Nacht!', trans: 'شب بخیر!' },
+    ja: { text: 'おやすみなさい！', trans: 'شب بخیر!' },
+    zh: { text: '晚安！', trans: 'شب بخیر!' }
+  },
+  'روز': {
+    en: { text: 'Have a nice day!', trans: 'روز خوبی داشته باشی!' },
+    ar: { text: 'يَوْمًا سَعِيدًا!', trans: 'روز خوبی داشته باشی!' },
+    ar_iq: { text: 'يَوْمْ حِلْوْ!', trans: 'روز خوبی داشته باشی!' },
+    ru: { text: 'Хорошего дня!', trans: 'روز خوبی داشته باشی!' },
+    fr: { text: 'Bonne journée !', trans: 'روز خوبی داشته باشی!' },
+    es: { text: '¡Buen día!', trans: 'روز خوبی داشته باشی!' },
+    de: { text: 'Schönen Tag!', trans: 'روز خوبی داشته باشی!' },
+    ja: { text: '良い一日を！', trans: 'روز خوبی داشته باشی!' },
+    zh: { text: '祝你有美好的一天！', trans: 'روز خوبی داشته باشی!' }
+  },
+  'غذا': {
+    en: { text: 'This food is delicious.', trans: 'این غذا خوشمزه است.' },
+    ar: { text: 'هَذَا الطَّعَامُ لَذِيذٌ.', trans: 'این غذا خوشمزه است.' },
+    ar_iq: { text: 'هَذَا الْأَكِلْ طَيِّبْ.', trans: 'این غذا خوشمزه است.' },
+    ru: { text: 'Эта еда вкусная.', trans: 'این غذا خوشمزه است.' },
+    fr: { text: 'Cette nourriture est délicieuse.', trans: 'این غذا خوشمزه است.' },
+    es: { text: 'Esta comida está deliciosa.', trans: 'این غذا خوشمزه است.' },
+    de: { text: 'Dieses Essen ist köstlich.', trans: 'این غذا خوشمزه است.' },
+    ja: { text: 'この食べ物は美味しいです。', trans: 'این غذا خوشمزه است.' },
+    zh: { text: '这食物很美味。', trans: 'این غذا خوشمزه است.' }
+  },
+  'مدرسه': {
+    en: { text: 'I go to school every day.', trans: 'هر روز به مدرسه می‌روم.' },
+    ar: { text: 'أَذْهَبُ إِلَى الْمَدْرَسَةِ كُلَّ يَوْمٍ.', trans: 'هر روز به مدرسه می‌روم.' },
+    ar_iq: { text: 'أَرُوحْ لِلْمَدْرَسَة كُلْ يَوْمْ.', trans: 'هر روز به مدرسه می‌روم.' },
+    ru: { text: 'Я хожу в школу каждый день.', trans: 'هر روز به مدرسه می‌روم.' },
+    fr: { text: "Je vais à l'école chaque jour.", trans: 'هر روز به مدرسه می‌روم.' },
+    es: { text: 'Voy a la escuela todos los días.', trans: 'هر روز به مدرسه می‌روم.' },
+    de: { text: 'Ich gehe jeden Tag zur Schule.', trans: 'هر روز به مدرسه می‌روم.' },
+    ja: { text: '毎日学校に行きます。', trans: 'هر روز به مدرسه می‌روم.' },
+    zh: { text: '我每天去学校。', trans: 'هر روز به مدرسه می‌روم.' }
+  },
+  'خوشحال': {
+    en: { text: 'I am very happy today.', trans: 'امروز خیلی خوشحالم.' },
+    ar: { text: 'أَنَا سَعِيدٌ جِدًّا الْيَوْمَ.', trans: 'امروز خیلی خوشحالم.' },
+    ar_iq: { text: 'أَنَا فَرْحَانْ هَوَايَة الْيَوْمْ.', trans: 'امروز خیلی خوشحالم.' },
+    ru: { text: 'Я очень счастлив сегодня.', trans: 'امروز خیلی خوشحالم.' },
+    fr: { text: "Je suis très heureux aujourd'hui.", trans: 'امروز خیلی خوشحالم.' },
+    es: { text: 'Estoy muy feliz hoy.', trans: 'امروز خیلی خوشحالم.' },
+    de: { text: 'Ich bin heute sehr glücklich.', trans: 'امروز خیلی خوشحالم.' },
+    ja: { text: '今日はとても幸せです。', trans: 'امروز خیلی خوشحالم.' },
+    zh: { text: '我今天很开心。', trans: 'امروز خیلی خوشحالم.' }
+  },
+  'زیبا': {
+    en: { text: 'What a beautiful flower!', trans: 'چه گل زیبایی!' },
+    ar: { text: 'يَا لَهَا مِنْ زَهْرَةٍ جَمِيلَةٍ!', trans: 'چه گل زیبایی!' },
+    ar_iq: { text: 'شْگِدْ حِلْوَة هَايْ الْوَرْدَة!', trans: 'چه گل زیبایی!' },
+    ru: { text: 'Какая красивая роза!', trans: 'چه گل زیبایی!' },
+    fr: { text: 'Quelle belle fleur !', trans: 'چه گل زیبایی!' },
+    es: { text: '¡Qué flor tan hermosa!', trans: 'چه گل زیبایی!' },
+    de: { text: 'Was für eine schöne Blume!', trans: 'چه گل زیبایی!' },
+    ja: { text: 'なんて美しい花でしょう！', trans: 'چه گل زیبایی!' },
+    zh: { text: '多么美丽的花啊！', trans: 'چه گل زیبایی!' }
+  },
+  'گربه': {
+    en: { text: 'The cat is sleeping.', trans: 'گربه در خواب است.' },
+    ar: { text: 'الْقِطَّةُ نَائِمَةٌ.', trans: 'گربه در خواب است.' },
+    ar_iq: { text: 'الْبِسَّة نَايْمَة.', trans: 'گربه در خواب است.' },
+    ru: { text: 'Кошка спит.', trans: 'گربه در خواب است.' },
+    fr: { text: 'Le chat dort.', trans: 'گربه در خواب است.' },
+    es: { text: 'El gato está durmiendo.', trans: 'گربه در خواب است.' },
+    de: { text: 'Die Katze schläft.', trans: 'گربه در خواب است.' },
+    ja: { text: '猫が寝ています。', trans: 'گربه در خواب است.' },
+    zh: { text: '猫在睡觉。', trans: 'گربه در خواب است.' }
+  },
+  'سگ': {
+    en: { text: 'The dog is barking.', trans: 'سگ پارس می‌کند.' },
+    ar: { text: 'الْكَلْبُ يَنْبَحُ.', trans: 'سگ پارس می‌کند.' },
+    ar_iq: { text: 'الْجِلِبْ يِعَوْعِي.', trans: 'سگ پارس می‌کند.' },
+    ru: { text: 'Собака лает.', trans: 'سگ پارس می‌کند.' },
+    fr: { text: 'Le chien aboie.', trans: 'سگ پارس می‌کند.' },
+    es: { text: 'El perro está ladrando.', trans: 'سگ پارس می‌کند.' },
+    de: { text: 'Der Hund bellt.', trans: 'سگ پارس می‌کند.' },
+    ja: { text: '犬が吠えています。', trans: 'سگ پارس می‌کند.' },
+    zh: { text: '狗在叫。', trans: 'سگ پارس می‌کند.' }
+  },
+  'خورشید': {
+    en: { text: 'The sun is shining.', trans: 'خورشید می‌درخشد.' },
+    ar: { text: 'الشَّمْسُ مُشْرِقَةٌ.', trans: 'خورشید می‌درخشد.' },
+    ar_iq: { text: 'الشَّمْسْ مُشْرِقَة.', trans: 'خورشید می‌درخشد.' },
+    ru: { text: 'Солнце светит.', trans: 'خورشید می‌درخشد.' },
+    fr: { text: 'Le soleil brille.', trans: 'خورشید می‌درخشد.' },
+    es: { text: 'El sol está brillando.', trans: 'خورشید می‌درخشد.' },
+    de: { text: 'Die Sonne scheint.', trans: 'خورشید می‌درخشد.' },
+    ja: { text: '太陽が輝いています。', trans: 'خورشید می‌درخشد.' },
+    zh: { text: '阳光明媚。', trans: 'خورشید می‌درخشد.' }
+  },
+  'ماه': {
+    en: { text: 'The moon is full tonight.', trans: 'امشب ماه کامل است.' },
+    ar: { text: 'الْقَمَرُ بَدْرٌ اللَّيْلَةَ.', trans: 'امشب ماه کامل است.' },
+    ar_iq: { text: 'الْقَمَرْ بَدِرْ اللَّيْلَة.', trans: 'امشب ماه کامل است.' },
+    ru: { text: 'Сегодня полная луна.', trans: 'امشب ماه کامل است.' },
+    fr: { text: 'La lune est pleine ce soir.', trans: 'امشب ماه کامل است.' },
+    es: { text: 'La luna está llena esta noche.', trans: 'امشب ماه کامل است.' },
+    de: { text: 'Der Mond ist heute Nacht voll.', trans: 'امشب ماه کامل است.' },
+    ja: { text: '今夜は満月です。', trans: 'امشب ماه کامل است.' },
+    zh: { text: '今晚是满月。', trans: 'امشب ماه کامل است.' }
+  },
+  'گل': {
+    en: { text: 'I love this flower.', trans: 'این گل را دوست دارم.' },
+    ar: { text: 'أُحِبُّ هَذِهِ الْوَرْدَةَ.', trans: 'این گل را دوست دارم.' },
+    ar_iq: { text: 'أَحِبْ هَايْ الْوَرْدَة.', trans: 'این گل را دوست دارم.' },
+    ru: { text: 'Я люблю этот цветок.', trans: 'این گل را دوست دارم.' },
+    fr: { text: "J'aime cette fleur.", trans: 'این گل را دوست دارم.' },
+    es: { text: 'Amo esta flor.', trans: 'این گل را دوست دارم.' },
+    de: { text: 'Ich liebe diese Blume.', trans: 'این گل را دوست دارم.' },
+    ja: { text: 'この花が好きです。', trans: 'این گل را دوست دارم.' },
+    zh: { text: '我喜欢这朵花。', trans: 'این گل را دوست دارم.' }
+  },
+  'درخت': {
+    en: { text: 'The tree is very tall.', trans: 'درخت خیلی بلند است.' },
+    ar: { text: 'الشَّجَرَةُ طَوِيلَةٌ جِدًّا.', trans: 'درخت خیلی بلند است.' },
+    ar_iq: { text: 'الشَّجَرَة طَوِيلَة هَوَايَة.', trans: 'درخت خیلی بلند است.' },
+    ru: { text: 'Дерево очень высокое.', trans: 'درخت خیلی بلند است.' },
+    fr: { text: "L'arbre est très grand.", trans: 'درخت خیلی بلند است.' },
+    es: { text: 'El árbol es muy alto.', trans: 'درخت خیلی بلند است.' },
+    de: { text: 'Der Baum ist sehr hoch.', trans: 'درخت خیلی بلند است.' },
+    ja: { text: '木はとても高いです。', trans: 'درخت خیلی بلند است.' },
+    zh: { text: '这棵树很高。', trans: 'درخت خیلی بلند است.' }
+  },
+  'ماشین': {
+    en: { text: 'My car is fast.', trans: 'ماشین من سریع است.' },
+    ar: { text: 'سَيَّارَتِي سَرِيعَةٌ.', trans: 'ماشین من سریع است.' },
+    ar_iq: { text: 'سَيَّارَتِي سَرِيعَة.', trans: 'ماشین من سریع است.' },
+    ru: { text: 'Моя машина быстрая.', trans: 'ماشین من سریع است.' },
+    fr: { text: 'Ma voiture est rapide.', trans: 'ماشین من سریع است.' },
+    es: { text: 'Mi coche es rápido.', trans: 'ماشین من سریع است.' },
+    de: { text: 'Mein Auto ist schnell.', trans: 'ماشین من سریع است.' },
+    ja: { text: '私の車は速いです。', trans: 'ماشین من سریع است.' },
+    zh: { text: '我的车很快。', trans: 'ماشین من سریع است.' }
+  },
+  'پول': {
+    en: { text: 'I need money.', trans: 'به پول نیاز دارم.' },
+    ar: { text: 'أَحْتَاجُ إِلَى الْمَالِ.', trans: 'به پول نیاز دارم.' },
+    ar_iq: { text: 'أَحْتَاجْ فُلُوسْ.', trans: 'به پول نیاز دارم.' },
+    ru: { text: 'Мне нужны деньги.', trans: 'به پول نیاز دارم.' },
+    fr: { text: "J'ai besoin d'argent.", trans: 'به پول نیاز دارم.' },
+    es: { text: 'Necesito dinero.', trans: 'به پول نیاز دارم.' },
+    de: { text: 'Ich brauche Geld.', trans: 'به پول نیاز دارم.' },
+    ja: { text: 'お金が必要です。', trans: 'به پول نیاز دارم.' },
+    zh: { text: '我需要钱。', trans: 'به پول نیاز دارم.' }
+  },
+  'وقت': {
+    en: { text: 'Time is precious.', trans: 'وقت باارزش است.' },
+    ar: { text: 'الْوَقْتُ ثَمِينٌ.', trans: 'وقت باارزش است.' },
+    ar_iq: { text: 'الْوَقْتْ ثَمِينْ.', trans: 'وقت باارزش است.' },
+    ru: { text: 'Время дорого.', trans: 'وقت باارزش است.' },
+    fr: { text: 'Le temps est précieux.', trans: 'وقت باارزش است.' },
+    es: { text: 'El tiempo es precioso.', trans: 'وقت باارزش است.' },
+    de: { text: 'Zeit ist kostbar.', trans: 'وقت باارزش است.' },
+    ja: { text: '時間は貴重です。', trans: 'وقت باارزش است.' },
+    zh: { text: '时间很宝贵。', trans: 'وقت باارزش است.' }
+  },
+  'رنگ': {
+    en: { text: 'What is your favorite color?', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    ar: { text: 'مَا هُوَ لَوْنُكَ الْمُفَضَّلُ؟', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    ar_iq: { text: 'شْنُو لَوْنَكْ الْمُفَضَّلْ؟', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    ru: { text: 'Какой твой любимый цвет?', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    fr: { text: 'Quelle est ta couleur préférée ?', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    es: { text: '¿Cuál es tu color favorito?', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    de: { text: 'Was ist deine Lieblingsfarbe?', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    ja: { text: '好きな色は何ですか？', trans: 'رنگ مورد علاقه‌ات چیست؟' },
+    zh: { text: '你最喜欢的颜色是什么？', trans: 'رنگ مورد علاقه‌ات چیست؟' }
+  },
+  'سفید': {
+    en: { text: 'Snow is white.', trans: 'برف سفید است.' },
+    ar: { text: 'الثَّلْجُ أَبْيَضُ.', trans: 'برف سفید است.' },
+    ar_iq: { text: 'الثَّلِجْ أَبْيَضْ.', trans: 'برف سفید است.' },
+    ru: { text: 'Снег белый.', trans: 'برف سفید است.' },
+    fr: { text: 'La neige est blanche.', trans: 'برف سفید است.' },
+    es: { text: 'La nieve es blanca.', trans: 'برف سفید است.' },
+    de: { text: 'Schnee ist weiß.', trans: 'برف سفید است.' },
+    ja: { text: '雪は白いです。', trans: 'برف سفید است.' },
+    zh: { text: '雪是白色的。', trans: 'برف سفید است.' }
+  }
+};
+
+/* ═══ نکات گرامری ═══ */
+const grammarTips = {
+  en: { title: '💡 نکته گرامری انگلیسی', text: 'در انگلیسی، <strong>Hello</strong> برای احوالپرسی رسمی و <code>Hi</code> برای حالت دوستانه استفاده می‌شود. برای تشکر مؤدبانه از <code>Thank you very much</code> استفاده کن.' },
+  ar: { title: '💡 نکته گرامری عربی فصیح', text: 'در عربی فصیح، <strong>مَرْحَبًا</strong> برای احوالپرسی عمومی، <code>صَبَاحَ الْخَيْرِ</code> برای صبح و <code>مَسَاءَ الْخَيْرِ</code> برای عصر استفاده می‌شود.' },
+  ar_iq: { title: '💡 نکته گرامری عربی عراقی', text: 'در لهجه عراقی، <strong>سَلَامْ عَلَيْكُمْ</strong> رایج‌ترین شکل سلام است. <code>أَشْلُونَكْ</code> به معنی «چطوری؟» و <code>هَوَايَة</code> به معنی «خیلی» است.' },
+  ru: { title: '💡 نکته گرامری روسی', text: 'در روسی، <strong>Привет</strong> برای دوستان و <code>Здравствуйте</code> برای حالت رسمی استفاده می‌شود.' },
+  fr: { title: '💡 نکته گرامری فرانسوی', text: 'در فرانسوی، <strong>Bonjour</strong> در طول روز و <code>Bonsoir</code> بعد از غروب استفاده می‌شود.' },
+  es: { title: '💡 نکته گرامری اسپانیایی', text: 'در اسپانیایی، <strong>Hola</strong> رایج‌ترین شکل سلام است و در همه موقعیت‌ها کار می‌کند.' },
+  de: { title: '💡 نکته گرامری آلمانی', text: 'در آلمانی، <strong>Hallo</strong> برای دوستان و <code>Guten Tag</code> برای رسمی استفاده می‌شود.' },
+  ja: { title: '💡 نکته گرامری ژاپنی', text: 'در ژاپنی، <strong>こんにちは</strong> در طول روز، صبح <code>おはよう</code> و شب <code>こんばんは</code> استفاده می‌شود.' },
+  zh: { title: '💡 نکته گرامری چینی', text: 'در چینی، <strong>你好</strong> رایج‌ترین شکل سلام است. <code>您好</code> شکل رسمی‌تر آن است.' }
+};
+
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ دقیق
+   ══════════════════════════════════════════════════════════════ */
+
+let availableVoices = [];
+let currentAudio = null;
+let speechRate = 1.0;
+let useGoogleTTS = true;
+
+const googleTTSLangMap = {
+  fa: 'fa', en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+function refreshVoices() {
+  if ('speechSynthesis' in window) {
+    availableVoices = window.speechSynthesis.getVoices() || [];
+  }
+}
+refreshVoices();
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = refreshVoices;
+}
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.speaking').forEach(el => el.classList.remove('speaking'));
+}
+
+function pickBestVoice(locale, langKey) {
+  if (!availableVoices.length) refreshVoices();
+
+  let voice = availableVoices.find(v =>
+    v.lang.replace('_', '-').toLowerCase() === locale.toLowerCase()
+  );
+
+  if (!voice) {
+    voice = availableVoices.find(v =>
+      v.lang.toLowerCase().startsWith(langKey + '-') ||
+      v.lang.toLowerCase() === langKey
+    );
+  }
+
+  if (!voice) {
+    const langNames = {
+      fa: ['persian', 'farsi', 'iranian'],
+      ar: ['arabic', 'saudi', 'egypt'],
+      ar_iq: ['arabic', 'iraqi', 'baghdad'],
+      ru: ['russian', 'russkiy'],
+      ja: ['japanese', 'kyoko', 'otoya'],
+      zh: ['chinese', 'mandarin', 'ting-ting', 'huihui'],
+      fr: ['french', 'français'],
+      de: ['german', 'deutsch'],
+      es: ['spanish', 'español']
+    };
+    const names = langNames[langKey] || [];
+    voice = availableVoices.find(v =>
+      names.some(n => v.name.toLowerCase().includes(n))
+    );
+  }
+
+  return voice || null;
+}
+
+function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+
+  try {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    currentAudio = audio;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      audio.onended = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+      audio.onerror = () => {
+        btnElement.classList.remove('speaking');
+        currentAudio = null;
+      };
+    }
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn('Google TTS error:', err.message);
+        useGoogleTTS = false;
+        if (btnElement) btnElement.classList.remove('speaking');
+        speakWebSpeech(text, langKey, btnElement);
+      });
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function speakWebSpeech(text, langKey, btnElement, customRate) {
+  if (!('speechSynthesis' in window) || !text) return;
+
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    const locale = speechLocaleMap[langKey] || langKey;
+    utter.lang = locale;
+    utter.rate = customRate !== undefined ? customRate : speechRate;
+    utter.pitch = 1;
+    utter.volume = 1;
+
+    const voice = pickBestVoice(locale, langKey);
+    if (voice) utter.voice = voice;
+
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+      utter.onerror = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch (err) {
+    console.warn('Web Speech error:', err);
+  }
+}
+
+function speakWord(text, langKey, btnElement, customRate) {
+  if (!text) return;
+  stopSpeaking();
+
+  // ⭐ تشخیص Firefox
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+
+  // ⭐ اگر در تلگرام یا Firefox هستیم، مستقیم Web Speech
+  if ((window.Telegram && window.Telegram.WebApp) || isFirefox) {
+    speakWebSpeech(text, langKey, btnElement, customRate);
+    return;
+  }
+
+  // اگر customRate داده شده
+  if (customRate !== undefined) {
+    speakWebSpeech(text, langKey, btnElement, customRate);
+    return;
+  }
+
+  if (!useGoogleTTS) {
+    speakWebSpeech(text, langKey, btnElement);
+    return;
+  }
+
+  const success = speakGoogle(text, langKey, btnElement);
+  if (!success) speakWebSpeech(text, langKey, btnElement);
+}
+
+function speakSlow(text, langKey, btnElement) {
+  stopSpeaking();
+  const slowRate = Math.max(0.4, speechRate * 0.6);
+  speakWebSpeech(text, langKey, btnElement, slowRate);
+}
+
+function speakSpelled(text, langKey, btnElement) {
+  if (!text) return;
+  const spelled = text.split('').filter(c => c.trim()).join(' , ');
+  speakWebSpeech(spelled, langKey, btnElement, 0.7);
+}
+
+function speakSentenceWordByWord(text, langKey, btnElement) {
+  if (!text) return;
+
+  const words = text.split(/\s+/).filter(w => w.trim());
+  let index = 0;
+
+  if (btnElement) btnElement.classList.add('speaking');
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+  function speakNext() {
+    if (index >= words.length) {
+      if (btnElement) btnElement.classList.remove('speaking');
+      return;
+    }
+
+    const word = words[index];
+    index++;
+
+    if ('speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = speechLocaleMap[langKey] || langKey;
+      utter.rate = 0.85;
+
+      const voice = pickBestVoice(utter.lang, langKey);
+      if (voice) utter.voice = voice;
+
+      utter.onend = () => setTimeout(speakNext, 350);
+      utter.onerror = () => {
+        if (btnElement) btnElement.classList.remove('speaking');
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+  }
+
+  speakNext();
+}
+
+function checkVoiceSupport() {
+  const info = document.getElementById('voiceInfo');
+  if (!info) return;
+
+  if (!('speechSynthesis' in window)) {
+    info.classList.add('unavailable');
+    info.querySelector('span:last-child').textContent = 'مرورگر از تلفظ پشتیبانی نمی‌کند';
+    return;
+  }
+
+  const check = () => {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      info.classList.remove('unavailable');
+      info.querySelector('span:last-child').textContent = `تلفظ دقیق فعال (${voices.length} صدا)`;
+    }
+  };
+  check();
+  setTimeout(check, 500);
+  setTimeout(check, 1500);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎮 منطق درسنامه
+   ══════════════════════════════════════════════════════════════ */
+
+let currentLang = 'en';
+let currentCategory = null;
+let currentWordIndex = 0;
+
+const categoriesGrid = document.getElementById('categoriesGrid');
+const categoriesView = document.getElementById('categoriesView');
+const lessonView = document.getElementById('lessonView');
+const lessonContent = document.getElementById('lessonContent');
+const progressFill = document.getElementById('progressFill');
+const counter = document.getElementById('counter');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const backBtn = document.getElementById('backBtn');
+
+/* ═══ تبدیل اعداد به فارسی ═══ */
+function toPersianNum(num) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(num).replace(/\d/g, d => persianDigits[d]);
+}
+
+/* ═══ ساخت فهرست دسته‌ها ═══ */
+function renderCategories() {
+  categoriesGrid.innerHTML = '';
+  categories.forEach(cat => {
+    const card = document.createElement('div');
+    card.className = 'category-card';
+    card.innerHTML = `
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-desc">${cat.description}</div>
+      <div class="cat-meta">
+        <span class="cat-count">📚 ${toPersianNum(cat.wordIndices.length)} کلمه</span>
+        <span class="cat-start">شروع ←</span>
+      </div>
+    `;
+    card.addEventListener('click', () => openCategory(cat));
+    categoriesGrid.appendChild(card);
+  });
+}
+
+/* ═══ باز کردن دسته ═══ */
+function openCategory(cat) {
+  currentCategory = cat;
+  currentWordIndex = 0;
+  categoriesView.classList.add('hidden');
+  lessonView.classList.add('active');
+  renderWord();
+}
+
+/* ═══ بازگشت ═══ */
+function backToCategories() {
+  stopSpeaking();
+  lessonView.classList.remove('active');
+  categoriesView.classList.remove('hidden');
+}
+
+/* ═══ رسم کلمه ═══ */
+function renderWord() {
+  const wordIdx = currentCategory.wordIndices[currentWordIndex];
+  const word = vocabulary[wordIdx];
+  if (!word) return;
+
+  const total = currentCategory.wordIndices.length;
+  const current = currentWordIndex + 1;
+
+  counter.textContent = `${toPersianNum(current)} / ${toPersianNum(total)}`;
+  progressFill.style.width = `${(current / total) * 100}%`;
+
+  prevBtn.disabled = currentWordIndex === 0;
+  nextBtn.disabled = currentWordIndex === total - 1;
+
+  const sourceLangKey = 'fa';
+  const targetLangKey = currentLang;
+
+  const sourceLang = languages[sourceLangKey];
+  const targetLang = languages[targetLangKey];
+
+  const sourceWord = word[sourceLangKey] || '—';
+  const targetWord = word[targetLangKey] || '—';
+
+  // مثال‌ها
+  const wordExamples = examples[word.fa] || {};
+  const targetExample = wordExamples[targetLangKey];
+
+  let examplesHTML = '';
+  if (targetExample) {
+    const exampleTextEscaped = targetExample.text.replace(/'/g, "\\'");
+
+    examplesHTML += `
+      <div class="example-item">
+        <div class="example-header">
+          <span class="example-flag">${targetLang.flag}</span>
+          <span>${targetLang.name}</span>
+        </div>
+        <div class="example-text ${targetLangKey}" style="font-family:${targetLang.font}">${targetExample.text}</div>
+        <div class="example-trans">↩ ${targetExample.trans}</div>
+        <div class="example-speak-row">
+          <button class="example-speak-btn" onclick="speakWord('${exampleTextEscaped}', '${targetLangKey}', this)">
+            🔊 تلفظ کامل جمله
+          </button>
+          <button class="example-speak-btn slow" onclick="speakSentenceWordByWord('${exampleTextEscaped}', '${targetLangKey}', this)">
+            🐢 کلمه‌به‌کلمه
+          </button>
+        </div>
+      </div>
+    `;
+
+    examplesHTML += `
+      <div class="example-item" style="border-right-color: #38bdf8; opacity: 0.85;">
+        <div class="example-header">
+          <span class="example-flag">🇮🇷</span>
+          <span>فارسی (ترجمه)</span>
+        </div>
+        <div class="example-text fa" style="font-family:${languages.fa.font}">${targetExample.trans}</div>
+      </div>
+    `;
+  } else {
+    examplesHTML = `<p style="color:#94a3b8; text-align:center; padding:20px;">مثال این کلمه برای زبان ${targetLang.name} به‌زودی اضافه می‌شود</p>`;
+  }
+
+  // نکته گرامری
+  const tip = grammarTips[targetLangKey] || {
+    title: `💡 نکته گرامری ${targetLang.name}`,
+    text: 'نکات گرامری این زبان به‌زودی اضافه می‌شود.'
+  };
+
+  // دکمه‌های تلفظ
+  const sourceSpeakHTML = `
+    <div class="speak-wrapper">
+      <button class="word-speak" onclick="speakWord('${sourceWord}', '${sourceLangKey}', this)">
+        🔊 تلفظ عادی
+      </button>
+      <div class="speak-options">
+        <button class="speak-mini slow" onclick="speakSlow('${sourceWord}', '${sourceLangKey}', this)">
+          🐢 آرام
+        </button>
+        <button class="speak-mini" onclick="speakSpelled('${sourceWord}', '${sourceLangKey}', this)">
+          🔤 حرف‌به‌حرف
+        </button>
+      </div>
+    </div>
+  `;
+
+  const targetWordEscaped = targetWord.replace(/'/g, "\\'");
+  const targetSpeakHTML = `
+    <div class="speak-wrapper">
+      <button class="word-speak target" onclick="speakWord('${targetWordEscaped}', '${targetLangKey}', this)">
+        🔊 تلفظ عادی
+      </button>
+      <div class="speak-options">
+        <button class="speak-mini slow" onclick="speakSlow('${targetWordEscaped}', '${targetLangKey}', this)">
+          🐢 آرام
+        </button>
+        <button class="speak-mini" onclick="speakSpelled('${targetWordEscaped}', '${targetLangKey}', this)">
+          🔤 حرف‌به‌حرف
+        </button>
+      </div>
+    </div>
+  `;
+
+  lessonContent.innerHTML = `
+    <div class="word-card">
+      <div class="word-main">
+        <span class="word-badge">${currentCategory.icon} ${currentCategory.name}</span>
+        <span class="word-icon">${word.icon || '📖'}</span>
+
+        <div class="bilingual-display">
+          <div class="bilingual-side source">
+            <span class="bilingual-flag">${sourceLang.flag}</span>
+            <div class="bilingual-label">${sourceLang.name}</div>
+            <div class="bilingual-word" style="font-family:${sourceLang.font}">${sourceWord}</div>
+            <button class="word-speak-small" onclick="speakWord('${sourceWord}', '${sourceLangKey}', this)">🔊</button>
+          </div>
+
+          <div class="bilingual-arrow"><span>⇄</span></div>
+
+          <div class="bilingual-side target">
+            <span class="bilingual-flag">${targetLang.flag}</span>
+            <div class="bilingual-label">${targetLang.name}</div>
+            <div class="bilingual-word target-word" style="font-family:${targetLang.font}">${targetWord}</div>
+            <button class="word-speak-small" onclick="speakWord('${targetWordEscaped}', '${targetLangKey}', this)">🔊</button>
+          </div>
+        </div>
+
+        <div class="speak-both-row">
+          ${sourceSpeakHTML}
+          ${targetSpeakHTML}
+        </div>
+
+        <div class="voice-info" id="voiceInfo">
+          <span class="dot"></span>
+          <span>در حال بررسی صدا...</span>
+        </div>
+      </div>
+
+      <div class="section-title">🌍 ترجمه در زبان انتخابی</div>
+      <div class="translations-grid two-cols">
+        <div class="trans-card source-card">
+          <span class="trans-flag">${sourceLang.flag}</span>
+          <div class="trans-lang">${sourceLang.name}</div>
+          <div class="trans-text ${sourceLangKey}" style="font-family:${sourceLang.font}">${sourceWord}</div>
+          <button class="trans-speak" onclick="speakWord('${sourceWord}', '${sourceLangKey}', this)">🔊 تلفظ</button>
+        </div>
+
+        <div class="trans-card target-card">
+          <span class="trans-flag">${targetLang.flag}</span>
+          <div class="trans-lang">${targetLang.name}</div>
+          <div class="trans-text ${targetLangKey}" style="font-family:${targetLang.font}">${targetWord}</div>
+          <button class="trans-speak" onclick="speakWord('${targetWordEscaped}', '${targetLangKey}', this)">🔊 تلفظ</button>
+        </div>
+      </div>
+
+      <div class="examples-section">
+        <div class="section-title">💬 مثال جمله‌ای در ${targetLang.name}</div>
+        ${examplesHTML}
+      </div>
+
+      <div class="grammar-section">
+        <div class="section-title">${tip.title}</div>
+        <div class="grammar-content">
+          <p>${tip.text}</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(checkVoiceSupport, 100);
+}
+
+/* ═══ به‌روزرسانی نوار زبان ═══ */
+function updateSelectedLangsBar() {
+  const targetLang = languages[currentLang];
+  const bar = document.getElementById('selectedTargetLang');
+  if (bar && targetLang) {
+    bar.querySelector('.sel-flag').textContent = targetLang.flag;
+    bar.querySelector('.sel-name').textContent = targetLang.name;
+  }
+}
+
+/* ═══ رویدادها ═══ */
+prevBtn.addEventListener('click', () => {
+  if (currentWordIndex > 0) {
+    currentWordIndex--;
+    renderWord();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentWordIndex < currentCategory.wordIndices.length - 1) {
+    currentWordIndex++;
+    renderWord();
+  }
+});
+
+backBtn.addEventListener('click', backToCategories);
+
+document.getElementById('practiceBtn').addEventListener('click', () => {
+  if (confirm('🎮 برای تمرین، به بازی اصلی برگردی؟')) {
+    window.location.href = 'index.html';
+  }
+});
+
+document.querySelectorAll('.lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentLang = chip.dataset.lang;
+    updateSelectedLangsBar();
+    if (currentCategory) renderWord();
+  });
+});
+
+/* ═══ اسلایدر سرعت ═══ */
+const speedSlider = document.getElementById('speedSlider');
+const speedValue = document.getElementById('speedValue');
+const speedReset = document.getElementById('speedReset');
+
+if (speedSlider) {
+  speedSlider.addEventListener('input', (e) => {
+    speechRate = parseFloat(e.target.value);
+    speedValue.textContent = speechRate.toFixed(1) + 'x';
+  });
+}
+
+if (speedReset) {
+  speedReset.addEventListener('click', () => {
+    speechRate = 1.0;
+    speedSlider.value = 1.0;
+    speedValue.textContent = '1.0x';
+  });
+}
+
+/* ═══ راه‌اندازی اولیه ═══ */
+window.addEventListener('load', () => {
+  renderCategories();
+  updateSelectedLangsBar();
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => {
+      refreshVoices();
+      checkVoiceSupport();
+    };
+  }
+});
+</script>
+
+</body>
+</html>

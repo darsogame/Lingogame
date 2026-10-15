@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✍️ بخش نوشتن — درسنامه بازی زبان</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: #e2e8f0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 950px; margin: 0 auto; }
+
+  /* ═══ هدر ═══ */
+  .main-header {
+    position: relative;
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+    border-radius: 25px;
+    border: 2px solid rgba(251, 191, 36, 0.3);
+  }
+
+  .main-header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .main-header p { color: #94a3b8; font-size: 15px; line-height: 1.8; }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 15px rgba(251, 191, 36, 0.4);
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 22px rgba(251, 191, 36, 0.6);
+  }
+
+  /* ═══ صفحه تنظیمات ═══ */
+  .setup-panel {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 25px;
+  }
+
+  .setup-section { margin-bottom: 25px; }
+  .setup-section:last-child { margin-bottom: 0; }
+
+  .setup-section h3 {
+    font-size: 15px;
+    color: #cbd5e1;
+    font-weight: 900;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .lang-chip {
+    padding: 10px 18px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #cbd5e1;
+    user-select: none;
+  }
+
+  .lang-chip:hover {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: #fbbf24;
+    transform: translateY(-2px);
+  }
+
+  .lang-chip.active {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-color: #fff;
+    color: #1e293b;
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+  }
+
+  .lang-chip .flag { font-size: 20px; line-height: 1; }
+
+  /* انواع تمرین */
+  .modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .mode-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  .mode-card:hover {
+    transform: translateY(-5px);
+    border-color: #fbbf24;
+    box-shadow: 0 15px 35px rgba(251, 191, 36, 0.3);
+  }
+
+  .mode-card.active {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, #78350f, #92400e);
+  }
+
+  .mode-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+  .mode-name { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+  .mode-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+  /* دکمه شروع */
+  .start-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    border: none;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+  }
+
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(251, 191, 36, 0.6);
+  }
+
+  /* ═══ صفحات مختلف ═══ */
+  .practice-view, .end-view {
+    display: none;
+  }
+
+  .practice-view.active, .end-view.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* نوار پیشرفت */
+  .progress-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 120px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fbbf24, #ef4444);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-counter {
+    font-size: 14px;
+    font-weight: 900;
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.1);
+    padding: 8px 14px;
+    border-radius: 10px;
+  }
+
+  .progress-score {
+    font-size: 14px;
+    font-weight: 900;
+    color: #1e293b;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    padding: 8px 14px;
+    border-radius: 10px;
+  }
+
+  /* ═══ کارت تمرین ═══ */
+  .exercise-card {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    border-radius: 25px;
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .exercise-type {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 20px;
+  }
+
+  .exercise-instruction {
+    font-size: 15px;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .exercise-content {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 15px;
+    border-right: 4px solid #fbbf24;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .exercise-content.fa,
+  .exercise-content.ar,
+  .exercise-content.ar_iq {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .exercise-content.ja,
+  .exercise-content.zh {
+    font-family: 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+  }
+
+  /* ═══ حالت ۱: ساخت جمله با کلمات (Word Order) ═══ */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    min-height: 70px;
+    border: 2px dashed rgba(148, 163, 184, 0.3);
+  }
+
+  .word-chip {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    border: none;
+    font-family: inherit;
+    direction: ltr;
+  }
+
+  .word-chip:hover:not(.used) {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.5);
+  }
+
+  .word-chip.used {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .answer-area {
+    min-height: 70px;
+    padding: 20px;
+    background: rgba(251, 191, 36, 0.08);
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    direction: ltr;
+  }
+
+  .answer-area:empty::before {
+    content: 'کلمات را اینجا بچین...';
+    color: #64748b;
+    font-style: italic;
+    direction: rtl;
+    font-size: 14px;
+  }
+
+  .answer-chip {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    border: none;
+    font-family: inherit;
+    direction: ltr;
+  }
+
+  .answer-chip:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+  }
+
+  /* ═══ حالت ۲: ترجمه (Translation) ═══ */
+  .translation-prompt {
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    text-align: center;
+  }
+
+  .translation-prompt .lang-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .translation-prompt .source-text {
+    font-size: 24px;
+    font-weight: 900;
+    color: #38bdf8;
+    line-height: 1.6;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .translation-prompt .source-text.fa {
+    direction: rtl;
+    font-family: 'Vazirmatn', sans-serif;
+  }
+
+  .translation-prompt .source-text.en {
+    direction: ltr;
+    font-family: 'Vazirmatn', sans-serif;
+  }
+
+  /* ═══ حالت ۳: جای خالی (Fill in the blank) ═══ */
+  .fill-blank-content {
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    line-height: 2.2;
+    direction: ltr;
+    text-align: left;
+    color: #e2e8f0;
+    font-weight: 700;
+  }
+
+  .fill-blank-content.fa,
+  .fill-blank-content.ar,
+  .fill-blank-content.ar_iq {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  .blank-placeholder {
+    display: inline-block;
+    min-width: 100px;
+    padding: 4px 12px;
+    margin: 0 6px;
+    border-bottom: 3px solid #fbbf24;
+    color: #fbbf24;
+    font-weight: 900;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+  }
+
+  .blank-placeholder.filled {
+    border-bottom-color: #22c55e;
+    color: #22c55e;
+  }
+
+  /* ═══ ورودی متن ═══ */
+  .text-input-area {
+    margin-bottom: 15px;
+  }
+
+  .text-input-area textarea {
+    width: 100%;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(148, 163, 184, 0.25);
+    border-radius: 15px;
+    color: #fff;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    resize: none;
+    min-height: 80px;
+    line-height: 1.7;
+    transition: all 0.25s;
+  }
+
+  .text-input-area textarea:focus {
+    outline: none;
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15);
+  }
+
+  .text-input-area textarea.ltr {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .text-input-area textarea::placeholder {
+    color: #64748b;
+  }
+
+  /* ═══ دکمه‌های عمل ═══ */
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  .action-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    flex: 1;
+    min-width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .action-btn.check {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .action-btn.check:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.6);
+  }
+
+  .action-btn.check:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .action-btn.hint {
+    background: rgba(251, 191, 36, 0.15);
+    border: 2px solid rgba(251, 191, 36, 0.4);
+    color: #fbbf24;
+    flex: 0.7;
+  }
+
+  .action-btn.hint:hover {
+    background: rgba(251, 191, 36, 0.3);
+  }
+
+  .action-btn.skip {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+    flex: 0.7;
+  }
+
+  .action-btn.skip:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  .action-btn.clear {
+    background: rgba(239, 68, 68, 0.15);
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    flex: 0.7;
+  }
+
+  .action-btn.clear:hover {
+    background: rgba(239, 68, 68, 0.3);
+  }
+
+  /* ═══ بازخورد ═══ */
+  .feedback-box {
+    padding: 20px 24px;
+    border-radius: 18px;
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.9;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .feedback-box.show { display: block; }
+
+  .feedback-box.correct {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1));
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  .feedback-box.wrong {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
+
+  .feedback-box .correct-answer {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(34, 197, 94, 0.2);
+    border-radius: 10px;
+    color: #86efac;
+    font-weight: 900;
+    margin: 0 4px;
+    direction: ltr;
+    font-family: 'Courier New', monospace;
+  }
+
+  .feedback-box .user-answer {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(239, 68, 68, 0.2);
+    border-radius: 10px;
+    color: #fca5a5;
+    font-weight: 900;
+    margin: 0 4px;
+    direction: ltr;
+    font-family: 'Courier New', monospace;
+    text-decoration: line-through;
+  }
+
+  /* ═══ صفحه پایان ═══ */
+  .end-view {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .end-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .end-view h2 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+  }
+
+  .end-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+
+  .end-stat {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    padding: 20px 15px;
+  }
+
+  .end-stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 8px;
+  }
+
+  .end-stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  .end-stat.correct .end-stat-value { color: #22c55e; }
+  .end-stat.wrong .end-stat-value { color: #ef4444; }
+
+  .end-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .end-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .end-btn.primary {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1e293b;
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+  }
+
+  .end-btn.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(251, 191, 36, 0.6);
+  }
+
+  .end-btn.secondary {
+    background: rgba(148, 163, 184, 0.15);
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    color: #cbd5e1;
+  }
+
+  .end-btn.secondary:hover {
+    background: rgba(148, 163, 184, 0.3);
+  }
+
+  /* ═══ رسیپانسیو ═══ */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .main-header { padding: 25px 15px; }
+    .main-header h1 { font-size: 24px; }
+    .main-header p { font-size: 13px; }
+    .back-btn { position: static; margin-bottom: 15px; }
+    .setup-panel { padding: 18px; }
+    .lang-chip { padding: 8px 14px; font-size: 13px; }
+    .modes-grid { grid-template-columns: 1fr; }
+    .exercise-card { padding: 25px 18px; }
+    .exercise-content { font-size: 18px; padding: 15px; }
+    .word-chip, .answer-chip { padding: 8px 14px; font-size: 14px; }
+    .action-buttons { flex-direction: column; }
+    .action-btn { width: 100%; flex: 1; }
+    .end-stats { grid-template-columns: 1fr; }
+    .end-view h2 { font-size: 22px; }
+    .text-input-area textarea { font-size: 16px; padding: 14px; }
+    .translation-prompt .source-text { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ هدر ═══ -->
+  <div class="main-header">
+    <a href="lesson.html" class="back-btn">📖 بازگشت به درسنامه</a>
+    <h1>✍️ بخش نوشتن</h1>
+    <p>جملات را بساز، ترجمه کن و جای خالی را پر کن</p>
+  </div>
+
+  <!-- ═══ صفحه تنظیمات ═══ -->
+  <div class="setup-panel" id="setupPanel">
+    
+    <div class="setup-section">
+      <h3>🌍 زبان تمرین را انتخاب کن:</h3>
+      <div class="lang-chips" id="langChips">
+        <div class="lang-chip active" data-lang="en"><span class="flag">🇬🇧</span> انگلیسی</div>
+        <div class="lang-chip" data-lang="ar"><span class="flag">🇸🇦</span> عربی فصیح</div>
+        <div class="lang-chip" data-lang="ar_iq"><span class="flag">🇮🇶</span> عربی عراقی</div>
+        <div class="lang-chip" data-lang="ru"><span class="flag">🇷🇺</span> روسی</div>
+        <div class="lang-chip" data-lang="fr"><span class="flag">🇫🇷</span> فرانسوی</div>
+        <div class="lang-chip" data-lang="es"><span class="flag">🇪🇸</span> اسپانیایی</div>
+        <div class="lang-chip" data-lang="de"><span class="flag">🇩🇪</span> آلمانی</div>
+        <div class="lang-chip" data-lang="ja"><span class="flag">🇯🇵</span> ژاپنی</div>
+        <div class="lang-chip" data-lang="zh"><span class="flag">🇨🇳</span> چینی</div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <h3>✏️ نوع تمرین را انتخاب کن:</h3>
+      <div class="modes-grid" id="modesGrid">
+        <div class="mode-card" data-mode="wordorder">
+          <span class="mode-icon">🧩</span>
+          <div class="mode-name">چیدن کلمات</div>
+          <div class="mode-desc">کلمات را به ترتیب درست بچین</div>
+        </div>
+        <div class="mode-card active" data-mode="translation">
+          <span class="mode-icon">🔤</span>
+          <div class="mode-name">ترجمه</div>
+          <div class="mode-desc">جمله فارسی را به زبان مقصد ترجمه کن</div>
+        </div>
+        <div class="mode-card" data-mode="fillblank">
+          <span class="mode-icon">📝</span>
+          <div class="mode-name">جای خالی</div>
+          <div class="mode-desc">کلمه‌ی مناسب را در جای خالی بگذار</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <h3>🔢 تعداد سوال:</h3>
+      <div class="lang-chips" id="countChips">
+        <div class="lang-chip" data-count="5">۵ سوال</div>
+        <div class="lang-chip active" data-count="8">۸ سوال</div>
+        <div class="lang-chip" data-count="12">۱۲ سوال</div>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startPractice()">
+      ▶ شروع تمرین نوشتن
+    </button>
+
+  </div>
+
+  <!-- ═══ صفحه تمرین ═══ -->
+  <div class="practice-view" id="practiceView">
+    
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-counter">
+        سوال <strong id="currentNum">1</strong> / <strong id="totalNum">8</strong>
+      </div>
+      <div class="progress-score">
+        ⭐ <strong id="scoreNum">0</strong>
+      </div>
+    </div>
+
+    <!-- کارت تمرین -->
+    <div class="exercise-card" id="exerciseCard">
+      <span class="exercise-type" id="exerciseType">تمرین</span>
+      <div class="exercise-instruction" id="exerciseInstruction">—</div>
+      
+      <!-- محتوای تمرین -->
+      <div id="exerciseBody"></div>
+      
+      <!-- بازخورد -->
+      <div class="feedback-box" id="feedbackBox"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ صفحه پایان ═══ -->
+  <div class="end-view" id="endView">
+    <div class="end-icon" id="endIcon">🏆</div>
+    <h2>تمرین نوشتن تمام شد!</h2>
+    
+    <div class="end-stats">
+      <div class="end-stat correct">
+        <div class="end-stat-value" id="endCorrect">0</div>
+        <div class="end-stat-label">پاسخ درست</div>
+      </div>
+      <div class="end-stat wrong">
+        <div class="end-stat-value" id="endWrong">0</div>
+        <div class="end-stat-label">پاسخ غلط</div>
+      </div>
+      <div class="end-stat">
+        <div class="end-stat-value" id="endScore">0</div>
+        <div class="end-stat-label">امتیاز کل</div>
+      </div>
+    </div>
+
+    <div class="end-actions">
+      <button class="end-btn primary" onclick="restartPractice()">🔄 تمرین مجدد</button>
+      <a href="lesson.html" class="end-btn secondary">📖 درسنامه</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   📚 داده‌های تمرین نوشتن
+   ══════════════════════════════════════════════════════════════ */
+
+const languages = {
+  fa:    { name: 'فارسی',        flag: '🇮🇷', font: "'Vazirmatn', sans-serif" },
+  en:    { name: 'انگلیسی',      flag: '🇬🇧', font: "'Vazirmatn', sans-serif" },
+  ar:    { name: 'عربی فصیح',   flag: '🇸🇦', font: "'Noto Naskh Arabic', serif" },
+  ar_iq: { name: 'عربی عراقی',  flag: '🇮🇶', font: "'Noto Naskh Arabic', serif" },
+  ru:    { name: 'روسی',         flag: '🇷🇺', font: "'Vazirmatn', sans-serif" },
+  fr:    { name: 'فرانسوی',      flag: '🇫🇷', font: "'Vazirmatn', sans-serif" },
+  es:    { name: 'اسپانیایی',    flag: '🇪🇸', font: "'Vazirmatn', sans-serif" },
+  de:    { name: 'آلمانی',       flag: '🇩🇪', font: "'Vazirmatn', sans-serif" },
+  ja:    { name: 'ژاپنی',        flag: '🇯🇵', font: "'Noto Sans JP', sans-serif" },
+  zh:    { name: 'چینی',         flag: '🇨🇳', font: "'Noto Sans SC', sans-serif" }
+};
+
+/* ═══ جملات پایه ═══ */
+const sentences = [
+  {
+    fa: 'سلام! امروز چطوری؟',
+    en: 'Hello! How are you today?',
+    ar: 'مَرْحَبًا! كَيْفَ حَالُكَ الْيَوْمَ؟',
+    ar_iq: 'سَلَامٌ عَلَيْكُمْ! شْلُونَكْ الْيَوْمْ؟',
+    ru: 'Привет! Как дела сегодня?',
+    fr: 'Bonjour ! Comment ça va ?',
+    es: '¡Hola! ¿Cómo estás hoy?',
+    de: 'Hallo! Wie geht es dir heute?',
+    ja: 'こんにちは！今日は元気ですか？',
+    zh: '你好！你今天怎么样？'
+  },
+  {
+    fa: 'من هر روز آب می‌نوشم.',
+    en: 'I drink water every day.',
+    ar: 'أَشْرَبُ الْمَاءَ كُلَّ يَوْمٍ.',
+    ar_iq: 'أَشْرَبْ مَايْ كُلْ يَوْمْ.',
+    ru: 'Я пью воду каждый день.',
+    fr: "Je bois de l'eau chaque jour.",
+    es: 'Bebo agua todos los días.',
+    de: 'Ich trinke jeden Tag Wasser.',
+    ja: '毎日水を飲みます。',
+    zh: '我每天喝水。'
+  },
+  {
+    fa: 'دوست من خیلی مهربان است.',
+    en: 'My friend is very kind.',
+    ar: 'صَدِيقِي لَطِيفٌ جِدًّا.',
+    ar_iq: 'صَدِيقِي طَيِّبْ هَوَايَة.',
+    ru: 'Мой друг очень добрый.',
+    fr: 'Mon ami est très gentil.',
+    es: 'Mi amigo es muy amable.',
+    de: 'Mein Freund ist sehr freundlich.',
+    ja: '私の友達はとても親切です。',
+    zh: '我的朋友很善良。'
+  },
+  {
+    fa: 'خانه من بزرگ است.',
+    en: 'My house is big.',
+    ar: 'بَيْتِي كَبِيرٌ.',
+    ar_iq: 'بَيْتِي چْبِيرْ.',
+    ru: 'Мой дом большой.',
+    fr: 'Ma maison est grande.',
+    es: 'Mi casa es grande.',
+    de: 'Mein Haus ist groß.',
+    ja: '私の家は大きいです。',
+    zh: '我的房子很大。'
+  },
+  {
+    fa: 'امروز خیلی خوشحالم.',
+    en: 'I am very happy today.',
+    ar: 'أَنَا سَعِيدٌ جِدًّا الْيَوْمَ.',
+    ar_iq: 'أَنَا فَرْحَانْ هَوَايَة الْيَوْمْ.',
+    ru: 'Я очень счастлив сегодня.',
+    fr: "Je suis très heureux aujourd'hui.",
+    es: 'Estoy muy feliz hoy.',
+    de: 'Ich bin heute sehr glücklich.',
+    ja: '今日はとても幸せです。',
+    zh: '我今天很开心。'
+  },
+  {
+    fa: 'گربه در خواب است.',
+    en: 'The cat is sleeping.',
+    ar: 'الْقِطَّةُ نَائِمَةٌ.',
+    ar_iq: 'الْبِسَّةْ نَايْمَة.',
+    ru: 'Кошка спит.',
+    fr: 'Le chat dort.',
+    es: 'El gato está durmiendo.',
+    de: 'Die Katze schläft.',
+    ja: '猫が寝ています。',
+    zh: '猫在睡觉。'
+  },
+  {
+    fa: 'خورشید می‌درخشد.',
+    en: 'The sun is shining.',
+    ar: 'الشَّمْسُ مُشْرِقَةٌ.',
+    ar_iq: 'الشَّمْسْ مُشْرِقَة.',
+    ru: 'Солнце светит.',
+    fr: 'Le soleil brille.',
+    es: 'El sol está brillando.',
+    de: 'Die Sonne scheint.',
+    ja: '太陽が輝いています。',
+    zh: '阳光明媚。'
+  },
+  {
+    fa: 'به پول نیاز دارم.',
+    en: 'I need money.',
+    ar: 'أَحْتَاجُ إِلَى الْمَالِ.',
+    ar_iq: 'أَحْتَاجْ فْلُوسْ.',
+    ru: 'Мне нужны деньги.',
+    fr: "J'ai besoin d'argent.",
+    es: 'Necesito dinero.',
+    de: 'Ich brauche Geld.',
+    ja: 'お金が必要です。',
+    zh: '我需要钱。'
+  },
+  {
+    fa: 'او یک کتاب می‌خواند.',
+    en: 'She is reading a book.',
+    ar: 'هِيَ تَقْرَأُ كِتَابًا.',
+    ar_iq: 'هِيَّ تِقْرَةْ كِتَابْ.',
+    ru: 'Она читает книгу.',
+    fr: 'Elle lit un livre.',
+    es: 'Ella está leyendo un libro.',
+    de: 'Sie liest ein Buch.',
+    ja: '彼女は本を読んでいます。',
+    zh: '她在读书。'
+  },
+  {
+    fa: 'ما هر شب شام می‌خوریم.',
+    en: 'We eat dinner every night.',
+    ar: 'نَأْكُلُ الْعَشَاءَ كُلَّ لَيْلَةٍ.',
+    ar_iq: 'نَاكُلْ الْعَشَا كُلْ لَيْلَة.',
+    ru: 'Мы ужинаем каждый вечер.',
+    fr: 'Nous dînons chaque soir.',
+    es: 'Cenamos todas las noches.',
+    de: 'Wir essen jeden Abend zu Abend.',
+    ja: '毎晩夕食を食べます。',
+    zh: '我们每天晚上吃晚饭。'
+  }
+];
+
+/* ═══ کلمات برای تمرین جای خالی ═══ */
+const fillBlanks = [
+  {
+    text: { en: 'I ___ water every day.', fa: 'من هر روز ___ می‌نوشم.', ar: 'أَشْرَبُ ___ كُلَّ يَوْمٍ.', ar_iq: 'أَشْرَبْ ___ كُلْ يَوْمْ.', ru: 'Я пью ___ каждый день.', fr: "Je bois de l'___ chaque jour.", es: 'Bebo ___ todos los días.', de: 'Ich trinke jeden Tag ___.', ja: '毎日___を飲みます。', zh: '我每天喝___。' },
+    answers: { en: 'water', fa: 'آب', ar: 'الْمَاءَ', ar_iq: 'مَايْ', ru: 'воду', fr: 'eau', es: 'agua', de: 'Wasser', ja: '水', zh: '水' },
+    hint: { fa: 'چیزی که می‌نوشیم', en: 'A liquid we drink' }
+  },
+  {
+    text: { en: 'My ___ is very kind.', fa: '___ من خیلی مهربان است.', ar: '___ لَطِيفٌ جِدًّا.', ar_iq: '___ طَيِّبْ هَوَايَة.', ru: 'Мой ___ очень добрый.', fr: 'Mon ___ est très gentil.', es: 'Mi ___ es muy amable.', de: 'Mein ___ ist sehr freundlich.', ja: '私の___はとても親切です。', zh: '我的___很善良。' },
+    answers: { en: 'friend', fa: 'دوست', ar: 'صَدِيقِي', ar_iq: 'صَدِيقِي', ru: 'друг', fr: 'ami', es: 'amigo', de: 'Freund', ja: '友達', zh: '朋友' },
+    hint: { fa: 'کسی که با او دوست هستیم', en: 'Someone we are close to' }
+  },
+  {
+    text: { en: 'The ___ is shining.', fa: '___ می‌درخشد.', ar: '___ مُشْرِقَةٌ.', ar_iq: '___ مُشْرِقَة.', ru: '___ светит.', fr: 'Le ___ brille.', es: 'El ___ está brillando.', de: 'Die ___ scheint.', ja: '___が輝いています。', zh: '___在照耀。' },
+    answers: { en: 'sun', fa: 'خورشید', ar: 'الشَّمْسُ', ar_iq: 'الشَّمْسْ', ru: 'солнце', fr: 'soleil', es: 'sol', de: 'Sonne', ja: '太陽', zh: '太阳' },
+    hint: { fa: 'ستاره‌ی روز', en: 'The star of the day' }
+  },
+  {
+    text: { en: 'I am very ___ today.', fa: 'امروز خیلی ___ هستم.', ar: 'أَنَا ___ جِدًّا الْيَوْمَ.', ar_iq: 'أَنَا ___ هَوَايَة الْيَوْمْ.', ru: 'Я очень ___ сегодня.', fr: "Je suis très ___ aujourd'hui.", es: 'Estoy muy ___ hoy.', de: 'Ich bin heute sehr ___.', ja: '今日はとても___です。', zh: '我今天很___。' },
+    answers: { en: 'happy', fa: 'خوشحال', ar: 'سَعِيدٌ', ar_iq: 'فَرْحَانْ', ru: 'счастлив', fr: 'heureux', es: 'feliz', de: 'glücklich', ja: '幸せ', zh: '开心' },
+    hint: { fa: 'احساس خوب', en: 'A good feeling' }
+  },
+  {
+    text: { en: 'The ___ is sleeping.', fa: '___ در خواب است.', ar: '___ نَائِمَةٌ.', ar_iq: '___ نَايْمَة.', ru: '___ спит.', fr: 'Le ___ dort.', es: 'El ___ está durmiendo.', de: 'Die ___ schläft.', ja: '___が寝ています。', zh: '___在睡觉。' },
+    answers: { en: 'cat', fa: 'گربه', ar: 'الْقِطَّةُ', ar_iq: 'الْبِسَّةْ', ru: 'кошка', fr: 'chat', es: 'gato', de: 'Katze', ja: '猫', zh: '猫' },
+    hint: { fa: 'حیوان خانگی که میو می‌کند', en: 'A pet that says meow' }
+  }
+];
+
+/* ══════════════════════════════════════════════════════════════
+   🔊 سیستم تلفظ
+   ══════════════════════════════════════════════════════════════ */
+
+const googleTTSLangMap = {
+  fa: 'fa', en: 'en', ar: 'ar', ar_iq: 'ar',
+  ru: 'ru', fr: 'fr', es: 'es', de: 'de',
+  ja: 'ja', zh: 'zh-CN'
+};
+
+const speechLocaleMap = {
+  fa: 'fa-IR', en: 'en-US', ar: 'ar-SA', ar_iq: 'ar-IQ',
+  ru: 'ru-RU', fr: 'fr-FR', es: 'es-ES', de: 'de-DE',
+  ja: 'ja-JP', zh: 'zh-CN'
+};
+
+let currentAudio = null;
+
+function stopSpeaking() {
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e){}
+    currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+
+function speakWebSpeech(text, langKey, btnElement, customRate) {
+  if (!('speechSynthesis' in window) || !text) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    const locale = speechLocaleMap[langKey] || langKey;
+    utter.lang = locale;
+    utter.rate = customRate !== undefined ? customRate : 1.0;
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === locale.toLowerCase());
+    if (!voice) voice = voices.find(v => v.lang.toLowerCase().startsWith(langKey + '-'));
+    if (voice) utter.voice = voice;
+    if (btnElement) {
+      btnElement.classList.add('speaking');
+      utter.onend = () => btnElement.classList.remove('speaking');
+    }
+    window.speechSynthesis.speak(utter);
+  } catch (err) {}
+}
+
+function speakGoogle(text, langKey, btnElement) {
+  if (!text) return false;
+  const gLang = googleTTSLangMap[langKey];
+  if (!gLang) return false;
+  try {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${gLang}&q=${encodeURIComponent(text)}&textlen=${text.length}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = 'anonymous';
+    currentAudio = audio;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => speakWebSpeech(text, langKey, btnElement));
+    }
+    return true;
+  } catch (err) { return false; }
+}
+
+function speakText(text, langKey) {
+  if (!text) return;
+  stopSpeaking();
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  if (isFirefox) speakWebSpeech(text, langKey, null);
+  else speakGoogle(text, langKey, null);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ✍️ منطق بخش Writing
+   ══════════════════════════════════════════════════════════════ */
+
+let selectedLang = 'en';
+let selectedMode = 'translation';
+let selectedCount = 8;
+
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let currentQuestion = null;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+/* ═══ انتخاب زبان ═══ */
+document.querySelectorAll('#langChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#langChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedLang = chip.dataset.lang;
+  });
+});
+
+/* ═══ انتخاب نوع تمرین ═══ */
+document.querySelectorAll('#modesGrid .mode-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('#modesGrid .mode-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    selectedMode = card.dataset.mode;
+  });
+});
+
+/* ═══ انتخاب تعداد ═══ */
+document.querySelectorAll('#countChips .lang-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#countChips .lang-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedCount = parseInt(chip.dataset.count);
+  });
+});
+
+/* ═══ شروع تمرین ═══ */
+function startPractice() {
+  currentQuestions = [];
+  
+  if (selectedMode === 'wordorder') {
+    const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffled.slice(0, Math.min(selectedCount, sentences.length)).map(s => ({
+      type: 'wordorder',
+      sentence: s,
+      targetText: s[selectedLang],
+      faText: s.fa
+    }));
+  } else if (selectedMode === 'translation') {
+    const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffled.slice(0, Math.min(selectedCount, sentences.length)).map(s => ({
+      type: 'translation',
+      sentence: s,
+      sourceText: s.fa,
+      targetText: s[selectedLang]
+    }));
+  } else if (selectedMode === 'fillblank') {
+    const shuffled = [...fillBlanks].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffled.slice(0, Math.min(selectedCount, fillBlanks.length)).map(fb => ({
+      type: 'fillblank',
+      data: fb,
+      blankText: fb.text[selectedLang],
+      correctAnswer: fb.answers[selectedLang],
+      hint: fb.hint
+    }));
+  }
+
+  currentQuestionIndex = 0;
+  score = 0;
+  correctCount = 0;
+  wrongCount = 0;
+
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('practiceView').classList.add('active');
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('totalNum').textContent = toPersianNum(currentQuestions.length);
+
+  loadQuestion();
+}
+
+/* ═══ بارگذاری سوال ═══ */
+function loadQuestion() {
+  if (currentQuestionIndex >= currentQuestions.length) {
+    endPractice();
+    return;
+  }
+
+  answered = false;
+  currentQuestion = currentQuestions[currentQuestionIndex];
+
+  document.getElementById('currentNum').textContent = toPersianNum(currentQuestionIndex + 1);
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+
+  const progress = (currentQuestionIndex / currentQuestions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  feedbackBox.classList.remove('show');
+  feedbackBox.className = 'feedback-box';
+
+  if (currentQuestion.type === 'wordorder') {
+    renderWordOrder();
+  } else if (currentQuestion.type === 'translation') {
+    renderTranslation();
+  } else if (currentQuestion.type === 'fillblank') {
+    renderFillBlank();
+  }
+}
+
+/* ═══ حالت ۱: چیدن کلمات ═══ */
+function renderWordOrder() {
+  document.getElementById('exerciseType').textContent = '🧩 چیدن کلمات';
+  document.getElementById('exerciseInstruction').textContent = 
+    `کلمات را به ترتیب درست بچین تا جمله‌ی «${currentQuestion.faText}» ساخته شود`;
+
+  // تقسیم جمله به کلمات
+  const words = currentQuestion.targetText.split(/\s+/).filter(w => w);
+  const shuffledWords = [...words].sort(() => Math.random() - 0.5);
+
+  // ذخیره در state
+  currentQuestion.words = shuffledWords;
+  currentQuestion.answer = [];
+
+  document.getElementById('exerciseBody').innerHTML = `
+    <div class="answer-area" id="answerArea"></div>
+    <div class="word-bank" id="wordBank">
+      ${shuffledWords.map((w, i) => `
+        <button class="word-chip" data-index="${i}" onclick="addWord(${i})">${w}</button>
+      `).join('')}
+    </div>
+    <div class="action-buttons">
+      <button class="action-btn clear" onclick="clearAnswer()">🗑️ پاک کردن</button>
+      <button class="action-btn skip" onclick="skipQuestion()">⏭️ رد کن</button>
+      <button class="action-btn check" id="checkBtn" onclick="checkAnswer()" disabled>✅ بررسی</button>
+    </div>
+  `;
+}
+
+function addWord(index) {
+  if (answered) return;
+  const word = currentQuestion.words[index];
+  currentQuestion.answer.push(word);
+
+  // علامت‌گذاری کلمه استفاده‌شده
+  const chip = document.querySelector(`.word-chip[data-index="${index}"]`);
+  if (chip) chip.classList.add('used');
+
+  updateAnswerArea();
+}
+
+function removeWordFromAnswer(idx) {
+  if (answered) return;
+  const word = currentQuestion.answer[idx];
+  currentQuestion.answer.splice(idx, 1);
+
+  // برگرداندن به بانک
+  const bankChips = document.querySelectorAll('.word-chip');
+  for (let chip of bankChips) {
+    if (chip.textContent === word && chip.classList.contains('used')) {
+      chip.classList.remove('used');
+      break;
+    }
+  }
+
+  updateAnswerArea();
+}
+
+function updateAnswerArea() {
+  const area = document.getElementById('answerArea');
+  area.innerHTML = currentQuestion.answer.map((w, i) => `
+    <button class="answer-chip" onclick="removeWordFromAnswer(${i})">${w}</button>
+  `).join('');
+
+  const checkBtn = document.getElementById('checkBtn');
+  if (checkBtn) {
+    checkBtn.disabled = currentQuestion.answer.length === 0;
+  }
+}
+
+function clearAnswer() {
+  if (answered) return;
+  currentQuestion.answer = [];
+  document.querySelectorAll('.word-chip').forEach(c => c.classList.remove('used'));
+  updateAnswerArea();
+}
+
+/* ═══ حالت ۲: ترجمه ═══ */
+function renderTranslation() {
+  document.getElementById('exerciseType').textContent = '🔤 ترجمه';
+  document.getElementById('exerciseInstruction').textContent = 
+    `جمله‌ی زیر را به «${languages[selectedLang].name}» ترجمه کن`;
+
+  const isRTL = selectedLang === 'ar' || selectedLang === 'ar_iq';
+
+  document.getElementById('exerciseBody').innerHTML = `
+    <div class="translation-prompt">
+      <span class="lang-label">🇮🇷 فارسی</span>
+      <div class="source-text fa">${currentQuestion.sourceText}</div>
+    </div>
+    
+    <div class="text-input-area">
+      <textarea 
+        id="answerInput" 
+        class="${isRTL ? '' : 'ltr'}"
+        placeholder="ترجمه خود را اینجا بنویس..."
+        rows="3"
+        autocomplete="off"
+        spellcheck="false"
+        style="direction: ${isRTL ? 'rtl' : 'ltr'}; text-align: ${isRTL ? 'right' : 'left'}; font-family: ${languages[selectedLang].font};"
+      ></textarea>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-btn hint" onclick="showHint()">💡 راهنما</button>
+      <button class="action-btn skip" onclick="skipQuestion()">⏭️ رد کن</button>
+      <button class="action-btn check" onclick="checkAnswer()">✅ بررسی</button>
+    </div>
+  `;
+
+  const input = document.getElementById('answerInput');
+  if (input) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        checkAnswer();
+      }
+    });
+    input.focus();
+  }
+}
+
+/* ═══ حالت ۳: جای خالی ═══ */
+function renderFillBlank() {
+  document.getElementById('exerciseType').textContent = '📝 جای خالی';
+  document.getElementById('exerciseInstruction').textContent = 
+    `کلمه‌ی مناسب را در جای خالی بنویس`;
+
+  const isRTL = selectedLang === 'ar' || selectedLang === 'ar_iq';
+  const displayText = currentQuestion.blankText.replace('___', '<span class="blank-placeholder" id="blankSpot">؟؟؟</span>');
+
+  document.getElementById('exerciseBody').innerHTML = `
+    <div class="fill-blank-content ${selectedLang}" style="font-family: ${languages[selectedLang].font};">
+      ${displayText}
+    </div>
+    
+    <div class="text-input-area">
+      <textarea 
+        id="answerInput" 
+        class="${isRTL ? '' : 'ltr'}"
+        placeholder="پاسخ خود را بنویس..."
+        rows="2"
+        autocomplete="off"
+        spellcheck="false"
+        style="direction: ${isRTL ? 'rtl' : 'ltr'}; text-align: ${isRTL ? 'right' : 'left'}; font-family: ${languages[selectedLang].font};"
+      ></textarea>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-btn hint" onclick="showHint()">💡 راهنما</button>
+      <button class="action-btn skip" onclick="skipQuestion()">⏭️ رد کن</button>
+      <button class="action-btn check" onclick="checkAnswer()">✅ بررسی</button>
+    </div>
+  `;
+
+  const input = document.getElementById('answerInput');
+  if (input) {
+    input.addEventListener('input', (e) => {
+      const spot = document.getElementById('blankSpot');
+      if (spot) {
+        if (e.target.value.trim()) {
+          spot.textContent = e.target.value;
+          spot.classList.add('filled');
+        } else {
+          spot.textContent = '؟؟؟';
+          spot.classList.remove('filled');
+        }
+      }
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        checkAnswer();
+      }
+    });
+    input.focus();
+  }
+}
+
+/* ═══ بررسی پاسخ ═══ */
+function checkAnswer() {
+  if (answered) return;
+  answered = true;
+
+  let userAnswer = '';
+  let correctAnswer = '';
+
+  if (currentQuestion.type === 'wordorder') {
+    userAnswer = currentQuestion.answer.join(' ');
+    correctAnswer = currentQuestion.targetText;
+  } else if (currentQuestion.type === 'translation') {
+    userAnswer = document.getElementById('answerInput').value.trim();
+    correctAnswer = currentQuestion.targetText;
+    if (!userAnswer) {
+      answered = false;
+      return;
+    }
+  } else if (currentQuestion.type === 'fillblank') {
+    userAnswer = document.getElementById('answerInput').value.trim();
+    correctAnswer = currentQuestion.correctAnswer;
+    if (!userAnswer) {
+      answered = false;
+      return;
+    }
+  }
+
+  const isCorrect = isAnswerCompatible(userAnswer, correctAnswer);
+  const feedbackBox = document.getElementById('feedbackBox');
+
+  // غیرفعال کردن دکمه‌ها
+  document.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+  if (currentQuestion.type !== 'wordorder') {
+    const input = document.getElementById('answerInput');
+    if (input) input.disabled = true;
+  }
+
+  if (isCorrect) {
+    correctCount++;
+    score += 10;
+    feedbackBox.className = 'feedback-box show correct';
+    feedbackBox.innerHTML = `✅ <strong>آفرین! پاسخ درست بود.</strong>`;
+    speakText(correctAnswer, selectedLang);
+  } else {
+    wrongCount++;
+    feedbackBox.className = 'feedback-box show wrong';
+    feedbackBox.innerHTML = `
+      ❌ <strong>اشتباه بود!</strong><br>
+      پاسخ درست: <span class="correct-answer">${correctAnswer}</span>
+    `;
+    speakText(correctAnswer, selectedLang);
+  }
+
+  document.getElementById('scoreNum').textContent = toPersianNum(score);
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 2800);
+}
+
+/* ═══ رد کردن ═══ */
+function skipQuestion() {
+  if (answered) return;
+  answered = true;
+  wrongCount++;
+
+  const correctAnswer = currentQuestion.type === 'wordorder' 
+    ? currentQuestion.targetText 
+    : currentQuestion.type === 'translation' 
+      ? currentQuestion.targetText 
+      : currentQuestion.correctAnswer;
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  feedbackBox.className = 'feedback-box show wrong';
+  feedbackBox.innerHTML = `
+    ⏭️ <strong>سوال رد شد.</strong><br>
+    پاسخ درست: <span class="correct-answer">${correctAnswer}</span>
+  `;
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 2800);
+}
+
+/* ═══ راهنما ═══ */
+function showHint() {
+  const feedbackBox = document.getElementById('feedbackBox');
+  let hintText = '';
+
+  if (currentQuestion.type === 'translation') {
+    const words = currentQuestion.targetText.split(/\s+/);
+    const firstWord = words[0];
+    const firstLetter = firstWord[0];
+    hintText = `💡 اولین کلمه با «<strong>${firstLetter}</strong>» شروع می‌شود و ${words.length} کلمه دارد`;
+  } else if (currentQuestion.type === 'fillblank') {
+    const answer = currentQuestion.correctAnswer;
+    const hidden = answer[0] + '●'.repeat(Math.max(1, answer.length - 1));
+    hintText = `💡 پاسخ: <strong style="direction:ltr; display:inline-block;">${hidden}</strong> (${answer.length} حرف)<br>`;
+    if (currentQuestion.hint) {
+      hintText += `<span style="color:#fbbf24;">راهنما: ${currentQuestion.hint.fa}</span>`;
+    }
+  }
+
+  feedbackBox.className = 'feedback-box show';
+  feedbackBox.style.background = 'linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1))';
+  feedbackBox.style.border = '2px solid rgba(251, 191, 36, 0.4)';
+  feedbackBox.style.color = '#fbbf24';
+  feedbackBox.innerHTML = hintText;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🔍 سیستم مقایسه هوشمند پاسخ‌ها
+   ══════════════════════════════════════════════════════════════ */
+
+function normalizeAnswer(text) {
+  if (!text) return '';
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[.,!?؟،؛;:'"«»()\[\]{}\-_\u060C\u061B\u061F]/g, '')
+    .replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآا]/g, 'ا')
+    .replace(/[ىي]/g, 'ی')
+    .replace(/[ؤئ]/g, 'ی')
+    .replace(/ة/g, 'ه')
+    .replace(/[àáâãäå]/g, 'a')
+    .replace(/[èéêë]/g, 'e')
+    .replace(/[ìíîï]/g, 'i')
+    .replace(/[òóôõö]/g, 'o')
+    .replace(/[ùúûü]/g, 'u')
+    .replace(/[ñ]/g, 'n')
+    .replace(/[ç]/g, 'c')
+    .replace(/[ß]/g, 'ss')
+    .replace(/\s+/g, ' ');
+}
+
+function removeSpaces(text) {
+  return text.replace(/\s+/g, '');
+}
+
+function levenshteinDistance(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+function isAnswerCompatible(userAnswer, correctAnswer) {
+  if (!userAnswer || !correctAnswer) return false;
+
+  const userNorm = normalizeAnswer(userAnswer);
+  const correctNorm = normalizeAnswer(correctAnswer);
+
+  if (userNorm === correctNorm) return true;
+  if (removeSpaces(userNorm) === removeSpaces(correctNorm)) return true;
+
+  const userNoSpace = removeSpaces(userNorm);
+  const correctNoSpace = removeSpaces(correctNorm);
+
+  const distance = levenshteinDistance(userNoSpace, correctNoSpace);
+  const maxLen = Math.max(userNoSpace.length, correctNoSpace.length);
+  const maxAllowedDistance = Math.min(2, Math.floor(maxLen * 0.15));
+
+  if (distance <= maxAllowedDistance) return true;
+
+  // بررسی کلمه‌به‌کلمه برای جملات
+  const userWords = userNorm.split(' ').filter(w => w);
+  const correctWords = correctNorm.split(' ').filter(w => w);
+  
+  if (userWords.length === correctWords.length && userWords.length > 1) {
+    let allMatch = true;
+    for (let i = 0; i < correctWords.length; i++) {
+      const dist = levenshteinDistance(userWords[i], correctWords[i]);
+      const wordMaxLen = Math.max(userWords[i].length, correctWords[i].length);
+      const wordAllowedDist = Math.min(2, Math.floor(wordMaxLen * 0.25));
+      if (dist > wordAllowedDist) {
+        allMatch = false;
+        break;
+      }
+    }
+    if (allMatch) return true;
+  }
+
+  return false;
+}
+
+/* ═══ پایان تمرین ═══ */
+function endPractice() {
+  document.getElementById('practiceView').classList.remove('active');
+  document.getElementById('endView').classList.add('active');
+
+  document.getElementById('endCorrect').textContent = toPersianNum(correctCount);
+  document.getElementById('endWrong').textContent = toPersianNum(wrongCount);
+  document.getElementById('endScore').textContent = toPersianNum(score);
+
+  const total = correctCount + wrongCount;
+  if (total > 0 && correctCount === total) {
+    document.getElementById('endIcon').textContent = '🏆';
+  } else if (total > 0 && correctCount / total >= 0.7) {
+    document.getElementById('endIcon').textContent = '🎉';
+  } else {
+    document.getElementById('endIcon').textContent = '💪';
+  }
+}
+
+function restartPractice() {
+  document.getElementById('endView').classList.remove('active');
+  document.getElementById('setupPanel').style.display = 'block';
+}
+
+/* ═══ تبدیل اعداد ═══ */
+function toPersianNum(num) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(num).replace(/\d/g, d => persianDigits[d]);
+}
+
+/* ═══ راه‌اندازی ═══ */
+window.addEventListener('load', () => {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+});
+</script>
+
+</body>
+</html>
